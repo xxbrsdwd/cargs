@@ -14,13 +14,10 @@
       --ok:#23c55e;
       --warn:#f59e0b;
       --bad:#ef4444;
-      --btn:#1f2c3a;
-      --btn2:#1a2430;
       --wa:#25D366;
       --shadow: 0 14px 40px rgba(0,0,0,.35);
       --radius: 18px;
     }
-
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
@@ -31,32 +28,13 @@
                   var(--bg);
       color:var(--text);
     }
-
-    .wrap{
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 18px;
-    }
-
+    .wrap{ max-width:1200px; margin:0 auto; padding:18px; }
     header{
-      display:flex;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding: 8px 0 16px;
+      display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+      gap:12px; padding:8px 0 16px;
     }
-    .title{
-      display:flex;
-      align-items:baseline;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .title h1{
-      margin:0;
-      font-size: clamp(18px, 2.2vw, 28px);
-      letter-spacing:.2px;
-    }
+    .title{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+    .title h1{ margin:0; font-size: clamp(18px, 2.2vw, 28px); letter-spacing:.2px; }
     .pill{
       border:1px solid var(--line);
       background: rgba(255,255,255,.03);
@@ -67,14 +45,8 @@
       white-space: nowrap;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 14px;
-    }
-    @media (max-width: 900px){
-      .grid{ grid-template-columns: 1fr; }
-    }
+    .grid{ display:grid; grid-template-columns: 1.05fr .95fr; gap:14px; }
+    @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
 
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
@@ -83,39 +55,19 @@
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-
     .card .hd{
       padding: 14px 14px 10px;
       border-bottom: 1px solid rgba(255,255,255,.06);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
     }
-    .card .hd h2{
-      margin:0;
-      font-size: 15px;
-      letter-spacing:.2px;
-    }
-    .card .bd{
-      padding: 14px;
-    }
+    .card .hd h2{ margin:0; font-size: 15px; letter-spacing:.2px; }
+    .card .bd{ padding: 14px; }
 
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:end;
-    }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:end; }
     .row > *{ flex:1; min-width: 180px; }
 
-    label{
-      display:block;
-      font-size: 12px;
-      color: var(--muted);
-      margin: 0 0 6px;
-    }
-    input, select, textarea{
+    label{ display:block; font-size:12px; color:var(--muted); margin:0 0 6px; }
+    input, textarea{
       width:100%;
       padding: 12px 12px;
       border-radius: 12px;
@@ -133,12 +85,7 @@
       letter-spacing: .2px;
     }
 
-    .btns{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top: 10px;
-    }
+    .btns{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 10px; }
     button{
       cursor:pointer;
       border: 1px solid var(--line);
@@ -156,9 +103,7 @@
       transition: transform .05s ease, border-color .15s ease, background .15s ease;
     }
     button:active{ transform: translateY(1px); }
-    button.secondary{
-      background: rgba(255,255,255,.02);
-    }
+    button.secondary{ background: rgba(255,255,255,.02); }
     button.wa{
       border-color: rgba(37,211,102,.45);
       background: linear-gradient(180deg, rgba(37,211,102,.16), rgba(37,211,102,.08));
@@ -167,16 +112,9 @@
       border-color: rgba(239,68,68,.45);
       background: linear-gradient(180deg, rgba(239,68,68,.18), rgba(239,68,68,.08));
     }
-    button:disabled{
-      opacity:.55;
-      cursor:not-allowed;
-    }
+    button:disabled{ opacity:.55; cursor:not-allowed; }
 
-    .scanner{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:10px;
-    }
+    .scanner{ display:grid; grid-template-columns: 1fr; gap:10px; }
 
     .videoBox{
       position: relative;
@@ -187,13 +125,15 @@
       border-radius: 16px;
       overflow:hidden;
     }
+    /* IMPORTANT: SIN espejo (sin scaleX(-1)) */
     .videoBox video{
       width:100%;
       height:100%;
       object-fit: cover;
       display:block;
-      transform: scaleX(-1); /* se ve tipo selfie; si no te gusta, quítalo */
+      transform: none;
     }
+
     .overlay{
       pointer-events:none;
       position:absolute;
@@ -237,20 +177,10 @@
       background: rgba(245,158,11,.9);
       box-shadow: 0 0 0 4px rgba(245,158,11,.12);
     }
-    .dot.ok{
-      background: rgba(35,197,94,.95);
-      box-shadow: 0 0 0 4px rgba(35,197,94,.12);
-    }
-    .dot.bad{
-      background: rgba(239,68,68,.95);
-      box-shadow: 0 0 0 4px rgba(239,68,68,.12);
-    }
+    .dot.ok{ background: rgba(35,197,94,.95); box-shadow: 0 0 0 4px rgba(35,197,94,.12); }
+    .dot.bad{ background: rgba(239,68,68,.95); box-shadow: 0 0 0 4px rgba(239,68,68,.12); }
 
-    .items{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
+    .items{ display:flex; flex-direction:column; gap:10px; }
     .item{
       border: 1px solid rgba(255,255,255,.08);
       background: rgba(0,0,0,.16);
@@ -262,92 +192,38 @@
       padding: 10px;
     }
     .thumb{
-      width: 92px;
-      height: 92px;
+      width: 92px; height: 92px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.08);
       background: rgba(255,255,255,.03);
       overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:flex; align-items:center; justify-content:center;
     }
-    .thumb img{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      display:block;
-    }
-    .noimg{
-      font-size: 11px;
-      color: rgba(138,160,182,.95);
-      text-align:center;
-      padding: 0 8px;
-    }
-    .meta{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width: 0;
-    }
-    .metaTop{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:flex-start;
-    }
-    .meta strong{
-      font-size: 14px;
-      line-height: 1.25;
-      display:block;
-      word-break: break-word;
-    }
-    .meta small{
-      color: var(--muted);
-      display:block;
-      font-size: 12px;
-    }
-    .miniBtns{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .miniBtns button{
-      min-height: 34px;
-      padding: 7px 10px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 12px;
-    }
+    .thumb img{ width:100%; height:100%; object-fit: cover; display:block; }
+    .noimg{ font-size: 11px; color: rgba(138,160,182,.95); text-align:center; padding: 0 8px; }
+
+    .meta{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+    .metaTop{ display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+    .meta strong{ font-size: 14px; line-height: 1.25; display:block; word-break: break-word; }
+    .meta small{ color: var(--muted); display:block; font-size: 12px; }
+
+    .miniBtns{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    .miniBtns button{ min-height: 34px; padding: 7px 10px; border-radius: 12px; font-weight: 700; font-size: 12px; }
 
     .totals{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-      align-items:center;
-      justify-content:space-between;
+      display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px;
+      align-items:center; justify-content:space-between;
       border-top: 1px dashed rgba(255,255,255,.10);
       padding-top: 10px;
       color: rgba(233,240,247,.92);
     }
-    .totals .big{
-      font-size: 16px;
-      font-weight: 800;
-    }
+    .totals .big{ font-size: 16px; font-weight: 800; }
     .totals .muted{ color: var(--muted); font-size: 12px; }
 
-    /* Modal */
     .modal{
-      position:fixed;
-      inset:0;
-      background: rgba(0,0,0,.6);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 18px;
-      z-index: 50;
+      position:fixed; inset:0; background: rgba(0,0,0,.6);
+      display:none; align-items:center; justify-content:center;
+      padding: 18px; z-index: 50;
     }
     .modal.open{ display:flex; }
     .modalCard{
@@ -361,15 +237,10 @@
     .modalHd{
       padding: 12px 14px;
       border-bottom: 1px solid rgba(255,255,255,.08);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
+      display:flex; align-items:center; justify-content:space-between; gap: 10px;
     }
     .modalHd strong{ font-size: 14px; }
-    .modalBd{
-      padding: 12px;
-    }
+    .modalBd{ padding: 12px; }
     .modalBd img{
       width:100%;
       height:auto;
@@ -387,11 +258,7 @@
       line-height: 1.35;
     }
 
-    .historyList{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
+    .historyList{ display:flex; flex-direction:column; gap:10px; }
     .historyItem{
       border:1px solid rgba(255,255,255,.08);
       border-radius: 16px;
@@ -406,28 +273,10 @@
       align-items:flex-start;
       border-bottom: 1px solid rgba(255,255,255,.06);
     }
-    .historyItem .top strong{
-      font-size: 13px;
-      word-break: break-word;
-    }
-    .historyItem .top small{
-      display:block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-    .historyItem .actions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .historyItem .actions button{
-      min-height: 34px;
-      padding: 7px 10px;
-      border-radius: 12px;
-      font-size: 12px;
-    }
+    .historyItem .top strong{ font-size: 13px; word-break: break-word; }
+    .historyItem .top small{ display:block; font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .historyItem .actions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    .historyItem .actions button{ min-height: 34px; padding: 7px 10px; border-radius: 12px; font-size: 12px; }
 
     .kbd{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
@@ -439,7 +288,6 @@
       color: rgba(233,240,247,.9);
       white-space: nowrap;
     }
-
     .svgWa{ width:18px; height:18px; display:block; }
   </style>
 </head>
@@ -449,7 +297,7 @@
     <header>
       <div class="title">
         <h1>Registro de Cargas (Tracking → Producto → Foto)</h1>
-        <span class="pill">Móvil/PC · Ordenado · Guarda historial</span>
+        <span class="pill">Móvil/PC · Ordenado · Guarda historial · Sin espejo</span>
       </div>
       <div class="status" id="statusLine">
         <span class="dot" id="statusDot"></span>
@@ -493,14 +341,16 @@
             <div class="btns">
               <button id="btnStartScan">Iniciar escáner</button>
               <button class="secondary" id="btnStopScan" disabled>Detener</button>
+              <button class="secondary" id="btnSwitchCamScan">Cambiar cámara</button>
+              <button class="secondary" id="btnTorchScan" style="display:none;">Linterna</button>
               <button class="secondary" id="btnScanFromImage">Escanear desde imagen</button>
             </div>
 
             <div class="hint">
-              ✅ Para escanear, abre este archivo desde un servidor <span class="kbd">https</span> o <span class="kbd">localhost</span>.
+              ✅ Para escanear, abre este archivo desde <span class="kbd">https</span> o <span class="kbd">localhost</span>.
               En algunos móviles, abrirlo como “archivo suelto” puede bloquear la cámara.
               <br/>
-              Si tu navegador no soporta escaneo automático, igual puedes pegar el tracking manualmente.
+              Si tu navegador no soporta escaneo automático, igual puedes escribir el tracking manualmente.
             </div>
           </div>
 
@@ -524,6 +374,8 @@
               <label>Foto (cámara o subir)</label>
               <div class="btns" style="margin-top:0">
                 <button id="btnOpenPhotoCam">Usar cámara</button>
+                <button class="secondary" id="btnSwitchCamPhoto">Cambiar cámara</button>
+                <button class="secondary" id="btnTorchPhoto" style="display:none;">Linterna</button>
                 <button class="secondary" id="btnUploadPhoto">Subir foto</button>
                 <button class="secondary" id="btnRemovePendingPhoto" disabled>Quitar foto</button>
               </div>
@@ -533,7 +385,7 @@
                   <video id="photoVideo" playsinline muted></video>
                   <div class="overlay">
                     <div class="scanFrame" style="border-color: rgba(59,130,246,.85);">
-                      <div class="scanHint">Encadra la foto y captura</div>
+                      <div class="scanHint">Encadra y captura</div>
                     </div>
                   </div>
                 </div>
@@ -545,7 +397,9 @@
                     </div>
                     <div style="flex:1; min-width: 180px;">
                       <div style="font-weight:800;">Foto lista ✅</div>
-                      <div class="hint" style="margin-top:6px;">Se guardará junto con el producto al presionar <span class="kbd">Agregar a la carga</span>.</div>
+                      <div class="hint" style="margin-top:6px;">
+                        Se guardará junto con el producto al presionar <span class="kbd">Agregar a la carga</span>.
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -595,7 +449,6 @@
 
           <h3 style="margin:0 0 10px; font-size:14px;">Listado (Información + Foto, en orden)</h3>
           <div class="items" id="itemsList"></div>
-
         </div>
       </section>
 
@@ -642,7 +495,6 @@
 
     function sanitizeTracking(raw){
       if(!raw) return "";
-      // Mantén letras/números y algunos símbolos comunes
       return String(raw).trim().replace(/\s+/g," ").slice(0, 120);
     }
 
@@ -684,7 +536,6 @@
       lines.push("");
       load.items.forEach((it, idx)=>{
         lines.push(`${idx+1}) ${it.qty} / ${it.product}`);
-        // "info y foto" en el chat: en texto solo podemos marcarlo así
         lines.push(it.photo ? `   🖼️ Foto: ${idx+1}` : `   🖼️ Foto: (no adjunta)`);
         lines.push("");
       });
@@ -695,19 +546,14 @@
     }
 
     /********************
-     * Estado + Storage
+     * Storage
      ********************/
-    const STORAGE_KEY = "registro_cargas_v1";
+    const STORAGE_KEY = "registro_cargas_v2_no_mirror";
     function loadStore(){
-      try{
-        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"history":[]}');
-      }catch(e){
-        return {history:[]};
-      }
+      try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"history":[]}'); }
+      catch(e){ return {history:[]}; }
     }
-    function saveStore(store){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
-    }
+    function saveStore(store){ localStorage.setItem(STORAGE_KEY, JSON.stringify(store)); }
 
     let store = loadStore();
 
@@ -736,15 +582,12 @@
     }
 
     function persistCurrentToHistory(){
-      // Si no hay nada, no guardes
       if(!currentLoad.tracking && currentLoad.items.length===0) return;
-      // Reemplaza si ya existe mismo ID
       const idx = store.history.findIndex(x=>x.id===currentLoad.id);
       const copy = JSON.parse(JSON.stringify(currentLoad));
       if(idx>=0) store.history[idx] = copy;
       else store.history.unshift(copy);
-      // recorta historial si quieres (opcional)
-      store.history = store.history.slice(0, 100);
+      store.history = store.history.slice(0, 120);
       saveStore(store);
       renderHistory();
     }
@@ -798,11 +641,10 @@
           const mini = document.createElement("div");
           mini.className = "miniBtns";
 
-          const btnView = document.createElement("button");
-          btnView.className = "secondary";
-          btnView.textContent = it.photo ? "Ver foto" : "Agregar foto";
-          btnView.addEventListener("click", async ()=>{
-            // abre selector de foto para ese item
+          const btnPhoto = document.createElement("button");
+          btnPhoto.className = "secondary";
+          btnPhoto.textContent = it.photo ? "Cambiar foto" : "Agregar foto";
+          btnPhoto.addEventListener("click", ()=>{
             editPhotoIndex = idx;
             $("fileInputPhoto").click();
           });
@@ -816,7 +658,7 @@
             renderItems();
           });
 
-          mini.appendChild(btnView);
+          mini.appendChild(btnPhoto);
           mini.appendChild(btnDel);
 
           top.appendChild(info);
@@ -882,13 +724,7 @@
 
         const btnShare = document.createElement("button");
         btnShare.className = "wa";
-        btnShare.innerHTML = `
-          <svg class="svgWa" viewBox="0 0 32 32" aria-hidden="true">
-            <path fill="var(--wa)" d="M16.02 3C9.4 3 4 8.39 4 15.01c0 2.34.68 4.62 1.97 6.59L4 29l7.58-1.92a12 12 0 0 0 4.44.85h.01C22.65 27.93 28 22.54 28 15.01 28 8.39 22.63 3 16.02 3z"/>
-            <path fill="#0b0f14" d="M13.2 10.2c-.3-.67-.62-.68-.9-.7h-.77c-.27 0-.7.1-1.06.5-.36.4-1.4 1.36-1.4 3.32 0 1.96 1.44 3.85 1.64 4.12.2.26 2.8 4.48 6.94 6.1 3.44 1.35 4.14 1.08 4.9 1.01.76-.07 2.44-1 2.78-1.96.34-.96.34-1.78.24-1.96-.1-.17-.36-.27-.77-.47-.4-.2-2.44-1.2-2.82-1.34-.37-.14-.64-.2-.9.2-.27.4-1.04 1.34-1.28 1.62-.24.27-.47.3-.87.1-.4-.2-1.7-.63-3.23-2.02-1.19-1.06-2-2.38-2.23-2.78-.24-.4-.03-.62.18-.82.18-.18.4-.47.6-.7.2-.24.27-.4.4-.67.14-.27.07-.5-.03-.7-.1-.2-.86-2.12-1.19-2.86z"/>
-          </svg>
-          Texto
-        `;
+        btnShare.textContent = "Texto";
         btnShare.addEventListener("click", ()=>{
           const txt = formatWhatsAppText(h);
           shareTextToWhatsApp(txt);
@@ -933,29 +769,21 @@
      * WhatsApp sharing
      ********************/
     function shareTextToWhatsApp(text){
-      // Si soporta Web Share (mejor en móviles) -> el usuario elige WhatsApp y chat
       if(navigator.share){
-        navigator.share({ text })
-          .then(()=> setStatus("ok","Compartido. Si falta, prueba el botón de WhatsApp Web."))
-          .catch(()=>{ /* cancelado */ });
+        navigator.share({ text }).catch(()=>{});
         return;
       }
-      // Fallback: WhatsApp Web / wa.me
       const url = "https://wa.me/?text=" + encodeURIComponent(text);
       window.open(url, "_blank");
-      setStatus("ok","Abriendo WhatsApp (web). Elige el chat y envía.");
     }
 
     async function shareOrderedItems(load){
-      // Intento: compartir cada producto + su foto en orden
-      // Esto requiere Web Share + soporte de compartir archivos
       if(!navigator.share){
         setStatus("bad","Tu navegador no soporta compartir. Usa 'Enviar carga registrada' (texto) y adjunta fotos manualmente.");
         return;
       }
-
-      // En iOS/Android algunos soportan files; otros no.
       const canFiles = !!navigator.canShare;
+
       for(let i=0;i<load.items.length;i++){
         const it = load.items[i];
         const line = `${i+1}) ${it.qty} / ${it.product}\nTracking: ${load.tracking || ""}`;
@@ -968,35 +796,26 @@
               await navigator.share({ text: line, files: [file] });
               continue;
             }
-          }catch(e){
-            // cae abajo
-          }
+          }catch(e){}
         }
-
-        // Si no se puede compartir archivo, manda texto (y foto manual)
         try{
-          await navigator.share({ text: line + (it.photo ? "\n🖼️ (Adjunta la foto manualmente)" : "") });
+          await navigator.share({ text: line + (it.photo ? "\n🖼️ (Adjunta la foto manualmente si no salió)" : "") });
         }catch(e){
-          // cancelado: salimos para no molestar
           setStatus("bad","Compartición cancelada.");
           return;
         }
       }
-
-      // Al final, comparte resumen
-      try{
-        const summary = formatWhatsAppText(load);
-        await navigator.share({ text: summary });
-      }catch(e){}
-      setStatus("ok","Listo. Se compartieron los productos en orden (según soporte del dispositivo).");
+      setStatus("ok","Compartido en orden (según soporte del dispositivo).");
     }
 
     /********************
      * Foto capture (producto)
      ********************/
-    let pendingPhoto = null;         // DataURL
+    let pendingPhoto = null;
     let photoStream = null;
-    let editPhotoIndex = null;       // si el usuario va a asignar foto a un item existente
+    let editPhotoIndex = null;
+    let photoFacing = "environment";
+    let photoTorchOn = false;
 
     function renderPendingPhoto(){
       const wrap = $("pendingPhotoWrap");
@@ -1017,13 +836,23 @@
     async function openPhotoCam(){
       try{
         const constraints = {
-          video: { facingMode: { ideal: "environment" } },
+          video: {
+            facingMode: { ideal: photoFacing },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
           audio: false
         };
         photoStream = await navigator.mediaDevices.getUserMedia(constraints);
+
         const v = $("photoVideo");
         v.srcObject = photoStream;
         await v.play();
+
+        await applyFocusIfPossible(photoStream);
+
+        // Torch UI
+        setupTorchButton(photoStream, $("btnTorchPhoto"), (state)=>{ photoTorchOn = state; });
 
         $("photoCamBox").style.display = "block";
         $("photoCamControls").style.display = "flex";
@@ -1041,6 +870,8 @@
         photoStream.getTracks().forEach(t=>t.stop());
         photoStream = null;
       }
+      $("btnTorchPhoto").style.display = "none";
+      photoTorchOn = false;
       $("photoCamBox").style.display = "none";
       $("photoCamControls").style.display = "none";
     }
@@ -1049,12 +880,10 @@
       const v = $("photoVideo");
       if(!v || v.readyState < 2) return;
 
-      // Captura a canvas y comprime
       const canvas = document.createElement("canvas");
       const w = v.videoWidth || 1280;
       const h = v.videoHeight || 720;
 
-      // Mantén buen tamaño (no gigante, no mini)
       const MAX_W = 1400;
       const scale = Math.min(1, MAX_W / w);
       canvas.width = Math.round(w * scale);
@@ -1069,6 +898,16 @@
       setStatus("ok","Foto capturada y lista para guardarse con el producto.");
     }
 
+    async function switchPhotoCamera(){
+      photoFacing = (photoFacing === "environment") ? "user" : "environment";
+      if(photoStream){
+        closePhotoCam();
+        await openPhotoCam();
+      }else{
+        setStatus("ok", `Cámara foto configurada a: ${photoFacing}. Abre la cámara cuando quieras.`);
+      }
+    }
+
     /********************
      * Scanner (tracking)
      ********************/
@@ -1076,6 +915,12 @@
     let scanning = false;
     let detector = null;
     let scanRaf = null;
+    let scanFacing = "environment";
+    let scanTorchOn = false;
+
+    // Canvas reutilizable (mejor rendimiento)
+    const roiCanvas = document.createElement("canvas");
+    const roiCtx = roiCanvas.getContext("2d", { willReadFrequently: true });
 
     function supportsBarcodeDetector(){
       return "BarcodeDetector" in window;
@@ -1090,28 +935,21 @@
 
       try{
         const formats = [
-          "qr_code",
-          "code_128",
-          "code_39",
-          "ean_13",
-          "ean_8",
-          "upc_a",
-          "upc_e",
-          "itf",
-          "pdf417",
-          "aztec",
-          "data_matrix"
+          "qr_code","code_128","code_39","ean_13","ean_8","upc_a","upc_e","itf","pdf417","aztec","data_matrix"
         ];
-
         if(supportsBarcodeDetector()){
           detector = new BarcodeDetector({ formats });
         }else{
           detector = null;
-          setStatus("bad","Tu navegador no soporta escaneo automático (BarcodeDetector). Puedes escribir el tracking manualmente o escanear desde imagen.");
+          setStatus("bad","Tu navegador no soporta escaneo automático. Puedes escribir el tracking manualmente o escanear desde imagen.");
         }
 
         scanStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: "environment" } },
+          video: {
+            facingMode: { ideal: scanFacing },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
           audio: false
         });
 
@@ -1119,11 +957,13 @@
         v.srcObject = scanStream;
         await v.play();
 
-        setStatus("ok","Escáner activo. Alinea el código en el recuadro.");
+        await applyFocusIfPossible(scanStream);
 
-        if(detector){
-          scanLoop();
-        }
+        // Torch UI
+        setupTorchButton(scanStream, $("btnTorchScan"), (state)=>{ scanTorchOn = state; });
+
+        setStatus("ok","Escáner activo. Alinea el código en el recuadro.");
+        if(detector) scanLoop();
       }catch(e){
         setStatus("bad","No pude abrir la cámara del escáner. Revisa permisos o usa modo manual.");
         stopScanner();
@@ -1147,7 +987,19 @@
         cancelAnimationFrame(scanRaf);
         scanRaf = null;
       }
+      $("btnTorchScan").style.display = "none";
+      scanTorchOn = false;
       setStatus("ok","Escáner detenido.");
+    }
+
+    async function switchScanCamera(){
+      scanFacing = (scanFacing === "environment") ? "user" : "environment";
+      if(scanning){
+        stopScanner();
+        await startScanner();
+      }else{
+        setStatus("ok", `Escáner configurado a: ${scanFacing}. Inicia cuando quieras.`);
+      }
     }
 
     async function scanLoop(){
@@ -1159,7 +1011,6 @@
         return;
       }
 
-      // ROI: recuadro horizontal centrado
       const vw = v.videoWidth;
       const vh = v.videoHeight;
 
@@ -1168,15 +1019,12 @@
       const roiX = Math.floor((vw - roiW)/2);
       const roiY = Math.floor((vh - roiH)/2);
 
-      // dibuja ROI a canvas
-      const canvas = document.createElement("canvas");
-      canvas.width = roiW;
-      canvas.height = roiH;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(v, roiX, roiY, roiW, roiH, 0, 0, roiW, roiH);
+      roiCanvas.width = roiW;
+      roiCanvas.height = roiH;
+      roiCtx.drawImage(v, roiX, roiY, roiW, roiH, 0, 0, roiW, roiH);
 
       try{
-        const bitmap = await createImageBitmap(canvas);
+        const bitmap = await createImageBitmap(roiCanvas);
         const codes = await detector.detect(bitmap);
         bitmap.close?.();
 
@@ -1190,13 +1038,12 @@
             renderItems();
             beep();
             setStatus("ok","Tracking capturado ✅ Puedes agregar productos.");
-            // Pausa escaneo para evitar repetir
             stopScanner();
             return;
           }
         }
       }catch(e){
-        // ignora y sigue
+        // sigue
       }
 
       scanRaf = requestAnimationFrame(scanLoop);
@@ -1206,14 +1053,12 @@
       if(!file) return;
 
       if(!supportsBarcodeDetector()){
-        setStatus("bad","Tu navegador no soporta BarcodeDetector para escanear imágenes. Ingresa el tracking manualmente.");
+        setStatus("bad","Tu navegador no soporta escaneo de imagen. Ingresa el tracking manualmente.");
         return;
       }
 
       try{
-        const formats = [
-          "qr_code","code_128","code_39","ean_13","ean_8","upc_a","upc_e","itf","pdf417","aztec","data_matrix"
-        ];
+        const formats = ["qr_code","code_128","code_39","ean_13","ean_8","upc_a","upc_e","itf","pdf417","aztec","data_matrix"];
         const det = new BarcodeDetector({ formats });
         const img = await createImageBitmap(file);
         const codes = await det.detect(img);
@@ -1234,7 +1079,58 @@
     }
 
     /********************
-     * Eventos
+     * Enfoque continuo y linterna
+     ********************/
+    async function applyFocusIfPossible(stream){
+      try{
+        const track = stream.getVideoTracks()[0];
+        if(!track?.getCapabilities) return;
+        const caps = track.getCapabilities();
+        const settings = track.getSettings?.() || {};
+
+        // En muchos Android existe focusMode
+        if(caps.focusMode && Array.isArray(caps.focusMode) && caps.focusMode.includes("continuous")){
+          await track.applyConstraints({ advanced: [{ focusMode: "continuous" }] });
+        }
+
+        // A veces exposureMode también ayuda
+        if(caps.exposureMode && Array.isArray(caps.exposureMode) && caps.exposureMode.includes("continuous")){
+          await track.applyConstraints({ advanced: [{ exposureMode: "continuous" }] });
+        }
+
+        // Si el navegador escogió cámara frontal por error, no hacemos espejo (por requerimiento)
+      }catch(e){}
+    }
+
+    function setupTorchButton(stream, btn, onStateChange){
+      try{
+        const track = stream.getVideoTracks()[0];
+        if(!track?.getCapabilities) { btn.style.display = "none"; return; }
+        const caps = track.getCapabilities();
+        if(!caps.torch){ btn.style.display = "none"; return; }
+
+        let torchOn = false;
+        btn.style.display = "inline-flex";
+        btn.textContent = "Linterna: OFF";
+
+        btn.onclick = async ()=>{
+          torchOn = !torchOn;
+          try{
+            await track.applyConstraints({ advanced: [{ torch: torchOn }] });
+            btn.textContent = `Linterna: ${torchOn ? "ON" : "OFF"}`;
+            onStateChange?.(torchOn);
+          }catch(e){
+            // si falla, revierte
+            torchOn = !torchOn;
+          }
+        };
+      }catch(e){
+        btn.style.display = "none";
+      }
+    }
+
+    /********************
+     * Eventos generales
      ********************/
     $("dateInput").value = currentLoad.date;
 
@@ -1245,7 +1141,6 @@
     });
 
     $("btnNewLoad").addEventListener("click", ()=>{
-      // guarda antes si hay algo
       persistCurrentToHistory();
       resetCurrentLoad();
     });
@@ -1261,11 +1156,9 @@
 
     $("btnStartScan").addEventListener("click", startScanner);
     $("btnStopScan").addEventListener("click", stopScanner);
+    $("btnSwitchCamScan").addEventListener("click", switchScanCamera);
 
-    $("btnScanFromImage").addEventListener("click", ()=>{
-      $("fileInputScan").click();
-    });
-
+    $("btnScanFromImage").addEventListener("click", ()=>{ $("fileInputScan").click(); });
     $("fileInputScan").addEventListener("change", (e)=>{
       const file = e.target.files?.[0];
       e.target.value = "";
@@ -1275,13 +1168,14 @@
     $("btnOpenPhotoCam").addEventListener("click", openPhotoCam);
     $("btnClosePhotoCam").addEventListener("click", closePhotoCam);
     $("btnCapturePhoto").addEventListener("click", capturePhoto);
+    $("btnSwitchCamPhoto").addEventListener("click", switchPhotoCamera);
 
     $("btnUploadPhoto").addEventListener("click", ()=>{
-      editPhotoIndex = null; // foto pendiente para nuevo item
+      editPhotoIndex = null;
       $("fileInputPhoto").click();
     });
 
-    $("fileInputPhoto").addEventListener("change", async (e)=>{
+    $("fileInputPhoto").addEventListener("change", (e)=>{
       const file = e.target.files?.[0];
       e.target.value = "";
       if(!file) return;
@@ -1291,7 +1185,6 @@
         const dataUrl = reader.result;
         if(typeof dataUrl === "string"){
           if(editPhotoIndex !== null && editPhotoIndex !== undefined){
-            // asigna foto a item existente
             currentLoad.items[editPhotoIndex].photo = dataUrl;
             editPhotoIndex = null;
             persistCurrentToHistory();
@@ -1340,7 +1233,6 @@
         photo: pendingPhoto
       });
 
-      // limpia inputs para siguiente “info y foto”
       $("productInput").value = "";
       $("qtyInput").value = "";
       pendingPhoto = null;
@@ -1357,8 +1249,7 @@
         return;
       }
       persistCurrentToHistory();
-      const txt = formatWhatsAppText(currentLoad);
-      shareTextToWhatsApp(txt);
+      shareTextToWhatsApp(formatWhatsAppText(currentLoad));
     });
 
     $("btnShareOrdered").addEventListener("click", ()=>{
@@ -1384,15 +1275,13 @@
     });
 
     $("btnCloseModal").addEventListener("click", closeModal);
-    $("modal").addEventListener("click", (e)=>{
-      if(e.target === $("modal")) closeModal();
-    });
+    $("modal").addEventListener("click", (e)=>{ if(e.target === $("modal")) closeModal(); });
 
     // Inicial
     renderPendingPhoto();
     renderItems();
     renderHistory();
-    setStatus("ok","Listo. Escanea el tracking y luego agrega: información + foto, en orden.");
+    setStatus("ok","Listo. Sin espejo. Escanea el tracking y luego agrega: información + foto, en orden.");
   </script>
 </body>
 </html>
