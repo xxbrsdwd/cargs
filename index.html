@@ -6,17 +6,8 @@
   <title>Registro de Cargas (Foto → Tracking → Producto → Foto)</title>
   <style>
     :root{
-      --bg:#0b0f14;
-      --card:#121a24;
-      --muted:#8aa0b6;
-      --text:#e9f0f7;
-      --line:#203042;
-      --ok:#23c55e;
-      --warn:#f59e0b;
-      --bad:#ef4444;
-      --wa:#25D366;
-      --shadow: 0 14px 40px rgba(0,0,0,.35);
-      --radius: 18px;
+      --bg:#0b0f14; --card:#121a24; --muted:#8aa0b6; --text:#e9f0f7; --line:#203042;
+      --ok:#23c55e; --bad:#ef4444; --wa:#25D366; --shadow: 0 14px 40px rgba(0,0,0,.35); --radius: 18px;
     }
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
@@ -29,38 +20,18 @@
       color:var(--text);
     }
     .wrap{ max-width:1200px; margin:0 auto; padding:18px; }
-    header{
-      display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
-      gap:12px; padding:8px 0 16px;
-    }
+    header{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding:8px 0 16px; }
     .title{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
     .title h1{ margin:0; font-size: clamp(18px, 2.2vw, 28px); letter-spacing:.2px; }
-    .pill{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
+    .pill{ border:1px solid var(--line); background: rgba(255,255,255,.03); color: var(--muted);
+      padding: 6px 10px; border-radius: 999px; font-size: 12px; white-space: nowrap; }
     .grid{ display:grid; grid-template-columns: 1.05fr .95fr; gap:14px; }
     @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
 
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .card .hd{
-      padding: 14px 14px 10px;
-      border-bottom: 1px solid rgba(255,255,255,.06);
-      display:flex; justify-content:space-between; align-items:center; gap:12px;
-      flex-wrap:wrap;
-    }
+    .card{ background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow:hidden; }
+    .card .hd{ padding: 14px 14px 10px; border-bottom: 1px solid rgba(255,255,255,.06);
+      display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
     .card .hd h2{ margin:0; font-size: 15px; letter-spacing:.2px; }
     .card .bd{ padding: 14px; }
 
@@ -69,153 +40,68 @@
 
     label{ display:block; font-size:12px; color:var(--muted); margin:0 0 6px; }
     input{
-      width:100%;
-      padding: 12px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: rgba(0,0,0,.22);
-      color: var(--text);
-      outline: none;
+      width:100%; padding: 12px 12px; border-radius: 12px; border: 1px solid var(--line);
+      background: rgba(0,0,0,.22); color: var(--text); outline: none;
     }
-    input:focus{
-      border-color: rgba(37,211,102,.55);
-      box-shadow: 0 0 0 4px rgba(37,211,102,.10);
-    }
-    .mono{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      letter-spacing: .2px;
-    }
+    input:focus{ border-color: rgba(37,211,102,.55); box-shadow: 0 0 0 4px rgba(37,211,102,.10); }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; letter-spacing: .2px; }
 
     .btns{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 10px; }
     button{
-      cursor:pointer;
-      border: 1px solid var(--line);
+      cursor:pointer; border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 14px;
-      font-weight: 700;
-      letter-spacing: .2px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap: 10px;
-      min-height: 42px;
+      color: var(--text); padding: 10px 12px; border-radius: 14px; font-weight: 800; letter-spacing: .2px;
+      display:inline-flex; align-items:center; justify-content:center; gap: 10px; min-height: 42px;
       transition: transform .05s ease, border-color .15s ease, background .15s ease;
     }
     button:active{ transform: translateY(1px); }
     button.secondary{ background: rgba(255,255,255,.02); }
-    button.wa{
-      border-color: rgba(37,211,102,.45);
-      background: linear-gradient(180deg, rgba(37,211,102,.16), rgba(37,211,102,.08));
-    }
-    button.danger{
-      border-color: rgba(239,68,68,.45);
-      background: linear-gradient(180deg, rgba(239,68,68,.18), rgba(239,68,68,.08));
-    }
+    button.wa{ border-color: rgba(37,211,102,.45); background: linear-gradient(180deg, rgba(37,211,102,.16), rgba(37,211,102,.08)); }
+    button.danger{ border-color: rgba(239,68,68,.45); background: linear-gradient(180deg, rgba(239,68,68,.18), rgba(239,68,68,.08)); }
     button:disabled{ opacity:.55; cursor:not-allowed; }
 
-    .status{
-      font-size: 12px;
-      color: var(--muted);
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .dot{
-      width:10px; height:10px; border-radius:999px;
-      background: rgba(245,158,11,.9);
-      box-shadow: 0 0 0 4px rgba(245,158,11,.12);
-    }
+    .status{ font-size: 12px; color: var(--muted); display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .dot{ width:10px; height:10px; border-radius:999px; background: rgba(245,158,11,.9); box-shadow: 0 0 0 4px rgba(245,158,11,.12); }
     .dot.ok{ background: rgba(35,197,94,.95); box-shadow: 0 0 0 4px rgba(35,197,94,.12); }
     .dot.bad{ background: rgba(239,68,68,.95); box-shadow: 0 0 0 4px rgba(239,68,68,.12); }
 
-    .hint{
-      margin-top:10px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.35;
-    }
+    .hint{ margin-top:10px; color: var(--muted); font-size: 12px; line-height: 1.35; }
 
-    .previewBox{
-      margin-top: 10px;
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: 16px;
-      padding: 10px;
-      background: rgba(0,0,0,.14);
-      display:none;
-      gap:10px;
-    }
+    .previewBox{ margin-top: 10px; border:1px solid rgba(255,255,255,.08); border-radius: 16px;
+      padding: 10px; background: rgba(0,0,0,.14); display:none; gap:10px; }
     .previewBox.show{ display:grid; grid-template-columns: 140px 1fr; }
-    .previewBox img{
-      width:140px; height:140px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.08);
-      object-fit: cover;
-      background:#000;
-    }
+    .previewBox img{ width:140px; height:140px; border-radius: 14px; border: 1px solid rgba(255,255,255,.08); object-fit: cover; background:#000; }
     .small{ font-size:12px; color: var(--muted); margin-top:6px; }
     .strong{ font-weight:900; font-size:13px; word-break:break-all; }
 
-    .candWrap{
-      margin-top:10px;
-      display:none;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.14);
-      border-radius: 16px;
-      padding: 10px;
-    }
+    .candWrap{ margin-top:10px; display:none; border:1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.14); border-radius: 16px; padding: 10px; }
     .candWrap.show{ display:block; }
     .candTitle{ font-weight:900; font-size:13px; margin-bottom:8px; }
     .chips{ display:flex; flex-wrap:wrap; gap:8px; }
     .chip{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      padding:8px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      cursor:pointer;
-      user-select:none;
-      max-width: 100%;
-      overflow:hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04);
+      padding:8px 10px; border-radius: 999px; font-size: 12px; cursor:pointer; user-select:none;
+      max-width: 100%; overflow:hidden; text-overflow: ellipsis; white-space: nowrap;
     }
-    .chip.best{
-      border-color: rgba(37,211,102,.55);
-      background: rgba(37,211,102,.12);
-    }
+    .chip.best{ border-color: rgba(37,211,102,.55); background: rgba(37,211,102,.12); }
 
     .items{ display:flex; flex-direction:column; gap:10px; }
     .item{
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.16);
-      border-radius: 16px;
-      overflow:hidden;
-      display:grid;
-      grid-template-columns: 92px 1fr;
-      gap: 10px;
-      padding: 10px;
+      border: 1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.16);
+      border-radius: 16px; overflow:hidden; display:grid; grid-template-columns: 92px 1fr; gap: 10px; padding: 10px;
     }
     .thumb{
-      width: 92px; height: 92px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-      overflow:hidden;
-      display:flex; align-items:center; justify-content:center;
+      width: 92px; height: 92px; border-radius: 14px; border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03); overflow:hidden; display:flex; align-items:center; justify-content:center;
     }
     .thumb img{ width:100%; height:100%; object-fit: cover; display:block; }
     .noimg{ font-size: 11px; color: rgba(138,160,182,.95); text-align:center; padding: 0 8px; }
-
     .meta{ display:flex; flex-direction:column; gap:6px; min-width:0; }
     .metaTop{ display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
     .meta strong{ font-size: 14px; line-height: 1.25; display:block; word-break: break-word; }
     .meta small{ color: var(--muted); display:block; font-size: 12px; }
-
     .miniBtns{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-    .miniBtns button{ min-height: 34px; padding: 7px 10px; border-radius: 12px; font-weight: 800; font-size: 12px; }
+    .miniBtns button{ min-height: 34px; padding: 7px 10px; border-radius: 12px; font-weight: 900; font-size: 12px; }
 
     .totals{
       display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px;
@@ -224,22 +110,13 @@
       padding-top: 10px;
       color: rgba(233,240,247,.92);
     }
-    .totals .big{ font-size: 16px; font-weight: 900; }
+    .totals .big{ font-size: 16px; font-weight: 950; }
     .totals .muted{ color: var(--muted); font-size: 12px; }
 
     .historyList{ display:flex; flex-direction:column; gap:10px; }
-    .historyItem{
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: 16px;
-      overflow:hidden;
-      background: rgba(0,0,0,.14);
-    }
+    .historyItem{ border:1px solid rgba(255,255,255,.08); border-radius: 16px; overflow:hidden; background: rgba(0,0,0,.14); }
     .historyItem .top{
-      padding: 10px 12px;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:flex-start;
+      padding: 10px 12px; display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
       border-bottom: 1px solid rgba(255,255,255,.06);
     }
     .historyItem .top strong{ font-size: 13px; word-break: break-word; }
@@ -265,7 +142,7 @@
     <header>
       <div class="title">
         <h1>Registro de Cargas (Foto → Tracking → Producto → Foto)</h1>
-        <span class="pill">Móvil/PC · Cámara a pantalla completa · OCR inteligente</span>
+        <span class="pill">Móvil/PC · WhatsApp ordenado (modo seguro)</span>
       </div>
       <div class="status">
         <span class="dot" id="statusDot"></span>
@@ -296,7 +173,6 @@
             </div>
           </div>
 
-          <!-- CAPTURAR FOTO PARA TRACKING -->
           <div class="btns" style="margin-top:12px;">
             <button id="btnTakeTrackingPhoto">📸 Tomar foto del tracking</button>
             <button class="secondary" id="btnPickTrackingPhoto">🖼️ Elegir imagen</button>
@@ -305,33 +181,26 @@
           </div>
 
           <div class="hint">
-            • Esta opción abre la cámara <b>en pantalla completa</b> (no mini cuadro).<br/>
-            • Si salen varios números (control interno, fecha, etc.), abajo te saldrán candidatos para escoger en 1 toque.
+            • Esto abre la cámara en <b>pantalla completa</b>.<br/>
+            • Si salen varios números (control interno, fecha, etc.), se mostrarán candidatos para escoger.
           </div>
 
-          <!-- inputs ocultos -->
           <input id="trackCamInput" type="file" accept="image/*" capture="environment" style="display:none;" />
           <input id="trackFileInput" type="file" accept="image/*" style="display:none;" />
 
-          <!-- preview -->
           <div class="previewBox" id="trackingPreview">
             <img id="trackingImg" alt="Tracking preview" />
             <div>
               <div class="strong">Foto cargada ✅</div>
               <div class="small" id="ocrProgress">Lista para OCR.</div>
-              <div class="small">
-                Tip: buena luz, sin reflejos, y el tracking que se vea grande.
-              </div>
+              <div class="small">Tip: buena luz, sin reflejos, el tracking grande.</div>
             </div>
           </div>
 
-          <!-- candidatos -->
           <div class="candWrap" id="candWrap">
             <div class="candTitle">Candidatos detectados (toca el correcto):</div>
             <div class="chips" id="candChips"></div>
-            <div class="small">
-              El sistema marca en verde el “mejor” candidato, pero tú mandas: toca el correcto.
-            </div>
+            <div class="small">El primero va marcado como “mejor”, pero tú eliges.</div>
           </div>
 
           <hr style="border:0;border-top:1px solid rgba(255,255,255,.08); margin:14px 0;"/>
@@ -367,9 +236,9 @@
                     <img id="pendingPhotoImg" alt="Foto pendiente" />
                   </div>
                   <div style="flex:1; min-width: 180px;">
-                    <div style="font-weight:900;">Foto lista ✅</div>
+                    <div style="font-weight:950;">Foto lista ✅</div>
                     <div class="hint" style="margin-top:6px;">
-                      Se guardará junto con el producto al presionar <span class="kbd">Agregar a la carga</span>.
+                      Se guardará al presionar <span class="kbd">Agregar a la carga</span>.
                     </div>
                   </div>
                 </div>
@@ -390,13 +259,13 @@
 
             <div class="btns" style="margin:0">
               <button class="wa" id="btnSendWhatsApp">📲 Enviar carga registrada (texto)</button>
-              <button class="secondary" id="btnShareOrdered">📎 Compartir en orden (texto+foto)</button>
+              <button class="wa" id="btnWhatsAppOrdered">📲 WhatsApp en orden (texto + foto)</button>
             </div>
           </div>
 
           <div class="hint">
-            • WhatsApp (texto): se abre y tú escoges el chat.<br/>
-            • Compartir en orden: intenta mandar producto+foto uno por uno (depende del móvil).
+            <b>WhatsApp en orden (texto+foto)</b> usa un modo “seguro”: abre WhatsApp con el texto y luego te abre el compartir de la foto
+            (porque WhatsApp no permite adjuntar imágenes automático desde web).
           </div>
 
           <hr style="border:0;border-top:1px solid rgba(255,255,255,.08); margin:14px 0;"/>
@@ -414,21 +283,15 @@
         </div>
         <div class="bd">
           <div class="historyList" id="historyList"></div>
-          <div class="hint" style="margin-top:12px;">
-            Se guarda en tu navegador (localStorage).
-          </div>
+          <div class="hint" style="margin-top:12px;">Se guarda en tu navegador (localStorage).</div>
         </div>
       </section>
     </div>
   </div>
 
-  <!-- Tesseract OCR (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
   <script>
-    /********************
-     * Helpers UI
-     ********************/
     const $ = (id)=>document.getElementById(id);
 
     function setStatus(type, text){
@@ -484,14 +347,43 @@
       return lines.join("\n").trim();
     }
 
+    function lineText(load, it, i){
+      return `${i+1}) ${it.qty} / ${it.product}\nTracking: ${load.tracking || ""}\nFecha: ${load.date}`;
+    }
+
+    function openWhatsAppText(text){
+      // método más estable para WhatsApp
+      const url = "https://wa.me/?text=" + encodeURIComponent(text);
+      window.open(url, "_blank");
+    }
+
     function dataUrlToBlob(dataUrl){
       return fetch(dataUrl).then(r=>r.blob());
+    }
+
+    async function sharePhotoWithText(it, text){
+      // intenta compartir con archivos (si soporta)
+      if(it.photo && navigator.share && navigator.canShare){
+        try{
+          const blob = await dataUrlToBlob(it.photo);
+          const file = new File([blob], "foto.jpg", { type: blob.type || "image/jpeg" });
+          if(navigator.canShare({ files:[file] })){
+            await navigator.share({ text, files:[file] });
+            return true;
+          }
+        }catch(e){}
+      }
+      // fallback: si no soporta files, comparte solo texto
+      if(navigator.share){
+        try{ await navigator.share({ text }); return true; }catch(e){ return false; }
+      }
+      return false;
     }
 
     /********************
      * Storage
      ********************/
-    const STORAGE_KEY = "registro_cargas_v5_photo_tracking";
+    const STORAGE_KEY = "registro_cargas_v5_photo_tracking_whatsapp";
     function loadStore(){
       try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"history":[]}'); }
       catch(e){ return {history:[]}; }
@@ -499,32 +391,21 @@
     function saveStore(store){ localStorage.setItem(STORAGE_KEY, JSON.stringify(store)); }
 
     let store = loadStore();
-
-    let currentLoad = {
-      id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()),
-      date: nowStamp(),
-      tracking: "",
-      items: []
-    };
+    let currentLoad = { id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()), date: nowStamp(), tracking:"", items:[] };
 
     function persistCurrentToHistory(){
       if(!currentLoad.tracking && currentLoad.items.length===0) return;
       const idx = store.history.findIndex(x=>x.id===currentLoad.id);
       const copy = JSON.parse(JSON.stringify(currentLoad));
-      if(idx>=0) store.history[idx] = copy;
+      if(idx>=0) store.history[idx]=copy;
       else store.history.unshift(copy);
-      store.history = store.history.slice(0, 150);
+      store.history = store.history.slice(0,150);
       saveStore(store);
       renderHistory();
     }
 
     function resetCurrentLoad(){
-      currentLoad = {
-        id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()),
-        date: nowStamp(),
-        tracking: "",
-        items: []
-      };
+      currentLoad = { id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()), date: nowStamp(), tracking:"", items:[] };
       $("trackingInput").value = "";
       $("dateInput").value = currentLoad.date;
       $("productInput").value = "";
@@ -533,12 +414,8 @@
       renderPendingPhoto();
       renderItems();
 
-      // tracking photo UI reset
-      trackingPhotoFile = null;
-      trackingPhotoDataUrl = "";
-      setTrackingPreview(false);
-      setCandidates([]);
-
+      trackingPhotoFile=null; trackingPhotoDataUrl="";
+      setTrackingPreview(false); setCandidates([]);
       $("btnReRunOcr").disabled = true;
       $("btnRemoveTrackingPhoto").disabled = true;
 
@@ -551,61 +428,55 @@
     function renderItems(){
       const list = $("itemsList");
       list.innerHTML = "";
-
       if(currentLoad.items.length===0){
         const empty = document.createElement("div");
-        empty.className = "hint";
-        empty.textContent = "Aún no has agregado productos. (Info + Foto, en orden).";
+        empty.className="hint";
+        empty.textContent="Aún no has agregado productos. (Info + Foto, en orden).";
         list.appendChild(empty);
-      }else{
+      } else {
         currentLoad.items.forEach((it, idx)=>{
           const div = document.createElement("div");
-          div.className = "item";
+          div.className="item";
 
           const thumb = document.createElement("div");
-          thumb.className = "thumb";
+          thumb.className="thumb";
           if(it.photo){
             const img = document.createElement("img");
-            img.src = it.photo;
-            img.alt = `Foto ${idx+1}`;
+            img.src=it.photo;
             thumb.appendChild(img);
-          }else{
-            const p = document.createElement("div");
-            p.className = "noimg";
-            p.textContent = "Sin foto";
+          } else {
+            const p=document.createElement("div");
+            p.className="noimg";
+            p.textContent="Sin foto";
             thumb.appendChild(p);
           }
 
-          const meta = document.createElement("div");
-          meta.className = "meta";
+          const meta=document.createElement("div");
+          meta.className="meta";
 
-          const top = document.createElement("div");
-          top.className = "metaTop";
+          const top=document.createElement("div");
+          top.className="metaTop";
 
-          const info = document.createElement("div");
-          const strong = document.createElement("strong");
-          strong.textContent = `${it.qty} / ${it.product}`;
-          const small = document.createElement("small");
-          small.textContent = `Orden: ${idx+1} · Tracking: ${currentLoad.tracking || "(vacío)"}`;
-          info.appendChild(strong);
-          info.appendChild(small);
+          const info=document.createElement("div");
+          const strong=document.createElement("strong");
+          strong.textContent=`${it.qty} / ${it.product}`;
+          const small=document.createElement("small");
+          small.textContent=`Orden: ${idx+1} · Tracking: ${currentLoad.tracking || "(vacío)"}`;
+          info.appendChild(strong); info.appendChild(small);
 
-          const mini = document.createElement("div");
-          mini.className = "miniBtns";
-
-          const btnDel = document.createElement("button");
-          btnDel.className = "danger";
-          btnDel.textContent = "Eliminar";
-          btnDel.addEventListener("click", ()=>{
+          const mini=document.createElement("div");
+          mini.className="miniBtns";
+          const btnDel=document.createElement("button");
+          btnDel.className="danger";
+          btnDel.textContent="Eliminar";
+          btnDel.onclick=()=>{
             currentLoad.items.splice(idx,1);
             persistCurrentToHistory();
             renderItems();
-          });
-
+          };
           mini.appendChild(btnDel);
-          top.appendChild(info);
-          top.appendChild(mini);
 
+          top.appendChild(info); top.appendChild(mini);
           meta.appendChild(top);
 
           div.appendChild(thumb);
@@ -623,64 +494,58 @@
     function renderHistory(){
       const wrap = $("historyList");
       wrap.innerHTML = "";
-
       if(store.history.length===0){
         const empty = document.createElement("div");
-        empty.className = "hint";
-        empty.textContent = "No hay cargas guardadas aún.";
+        empty.className="hint";
+        empty.textContent="No hay cargas guardadas aún.";
         wrap.appendChild(empty);
         return;
       }
-
       store.history.forEach((h)=>{
-        const box = document.createElement("div");
-        box.className = "historyItem";
+        const box=document.createElement("div");
+        box.className="historyItem";
+        const top=document.createElement("div");
+        top.className="top";
 
-        const top = document.createElement("div");
-        top.className = "top";
-
-        const left = document.createElement("div");
-        const st = document.createElement("strong");
-        st.textContent = `Tracking: ${h.tracking || "(sin tracking)"}`;
-        const sm = document.createElement("small");
+        const left=document.createElement("div");
+        const st=document.createElement("strong");
+        st.textContent=`Tracking: ${h.tracking || "(sin tracking)"}`;
+        const sm=document.createElement("small");
         const units = h.items.reduce((a,b)=>a + (Number(b.qty)||0), 0);
-        sm.textContent = `${h.date} · ${h.items.length} productos · ${units} unidades`;
-        left.appendChild(st);
-        left.appendChild(sm);
+        sm.textContent=`${h.date} · ${h.items.length} productos · ${units} unidades`;
+        left.appendChild(st); left.appendChild(sm);
 
-        const actions = document.createElement("div");
-        actions.className = "actions";
+        const actions=document.createElement("div");
+        actions.className="actions";
 
-        const btnLoad = document.createElement("button");
-        btnLoad.className = "secondary";
-        btnLoad.textContent = "Abrir";
-        btnLoad.addEventListener("click", ()=>{
+        const btnLoad=document.createElement("button");
+        btnLoad.className="secondary";
+        btnLoad.textContent="Abrir";
+        btnLoad.onclick=()=>{
           currentLoad = JSON.parse(JSON.stringify(h));
-          $("trackingInput").value = currentLoad.tracking || "";
-          $("dateInput").value = currentLoad.date || nowStamp();
-          pendingPhoto = null;
+          $("trackingInput").value=currentLoad.tracking||"";
+          $("dateInput").value=currentLoad.date||nowStamp();
+          pendingPhoto=null;
           renderPendingPhoto();
           renderItems();
 
-          trackingPhotoFile = null;
-          trackingPhotoDataUrl = "";
-          setTrackingPreview(false);
-          setCandidates([]);
-          $("btnReRunOcr").disabled = true;
-          $("btnRemoveTrackingPhoto").disabled = true;
+          trackingPhotoFile=null; trackingPhotoDataUrl="";
+          setTrackingPreview(false); setCandidates([]);
+          $("btnReRunOcr").disabled=true;
+          $("btnRemoveTrackingPhoto").disabled=true;
 
           setStatus("ok","Carga cargada desde historial.");
-        });
+        };
 
-        const btnDel = document.createElement("button");
-        btnDel.className = "danger";
-        btnDel.textContent = "Eliminar";
-        btnDel.addEventListener("click", ()=>{
+        const btnDel=document.createElement("button");
+        btnDel.className="danger";
+        btnDel.textContent="Eliminar";
+        btnDel.onclick=()=>{
           store.history = store.history.filter(x=>x.id!==h.id);
           saveStore(store);
           renderHistory();
           setStatus("ok","Carga eliminada del historial.");
-        });
+        };
 
         actions.appendChild(btnLoad);
         actions.appendChild(btnDel);
@@ -693,20 +558,19 @@
     }
 
     /********************
-     * TRACKING por FOTO + OCR
+     * Tracking foto + OCR
      ********************/
     const MIN_TRACK_DIGITS = 8;
-
-    let trackingPhotoFile = null;
-    let trackingPhotoDataUrl = "";
-    let ocrWorker = null;
+    let trackingPhotoFile=null;
+    let trackingPhotoDataUrl="";
+    let ocrWorker=null;
 
     function setTrackingPreview(show){
       const box = $("trackingPreview");
       if(show){
         box.classList.add("show");
         $("trackingImg").src = trackingPhotoDataUrl;
-      }else{
+      } else {
         box.classList.remove("show");
         $("trackingImg").src = "";
         $("ocrProgress").textContent = "Lista para OCR.";
@@ -714,114 +578,80 @@
     }
 
     function setCandidates(cands){
-      const wrap = $("candWrap");
-      const chips = $("candChips");
-      chips.innerHTML = "";
-      if(!cands || !cands.length){
-        wrap.classList.remove("show");
-        return;
-      }
+      const wrap=$("candWrap");
+      const chips=$("candChips");
+      chips.innerHTML="";
+      if(!cands || !cands.length){ wrap.classList.remove("show"); return; }
       wrap.classList.add("show");
-
       cands.forEach((c, idx)=>{
-        const b = document.createElement("div");
-        b.className = "chip" + (idx===0 ? " best" : "");
-        b.title = c.value;
-        b.textContent = c.value;
-        b.addEventListener("click", ()=>{
-          $("trackingInput").value = c.value;
-          currentLoad.tracking = c.value;
+        const b=document.createElement("div");
+        b.className="chip" + (idx===0 ? " best" : "");
+        b.textContent=c.value;
+        b.title=c.value;
+        b.onclick=()=>{
+          $("trackingInput").value=c.value;
+          currentLoad.tracking=c.value;
           persistCurrentToHistory();
           renderItems();
           beep();
           setStatus("ok","Tracking seleccionado ✅");
-        });
+        };
         chips.appendChild(b);
       });
     }
 
     function normalizeOcrText(t){
-      return String(t || "")
-        .replace(/[Oo]/g, "0")
-        .replace(/[Il|]/g, "1")
-        .replace(/[Ss]/g, "5")
-        .replace(/[Bb]/g, "8")
-        .replace(/[Zz]/g, "2");
+      return String(t||"")
+        .replace(/[Oo]/g,"0")
+        .replace(/[Il|]/g,"1")
+        .replace(/[Ss]/g,"5")
+        .replace(/[Bb]/g,"8")
+        .replace(/[Zz]/g,"2");
     }
-
     function joinSplitDigits(t){
-      let s = t;
+      let s=t;
       for(let i=0;i<10;i++){
-        s = s.replace(/(\d)\s+(\d)/g, "$1$2");
-        s = s.replace(/(\d)\n(\d)/g, "$1$2");
+        s=s.replace(/(\d)\s+(\d)/g,"$1$2");
+        s=s.replace(/(\d)\n(\d)/g,"$1$2");
       }
       return s;
     }
-
     function looksLikeDate8(d){
-      const toInt = (x)=>Number(x);
-      const dd = toInt(d.slice(0,2));
-      const mm = toInt(d.slice(2,4));
-      const yyyy = toInt(d.slice(4,8));
-
-      const mm2 = toInt(d.slice(0,2));
-      const dd2 = toInt(d.slice(2,4));
-      const yyyy2 = toInt(d.slice(4,8));
-
-      const yyyy3 = toInt(d.slice(0,4));
-      const mm3 = toInt(d.slice(4,6));
-      const dd3 = toInt(d.slice(6,8));
-
-      const yearOk = (y)=> y >= 1990 && y <= 2099;
-
-      if(dd>=1 && dd<=31 && mm>=1 && mm<=12 && yearOk(yyyy)) return true;     // DDMMYYYY
-      if(mm2>=1 && mm2<=12 && dd2>=1 && dd2<=31 && yearOk(yyyy2)) return true; // MMDDYYYY
-      if(yearOk(yyyy3) && mm3>=1 && mm3<=12 && dd3>=1 && dd3<=31) return true; // YYYYMMDD
+      const toInt=(x)=>Number(x);
+      const dd=toInt(d.slice(0,2)), mm=toInt(d.slice(2,4)), yyyy=toInt(d.slice(4,8));
+      const mm2=toInt(d.slice(0,2)), dd2=toInt(d.slice(2,4)), yyyy2=toInt(d.slice(4,8));
+      const yyyy3=toInt(d.slice(0,4)), mm3=toInt(d.slice(4,6)), dd3=toInt(d.slice(6,8));
+      const yearOk=(y)=>y>=1990 && y<=2099;
+      if(dd>=1 && dd<=31 && mm>=1 && mm<=12 && yearOk(yyyy)) return true;
+      if(mm2>=1 && mm2<=12 && dd2>=1 && dd2<=31 && yearOk(yyyy2)) return true;
+      if(yearOk(yyyy3) && mm3>=1 && mm3<=12 && dd3>=1 && dd3<=31) return true;
       return false;
     }
 
-    // Extra: score por cercanía a la palabra "tracking"
     function scoreCandidateDigits(d, normText){
       let score = d.length * 10;
+      if(d.length===8 && looksLikeDate8(d)) score -= 95;
 
-      if(d.length === 8 && looksLikeDate8(d)) score -= 95;
-
-      if(d.length >= 8){
-        const first4 = Number(d.slice(0,4));
-        if(first4 >= 1990 && first4 <= 2099) score -= 25;
-      }
-
-      if(d.length >= 12) score += 15;
-      if(d.length >= 20) score += 25;
-
-      // Cercanía a "tracking"
       const tpos = normText.toLowerCase().indexOf("tracking");
-      if(tpos >= 0){
+      if(tpos>=0){
         const idx = normText.indexOf(d);
-        if(idx >= 0){
+        if(idx>=0){
           const dist = Math.abs(idx - tpos);
-          score += Math.max(0, 120 - Math.min(dist, 120)); // más cerca, más score
+          score += Math.max(0, 120 - Math.min(dist,120));
         }
       }
-
-      // Penaliza si cerca de "fecha"
       const fpos = normText.toLowerCase().indexOf("fecha");
-      if(fpos >= 0){
+      if(fpos>=0){
         const idx = normText.indexOf(d);
-        if(idx >= 0 && Math.abs(idx - fpos) < 80){
-          score -= 35;
-        }
+        if(idx>=0 && Math.abs(idx - fpos) < 80) score -= 35;
       }
-
-      // Penaliza si cerca de "control"
       const cpos = normText.toLowerCase().indexOf("control");
-      if(cpos >= 0){
+      if(cpos>=0){
         const idx = normText.indexOf(d);
-        if(idx >= 0 && Math.abs(idx - cpos) < 80){
-          score -= 25;
-        }
+        if(idx>=0 && Math.abs(idx - cpos) < 80) score -= 25;
       }
-
+      if(d.length>=12) score += 15;
+      if(d.length>=20) score += 25;
       return score;
     }
 
@@ -829,7 +659,6 @@
       let s = normalizeOcrText(rawText);
       s = joinSplitDigits(s);
 
-      // 1) Si aparece "tracking", intenta capturar número en la misma línea
       const direct = s.match(/tracking[^0-9]*([0-9]{6,})/i);
       let directHit = null;
       if(direct){
@@ -837,141 +666,92 @@
         if(cand.length >= MIN_TRACK_DIGITS) directHit = cand;
       }
 
-      // 2) Todas las secuencias de dígitos
       const runs = (s.match(/\d+/g) || [])
-        .map(x => x.replace(/\D/g,""))
-        .filter(x => x.length >= MIN_TRACK_DIGITS);
+        .map(x=>x.replace(/\D/g,""))
+        .filter(x=>x.length >= MIN_TRACK_DIGITS);
 
-      // uniq
-      const uniq = [];
-      const seen = new Set();
-      for(const r of runs){
-        if(!seen.has(r)){
-          seen.add(r);
-          uniq.push(r);
-        }
-      }
+      const uniq=[]; const seen=new Set();
+      for(const r of runs){ if(!seen.has(r)){ seen.add(r); uniq.push(r); } }
 
-      // score
-      const scored = uniq.map(v => ({ value: v, score: scoreCandidateDigits(v, s) }))
+      const scored = uniq.map(v=>({value:v, score: scoreCandidateDigits(v, s)}))
                          .sort((a,b)=>b.score-a.score);
 
-      // Si hay hit directo por "tracking", ponlo primero
       if(directHit){
-        const exists = scored.find(x=>x.value===directHit);
-        if(exists){
-          exists.score += 9999;
-          scored.sort((a,b)=>b.score-a.score);
-        }else{
-          scored.unshift({ value: directHit, score: 999999 });
-        }
+        const ex = scored.find(x=>x.value===directHit);
+        if(ex){ ex.score += 9999; scored.sort((a,b)=>b.score-a.score); }
+        else scored.unshift({value:directHit, score:999999});
       }
-
-      // Si el primero es fecha clara (8 dígitos), muévelo abajo
-      // (igual el usuario puede tocarlo si realmente es tracking)
-      const out = scored.map(x=>({value:x.value,score:x.score}));
-      return out.slice(0, 8);
+      return scored.slice(0, 10);
     }
 
     async function getOcrWorker(){
       if(ocrWorker) return ocrWorker;
-
       ocrWorker = await Tesseract.createWorker({
         logger: m=>{
-          if(m.status === "recognizing text"){
+          if(m.status==="recognizing text"){
             $("ocrProgress").textContent = `OCR leyendo... ${Math.round((m.progress||0)*100)}%`;
           }
         }
       });
-
-      // "eng" es suficiente; necesitamos dígitos + palabra "tracking"
       await ocrWorker.loadLanguage("eng");
       await ocrWorker.initialize("eng");
-
       await ocrWorker.setParameters({
         tessedit_char_whitelist: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz: ",
-        preserve_interword_spaces: "1",
-        user_defined_dpi: "300",
-        tessedit_pageseg_mode: "6"
+        preserve_interword_spaces:"1",
+        user_defined_dpi:"300",
+        tessedit_pageseg_mode:"6"
       });
-
       return ocrWorker;
     }
 
     async function loadBitmapFromFile(file){
-      // Orientación desde EXIF (importante en iPhone)
-      try{
-        return await createImageBitmap(file, { imageOrientation: "from-image" });
-      }catch(e){
-        return await createImageBitmap(file);
-      }
+      try{ return await createImageBitmap(file, { imageOrientation: "from-image" }); }
+      catch(e){ return await createImageBitmap(file); }
     }
 
     function preprocessBitmapToDataUrl(bitmap, cropMode){
-      // cropMode: "full" o "band"
       const maxW = 1600;
-      const srcW = bitmap.width;
-      const srcH = bitmap.height;
+      const srcW = bitmap.width, srcH = bitmap.height;
 
-      let cropX=0, cropY=0, cropW=srcW, cropH=srcH;
-      if(cropMode === "band"){
-        // banda donde suele ir el "Tracking:" (mitad-baja)
-        cropX = 0;
-        cropW = srcW;
-        cropY = Math.floor(srcH * 0.35);
-        cropH = Math.floor(srcH * 0.50); // 35% -> 85%
+      let cropX=0,cropY=0,cropW=srcW,cropH=srcH;
+      if(cropMode==="band"){
+        cropY = Math.floor(srcH*0.35);
+        cropH = Math.floor(srcH*0.50);
       }
 
-      // escalado
       const scale = Math.min(1, maxW / cropW);
-      const outW = Math.max(600, Math.floor(cropW * scale));
-      const outH = Math.max(400, Math.floor(cropH * scale));
+      const outW = Math.max(700, Math.floor(cropW*scale));
+      const outH = Math.max(450, Math.floor(cropH*scale));
 
-      const c = document.createElement("canvas");
-      c.width = outW;
-      c.height = outH;
-      const ctx = c.getContext("2d", { willReadFrequently:true });
+      const c=document.createElement("canvas");
+      c.width=outW; c.height=outH;
+      const ctx=c.getContext("2d",{willReadFrequently:true});
+      ctx.fillStyle="#fff"; ctx.fillRect(0,0,outW,outH);
+      ctx.drawImage(bitmap, cropX,cropY,cropW,cropH, 0,0,outW,outH);
 
-      // fondo blanco
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(0,0,outW,outH);
+      const img=ctx.getImageData(0,0,outW,outH);
+      const d=img.data;
 
-      // dibujar
-      ctx.drawImage(bitmap, cropX, cropY, cropW, cropH, 0, 0, outW, outH);
-
-      // filtro fuerte para números: gris + contraste + umbral
-      const img = ctx.getImageData(0,0,outW,outH);
-      const d = img.data;
-
-      let sum = 0;
+      let sum=0;
       for(let i=0;i<d.length;i+=4){
-        const gray = (d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114);
+        const gray=(d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114);
         sum += gray;
       }
-      const avg = sum / (d.length/4);
-      const thresh = avg * 0.90;
+      const avg = sum/(d.length/4);
+      const thresh = avg*0.90;
 
       for(let i=0;i<d.length;i+=4){
-        let gray = (d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114);
-
-        // contraste
-        gray = (gray - avg) * 1.55 + avg;
-
-        const v = (gray < thresh) ? 0 : 255;
-        d[i]=d[i+1]=d[i+2]=v;
-        d[i+3]=255;
+        let gray=(d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114);
+        gray=(gray-avg)*1.55 + avg;
+        const v=(gray<thresh)?0:255;
+        d[i]=d[i+1]=d[i+2]=v; d[i+3]=255;
       }
       ctx.putImageData(img,0,0);
-
       return c.toDataURL("image/png");
     }
 
     async function runTrackingOcr(){
-      if(!trackingPhotoFile){
-        setStatus("bad","Primero toma o elige una foto del tracking.");
-        return;
-      }
-
+      if(!trackingPhotoFile){ setStatus("bad","Primero toma o elige una foto del tracking."); return; }
       setCandidates([]);
       $("btnReRunOcr").disabled = true;
       setStatus("ok","Procesando foto para OCR...");
@@ -980,39 +760,29 @@
         const worker = await getOcrWorker();
         const bitmap = await loadBitmapFromFile(trackingPhotoFile);
 
-        // 1) OCR FULL
         $("ocrProgress").textContent = "Preparando imagen (FULL)...";
         const fullData = preprocessBitmapToDataUrl(bitmap, "full");
         const resFull = await worker.recognize(fullData);
         const textFull = resFull?.data?.text || "";
         let cands = extractCandidates(textFull);
 
-        // 2) Si no hay nada bueno, OCR BAND (mitad-baja)
-        // o si el primero parece fecha y hay pocos candidatos
         const first = cands?.[0]?.value || "";
-        const looksDate = (first.length === 8 && looksLikeDate8(first));
-        if((!cands.length) || (looksDate && cands.length < 2)){
+        const looksDate = (first.length===8 && looksLikeDate8(first));
+        if(!cands.length || (looksDate && cands.length < 2)){
           $("ocrProgress").textContent = "Reintentando OCR (banda del tracking)...";
           const bandData = preprocessBitmapToDataUrl(bitmap, "band");
           const resBand = await worker.recognize(bandData);
           const textBand = resBand?.data?.text || "";
           const c2 = extractCandidates(textBand);
 
-          // unir y re-rank
-          const merged = [];
-          const seen = new Set();
+          const merged=[]; const seen=new Set();
           for(const x of [...c2, ...cands]){
-            if(!seen.has(x.value)){
-              seen.add(x.value);
-              merged.push(x);
-            }
+            if(!seen.has(x.value)){ seen.add(x.value); merged.push(x); }
           }
-          // re-score usando texto combinado
           const combinedText = normalizeOcrText(joinSplitDigits(textBand + "\n" + textFull));
-          const rescored = merged.map(x=>({ value:x.value, score: scoreCandidateDigits(x.value, combinedText)}))
-                                 .sort((a,b)=>b.score-a.score)
-                                 .slice(0,8);
-          cands = rescored;
+          cands = merged.map(x=>({value:x.value, score: scoreCandidateDigits(x.value, combinedText)}))
+                        .sort((a,b)=>b.score-a.score)
+                        .slice(0,10);
         }
 
         if(!cands.length){
@@ -1023,7 +793,6 @@
 
         setCandidates(cands);
 
-        // auto-set el mejor candidato
         const best = cands[0].value;
         $("trackingInput").value = best;
         currentLoad.tracking = best;
@@ -1033,7 +802,6 @@
 
         $("ocrProgress").textContent = `Detectado: ${best} (${best.length} dígitos).`;
         $("btnReRunOcr").disabled = false;
-
         setStatus("ok","✅ Tracking capturado. Si no es el correcto, toca otro candidato.");
       }catch(e){
         setStatus("bad","Error OCR. Intenta con otra foto (más cerca / mejor luz).");
@@ -1042,66 +810,66 @@
     }
 
     /********************
-     * Foto producto (info+foto)
+     * Foto producto
      ********************/
-    let pendingPhoto = null;
-
+    let pendingPhoto=null;
     function renderPendingPhoto(){
-      const wrap = $("pendingPhotoWrap");
-      const img = $("pendingPhotoImg");
-      const btnRemove = $("btnRemovePendingPhoto");
+      const wrap=$("pendingPhotoWrap");
+      const img=$("pendingPhotoImg");
+      const btn=$("btnRemovePendingPhoto");
       if(pendingPhoto){
         wrap.style.display="block";
-        img.src = pendingPhoto;
-        btnRemove.disabled = false;
-      }else{
+        img.src=pendingPhoto;
+        btn.disabled=false;
+      } else {
         wrap.style.display="none";
-        img.src = "";
-        btnRemove.disabled = true;
+        img.src="";
+        btn.disabled=true;
       }
     }
 
     /********************
-     * WhatsApp share
+     * WhatsApp
      ********************/
-    function shareTextToWhatsApp(text){
-      if(navigator.share){
-        navigator.share({ text }).catch(()=>{});
-        return;
-      }
+    function sendTextToWhatsApp(text){
       const url = "https://wa.me/?text=" + encodeURIComponent(text);
       window.open(url, "_blank");
     }
 
-    async function shareOrderedItems(load){
-      if(!navigator.share){
-        setStatus("bad","Tu navegador no soporta compartir. Usa WhatsApp (texto).");
-        return;
-      }
-      const canFiles = !!navigator.canShare;
+    async function whatsappOrdered(load){
+      // Este modo SIEMPRE funciona:
+      // 1) abre WA con texto (wa.me)
+      // 2) comparte la foto (share sheet) si el móvil lo soporta
+      if(!load.items.length){ setStatus("bad","No hay productos."); return; }
+
+      // aviso claro
+      setStatus("ok","Abriendo WhatsApp en orden... (texto → foto).");
 
       for(let i=0;i<load.items.length;i++){
         const it = load.items[i];
-        const line = `${i+1}) ${it.qty} / ${it.product}\nTracking: ${load.tracking || ""}`;
+        const text = lineText(load, it, i);
 
-        if(it.photo && canFiles){
-          try{
-            const blob = await dataUrlToBlob(it.photo);
-            const file = new File([blob], `producto_${i+1}.jpg`, {type: blob.type || "image/jpeg"});
-            if(navigator.canShare({ files:[file] })){
-              await navigator.share({ text: line, files:[file] });
-              continue;
-            }
-          }catch(e){}
+        // Paso 1: WhatsApp con texto (estable)
+        openWhatsAppText(text);
+
+        // pequeño delay para que el usuario regrese y comparta la foto
+        // (sin prometer automatización total)
+        await new Promise(r=>setTimeout(r, 500));
+
+        // Paso 2: intentar compartir foto + texto con share sheet (si soporta)
+        if(it.photo){
+          const ok = await sharePhotoWithText(it, "");
+          if(!ok){
+            // Si no se pudo compartir archivos, al menos dejamos listo:
+            // (no hacemos nada más porque WhatsApp no permite adjuntar por wa.me)
+          }
         }
-        try{
-          await navigator.share({ text: line + (it.photo ? "\n🖼️ (Adjunta la foto si no salió)" : "") });
-        }catch(e){
-          setStatus("bad","Compartición cancelada.");
-          return;
-        }
+
+        // Pausa pequeña para que el usuario complete el envío y vuelva
+        await new Promise(r=>setTimeout(r, 500));
       }
-      setStatus("ok","Compartido en orden (según soporte del dispositivo).");
+
+      setStatus("ok","Listo. Si alguna foto no se adjuntó, es limitación de WhatsApp/Web. Repite solo esa foto.");
     }
 
     /********************
@@ -1126,30 +894,27 @@
 
     $("btnClearAll").addEventListener("click", ()=>{
       if(!confirm("¿Seguro que quieres borrar TODO el historial?")) return;
-      store = {history:[]};
+      store={history:[]};
       saveStore(store);
       resetCurrentLoad();
       renderHistory();
       setStatus("ok","Historial borrado.");
     });
 
-    // Tracking photo buttons
     $("btnTakeTrackingPhoto").addEventListener("click", ()=> $("trackCamInput").click());
     $("btnPickTrackingPhoto").addEventListener("click", ()=> $("trackFileInput").click());
 
     function handleTrackingFile(file){
       if(!file) return;
-      trackingPhotoFile = file;
-
-      const r = new FileReader();
-      r.onload = async ()=>{
-        if(typeof r.result === "string"){
-          trackingPhotoDataUrl = r.result;
-          setTrackingPreview(true);
-          $("btnReRunOcr").disabled = false;
-          $("btnRemoveTrackingPhoto").disabled = false;
-
-          // OCR automático al cargar foto
+      trackingPhotoFile=file;
+      const r=new FileReader();
+      r.onload=async ()=>{
+        if(typeof r.result==="string"){
+          trackingPhotoDataUrl=r.result;
+          $("trackingPreview").classList.add("show");
+          $("trackingImg").src=trackingPhotoDataUrl;
+          $("btnReRunOcr").disabled=false;
+          $("btnRemoveTrackingPhoto").disabled=false;
           await runTrackingOcr();
         }
       };
@@ -1157,40 +922,36 @@
     }
 
     $("trackCamInput").addEventListener("change",(e)=>{
-      const f = e.target.files?.[0];
-      e.target.value = "";
+      const f=e.target.files?.[0]; e.target.value="";
       handleTrackingFile(f);
     });
-
     $("trackFileInput").addEventListener("change",(e)=>{
-      const f = e.target.files?.[0];
-      e.target.value = "";
+      const f=e.target.files?.[0]; e.target.value="";
       handleTrackingFile(f);
     });
 
     $("btnReRunOcr").addEventListener("click", runTrackingOcr);
 
     $("btnRemoveTrackingPhoto").addEventListener("click", ()=>{
-      trackingPhotoFile = null;
-      trackingPhotoDataUrl = "";
-      setTrackingPreview(false);
+      trackingPhotoFile=null; trackingPhotoDataUrl="";
+      $("trackingPreview").classList.remove("show");
+      $("trackingImg").src="";
+      $("ocrProgress").textContent="Lista para OCR.";
       setCandidates([]);
-      $("btnReRunOcr").disabled = true;
-      $("btnRemoveTrackingPhoto").disabled = true;
-      $("ocrProgress").textContent = "Lista para OCR.";
+      $("btnReRunOcr").disabled=true;
+      $("btnRemoveTrackingPhoto").disabled=true;
       setStatus("ok","Foto del tracking removida.");
     });
 
     // Foto producto
     $("btnTakePhoto").addEventListener("click", ()=> $("fileInputPhotoCam").click());
     $("fileInputPhotoCam").addEventListener("change",(e)=>{
-      const f = e.target.files?.[0];
-      e.target.value = "";
+      const f=e.target.files?.[0]; e.target.value="";
       if(!f) return;
-      const r = new FileReader();
-      r.onload = ()=>{
-        if(typeof r.result === "string"){
-          pendingPhoto = r.result;
+      const r=new FileReader();
+      r.onload=()=>{
+        if(typeof r.result==="string"){
+          pendingPhoto=r.result;
           renderPendingPhoto();
           setStatus("ok","Foto lista para guardarse con el producto.");
         }
@@ -1200,13 +961,12 @@
 
     $("btnUploadPhoto").addEventListener("click", ()=> $("fileInputPhoto").click());
     $("fileInputPhoto").addEventListener("change",(e)=>{
-      const f = e.target.files?.[0];
-      e.target.value = "";
+      const f=e.target.files?.[0]; e.target.value="";
       if(!f) return;
-      const r = new FileReader();
-      r.onload = ()=>{
-        if(typeof r.result === "string"){
-          pendingPhoto = r.result;
+      const r=new FileReader();
+      r.onload=()=>{
+        if(typeof r.result==="string"){
+          pendingPhoto=r.result;
           renderPendingPhoto();
           setStatus("ok","Foto lista para guardarse con el producto.");
         }
@@ -1215,37 +975,25 @@
     });
 
     $("btnRemovePendingPhoto").addEventListener("click", ()=>{
-      pendingPhoto = null;
+      pendingPhoto=null;
       renderPendingPhoto();
       setStatus("ok","Foto pendiente removida.");
     });
 
     $("btnAddItem").addEventListener("click", ()=>{
-      const product = $("productInput").value.trim();
-      const qty = Number($("qtyInput").value);
+      const product=$("productInput").value.trim();
+      const qty=Number($("qtyInput").value);
 
-      if(!currentLoad.tracking){
-        setStatus("bad","Primero captura/escribe el tracking (con foto OCR o manual).");
-        return;
-      }
-      if(!product){
-        setStatus("bad","Escribe el nombre del producto.");
-        return;
-      }
-      if(!qty || qty < 1){
-        setStatus("bad","Ingresa una cantidad válida (>= 1).");
-        return;
-      }
-      if(!pendingPhoto){
-        setStatus("bad","Falta la foto. (Info y foto, en orden.)");
-        return;
-      }
+      if(!currentLoad.tracking){ setStatus("bad","Primero captura/escribe el tracking."); return; }
+      if(!product){ setStatus("bad","Escribe el nombre del producto."); return; }
+      if(!qty || qty<1){ setStatus("bad","Ingresa una cantidad válida (>= 1)."); return; }
+      if(!pendingPhoto){ setStatus("bad","Falta la foto. (Info y foto, en orden.)"); return; }
 
       currentLoad.items.push({ product, qty: Math.floor(qty), photo: pendingPhoto });
 
-      $("productInput").value = "";
-      $("qtyInput").value = "";
-      pendingPhoto = null;
+      $("productInput").value="";
+      $("qtyInput").value="";
+      pendingPhoto=null;
       renderPendingPhoto();
 
       persistCurrentToHistory();
@@ -1259,30 +1007,32 @@
         return;
       }
       persistCurrentToHistory();
-      shareTextToWhatsApp(formatWhatsAppText(currentLoad));
+      sendTextToWhatsApp(formatWhatsAppText(currentLoad));
     });
 
-    $("btnShareOrdered").addEventListener("click", ()=>{
+    $("btnWhatsAppOrdered").addEventListener("click", async ()=>{
       if(!currentLoad.tracking || currentLoad.items.length===0){
         setStatus("bad","Carga vacía. Captura tracking y agrega productos.");
         return;
       }
       persistCurrentToHistory();
-      shareOrderedItems(currentLoad);
+      await whatsappOrdered(currentLoad);
     });
 
     $("btnExportJson").addEventListener("click", ()=>{
-      const blob = new Blob([JSON.stringify(store, null, 2)], {type:"application/json"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "historial_cargas.json";
+      const blob=new Blob([JSON.stringify(store,null,2)],{type:"application/json"});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");
+      a.href=url; a.download="historial_cargas.json";
       document.body.appendChild(a);
       a.click();
       a.remove();
-      setTimeout(()=>URL.revokeObjectURL(url), 800);
+      setTimeout(()=>URL.revokeObjectURL(url),800);
       setStatus("ok","Historial exportado a JSON.");
     });
+
+    // init values
+    $("dateInput").value = currentLoad.date;
   </script>
 </body>
 </html>
