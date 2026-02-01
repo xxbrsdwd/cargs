@@ -999,14 +999,17 @@
         locate: true
       }, function(err){
         if(err){
-          scanning = false;
-          $("btnStartScan").disabled = false;
-          $("btnStopScan").disabled = true;
-          toast("⚠️ No se pudo iniciar cámara");
-          return;
-        }
-        Quagga.start();
-        toast("Escaneando...");
+    scanning = false;
+    $("btnStartScan").disabled = false;
+    $("btnStopScan").disabled = true;
+
+    const msg = (err && (err.name || err.message)) ? (err.name || err.message) : String(err);
+    toast("⚠️ Cámara error: " + msg);
+    console.error("Quagga init error:", err);
+    return;
+  }
+  Quagga.start();
+  toast("Escaneando...");
       });
 
       Quagga.offDetected();
@@ -1345,3 +1348,4 @@
   </script>
 </body>
 </html>
+
