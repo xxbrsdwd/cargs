@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Registro de Cargas (Tracking + Producto + Foto)</title>
+  <title>Registro de Cargas (Tracking → Producto → Foto)</title>
   <style>
     :root{
       --bg:#0b0f14;
@@ -12,6 +12,7 @@
       --text:#e9f0f7;
       --line:#203042;
       --ok:#23c55e;
+      --warn:#f59e0b;
       --bad:#ef4444;
       --wa:#25D366;
       --shadow: 0 14px 40px rgba(0,0,0,.35);
@@ -43,6 +44,7 @@
       font-size: 12px;
       white-space: nowrap;
     }
+
     .grid{ display:grid; grid-template-columns: 1.05fr .95fr; gap:14px; }
     @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
 
@@ -57,6 +59,7 @@
       padding: 14px 14px 10px;
       border-bottom: 1px solid rgba(255,255,255,.06);
       display:flex; justify-content:space-between; align-items:center; gap:12px;
+      flex-wrap:wrap;
     }
     .card .hd h2{ margin:0; font-size: 15px; letter-spacing:.2px; }
     .card .bd{ padding: 14px; }
@@ -98,7 +101,9 @@
       justify-content:center;
       gap: 10px;
       min-height: 42px;
+      transition: transform .05s ease, border-color .15s ease, background .15s ease;
     }
+    button:active{ transform: translateY(1px); }
     button.secondary{ background: rgba(255,255,255,.02); }
     button.wa{
       border-color: rgba(37,211,102,.45);
@@ -127,6 +132,7 @@
       display:block;
       transform:none;
     }
+
     .overlay{
       pointer-events:none;
       position:absolute;
@@ -157,6 +163,24 @@
       white-space: nowrap;
     }
 
+    /* Frame alternativo (franja superior) */
+    .scanFrameTop{
+      width: 86%;
+      height: 18%;
+      border-radius: 14px;
+      border: 2px solid rgba(59,130,246,.85);
+      box-shadow: 0 0 0 9999px rgba(0,0,0,.35);
+      position:absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      display:none;
+    }
+    .scanFrameTop.show{ display:block; }
+    .scanFrameTop .scanHint{
+      bottom: -34px;
+    }
+
     .status{
       font-size: 12px;
       color: var(--muted);
@@ -179,6 +203,27 @@
       font-size: 12px;
       line-height: 1.35;
     }
+
+    /* OCR preview */
+    .ocrBox{
+      margin-top: 10px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 10px;
+      background: rgba(0,0,0,.14);
+      display:none;
+      gap:10px;
+    }
+    .ocrBox.show{ display:grid; grid-template-columns: 120px 1fr; }
+    .ocrBox img{
+      width:120px; height:120px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.08);
+      object-fit: cover;
+      background:#000;
+    }
+    .ocrSmall{ font-size:12px; color: var(--muted); margin-top:6px; }
+    .ocrStrong{ font-weight:800; font-size:13px; word-break:break-all; }
 
     .items{ display:flex; flex-direction:column; gap:10px; }
     .item{
@@ -251,26 +296,21 @@
       white-space: nowrap;
     }
 
-    /* OCR Preview */
-    .ocrBox{
-      margin-top: 10px;
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: 16px;
-      padding: 10px;
-      background: rgba(0,0,0,.14);
-      display:none;
-      gap:10px;
+    .toggleRow{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
     }
-    .ocrBox.show{ display:grid; grid-template-columns: 120px 1fr; }
-    .ocrBox img{
-      width:120px; height:120px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.08);
-      object-fit: cover;
-      background:#000;
+    .switch{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      padding:6px 10px;
+      border-radius: 999px;
+      user-select:none;
     }
-    .ocrSmall{ font-size:12px; color: var(--muted); margin-top:6px; }
-    .ocrStrong{ font-weight:800; font-size:13px; word-break:break-all; }
+    .switch input{ width:auto; margin:0; }
   </style>
 </head>
 
@@ -279,11 +319,11 @@
     <header>
       <div class="title">
         <h1>Registro de Cargas (Tracking → Producto → Foto)</h1>
-        <span class="pill">Móvil/PC · Ordenado · OCR números largos · Sin espejo</span>
+        <span class="pill">Móvil/PC · OCR inteligente (8+ dígitos) · Sin espejo</span>
       </div>
       <div class="status">
         <span class="dot" id="statusDot"></span>
-        <span id="statusText">Listo. Inicia el escáner o usa OCR para capturar números largos.</span>
+        <span id="statusText">Listo. Inicia cámara y usa OCR para capturar el tracking.</span>
       </div>
     </header>
 
@@ -301,7 +341,7 @@
         <div class="bd">
           <div class="row">
             <div>
-              <label>Tracking (barcode/QR o número largo por OCR)</label>
+              <label>Tracking (se llena por OCR/escáner, pero puedes editar)</label>
               <input id="trackingInput" class="mono" placeholder="Ej: 4203316660949402108106245672088267" autocomplete="off" />
             </div>
             <div>
@@ -313,48 +353,61 @@
           <div style="margin-top:12px">
             <div class="videoBox">
               <video id="video" playsinline muted></video>
+
               <div class="overlay">
-                <div class="scanFrame">
-                  <div class="scanHint">Alinea el número/código dentro del recuadro</div>
+                <!-- ROI centro -->
+                <div class="scanFrame" id="roiCenter">
+                  <div class="scanHint">Alinea el tracking dentro del recuadro</div>
                 </div>
+              </div>
+
+              <!-- ROI franja superior (mejor para etiquetas con "Tracking:") -->
+              <div class="scanFrameTop" id="roiTop">
+                <div class="scanHint">Modo superior: enfoca la línea “Tracking: 123...”</div>
               </div>
             </div>
 
+            <div class="toggleRow">
+              <span class="switch">
+                <input type="checkbox" id="chkTopRoi" />
+                <label for="chkTopRoi">OCR en franja superior</label>
+              </span>
+              <span>Actívalo si tu etiqueta tiene “Tracking:” arriba (mejora precisión).</span>
+            </div>
+
             <div class="btns">
-              <button id="btnStartScan">Iniciar escáner</button>
-              <button class="secondary" id="btnStopScan" disabled>Detener</button>
-              <button class="secondary" id="btnSwitchCamScan">Cambiar cámara</button>
-              <button class="secondary" id="btnTorchScan" style="display:none;">Linterna</button>
+              <button id="btnStartCam">Iniciar cámara</button>
+              <button class="secondary" id="btnStopCam" disabled>Detener</button>
+              <button class="secondary" id="btnSwitchCam">Cambiar cámara</button>
+              <button class="secondary" id="btnTorch" style="display:none;">Linterna</button>
 
-              <!-- NUEVO: OCR del recuadro -->
-              <button class="secondary" id="btnOcrFromView" disabled>OCR del recuadro (número)</button>
-
-              <!-- OCR desde foto si no quieres abrir cámara live -->
-              <button class="secondary" id="btnOcrFromImage">OCR desde foto</button>
+              <button class="secondary" id="btnBarcode" disabled>Escanear código (QR/Barra)</button>
+              <button class="secondary" id="btnOcrView" disabled>OCR del recuadro (Tracking)</button>
+              <button class="secondary" id="btnOcrImage">OCR desde foto</button>
             </div>
 
             <!-- Zoom (si existe) -->
             <div id="zoomWrap" style="display:none; margin-top:10px;">
               <label>Zoom (si tu cámara lo soporta)</label>
               <input id="zoomRange" type="range" min="1" max="1" step="0.1" value="1" />
-              <div class="ocrSmall">Súbele un poco el zoom para que el número largo salga más nítido.</div>
+              <div class="ocrSmall">Súbele un poco el zoom para que el número salga más nítido.</div>
             </div>
 
             <!-- OCR preview -->
             <div class="ocrBox" id="ocrBox">
               <img id="ocrImg" alt="OCR preview" />
               <div>
-                <div class="ocrStrong">OCR detectado:</div>
+                <div class="ocrStrong">Tracking detectado:</div>
                 <div class="ocrStrong" id="ocrDetected">—</div>
                 <div class="ocrSmall" id="ocrTip">
-                  Tip: acerca más la cámara y evita reflejos (papel brillante) para mejorar precisión.
+                  Tip: acerca la cámara, buena luz, evita reflejos. Si sale fecha, activa “franja superior”.
                 </div>
               </div>
             </div>
 
             <div class="hint">
-              📌 Si tu etiqueta tiene SOLO el número impreso (sin barras/QR), usa <span class="kbd">OCR del recuadro</span>.
-              <br/>Mejor resultado: número grande, enfocado, buena luz, sin sombra.
+              📌 Si tu tracking es texto (números impresos), usa <span class="kbd">OCR del recuadro</span>.
+              <br/>✅ Mejor: activa <span class="kbd">OCR en franja superior</span> cuando tu etiqueta diga “Tracking:”.
             </div>
 
             <input id="fileInputOcr" type="file" accept="image/*" style="display:none;" />
@@ -384,6 +437,7 @@
                 <button class="secondary" id="btnRemovePendingPhoto" disabled>Quitar foto</button>
               </div>
 
+              <!-- capture=environment abre cámara en móvil -->
               <input id="fileInputPhotoCam" type="file" accept="image/*" capture="environment" style="display:none;" />
               <input id="fileInputPhoto" type="file" accept="image/*" style="display:none;" />
 
@@ -415,14 +469,14 @@
             </div>
 
             <div class="btns" style="margin:0">
-              <button class="wa" id="btnSendWhatsApp">Enviar carga registrada</button>
+              <button class="wa" id="btnSendWhatsApp">Enviar carga registrada (texto)</button>
               <button class="secondary" id="btnShareOrdered">Compartir en orden (texto+foto)</button>
             </div>
           </div>
 
           <div class="hint">
-            • “Enviar carga registrada” comparte el <b>texto</b> en WhatsApp (eliges el chat).<br/>
-            • “Compartir en orden” intenta mandar <b>producto + foto</b> uno por uno (depende del soporte del móvil).
+            • “Enviar” manda el texto a WhatsApp (eliges el chat).<br/>
+            • “Compartir en orden” intenta mandar 1 producto + su foto uno por uno (según soporte del móvil).
           </div>
 
           <hr style="border:0;border-top:1px solid rgba(255,255,255,.08); margin:14px 0;"/>
@@ -448,7 +502,7 @@
     </div>
   </div>
 
-  <!-- Tesseract OCR -->
+  <!-- Tesseract OCR (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
   <script>
@@ -473,9 +527,7 @@
 
     function sanitizeTracking(raw){
       if(!raw) return "";
-      // Para OCR: dejamos solo dígitos si son mayoría
-      const s = String(raw).trim();
-      return s.replace(/\s+/g," ").slice(0, 160);
+      return String(raw).trim().replace(/\s+/g," ").slice(0, 200);
     }
 
     function beep(){
@@ -519,7 +571,7 @@
     /********************
      * Storage
      ********************/
-    const STORAGE_KEY = "registro_cargas_v3_ocr";
+    const STORAGE_KEY = "registro_cargas_v4_full";
     function loadStore(){
       try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"history":[]}'); }
       catch(e){ return {history:[]}; }
@@ -541,7 +593,7 @@
       const copy = JSON.parse(JSON.stringify(currentLoad));
       if(idx>=0) store.history[idx] = copy;
       else store.history.unshift(copy);
-      store.history = store.history.slice(0, 120);
+      store.history = store.history.slice(0, 150);
       saveStore(store);
       renderHistory();
     }
@@ -560,7 +612,7 @@
       pendingPhoto = null;
       renderPendingPhoto();
       renderItems();
-      setStatus("ok","Nueva carga lista. Escanea o usa OCR para el tracking.");
+      setStatus("ok","Nueva carga lista. Inicia cámara y captura el tracking.");
     }
 
     /********************
@@ -682,10 +734,10 @@
           setStatus("ok","Carga cargada desde historial.");
         });
 
-        const btnDelete = document.createElement("button");
-        btnDelete.className = "danger";
-        btnDelete.textContent = "Eliminar";
-        btnDelete.addEventListener("click", ()=>{
+        const btnDel = document.createElement("button");
+        btnDel.className = "danger";
+        btnDel.textContent = "Eliminar";
+        btnDel.addEventListener("click", ()=>{
           store.history = store.history.filter(x=>x.id!==h.id);
           saveStore(store);
           renderHistory();
@@ -693,23 +745,25 @@
         });
 
         actions.appendChild(btnLoad);
-        actions.appendChild(btnDelete);
+        actions.appendChild(btnDel);
 
         top.appendChild(left);
         top.appendChild(actions);
+
         box.appendChild(top);
         wrap.appendChild(box);
       });
     }
 
     /********************
-     * Scanner (BarcodeDetector)
+     * Cámara (1 stream para todo)
      ********************/
-    let scanStream = null;
-    let scanning = false;
+    let camStream = null;
+    let camFacing = "environment";
     let detector = null;
+    let scanningBarcode = false;
     let scanRaf = null;
-    let scanFacing = "environment";
+
     const roiCanvas = document.createElement("canvas");
     const roiCtx = roiCanvas.getContext("2d", { willReadFrequently: true });
 
@@ -759,9 +813,8 @@
         const track = stream.getVideoTracks()[0];
         if(!track?.getCapabilities){ wrap.style.display="none"; return; }
         const caps = track.getCapabilities();
-        if(!caps.zoom){
-          wrap.style.display="none"; return;
-        }
+        if(!caps.zoom){ wrap.style.display="none"; return; }
+
         wrap.style.display="block";
         range.min = caps.zoom.min ?? 1;
         range.max = caps.zoom.max ?? 1;
@@ -770,34 +823,28 @@
 
         range.oninput = async ()=>{
           const z = Number(range.value);
-          try{
-            await track.applyConstraints({ advanced: [{ zoom: z }] });
-          }catch(e){}
+          try{ await track.applyConstraints({ advanced: [{ zoom: z }] }); }catch(e){}
         };
       }catch(e){
-        wrap.style.display="none";
+        $("zoomWrap").style.display="none";
       }
     }
 
-    async function startScanner(){
-      if(scanning) return;
-      scanning = true;
-      $("btnStartScan").disabled = true;
-      $("btnStopScan").disabled = false;
+    async function startCam(){
+      if(camStream) return;
 
       try{
         if(supportsBarcodeDetector()){
           detector = new BarcodeDetector({
             formats: ["qr_code","code_128","code_39","ean_13","ean_8","upc_a","upc_e","itf","pdf417","aztec","data_matrix"]
           });
-        }else{
+        } else {
           detector = null;
-          setStatus("bad","Tu navegador no soporta escaneo barcode/QR. Usa OCR para el número largo.");
         }
 
-        scanStream = await navigator.mediaDevices.getUserMedia({
+        camStream = await navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: { ideal: scanFacing },
+            facingMode: { ideal: camFacing },
             width: { ideal: 1280 },
             height: { ideal: 720 }
           },
@@ -805,69 +852,122 @@
         });
 
         const v = $("video");
-        v.srcObject = scanStream;
+        v.srcObject = camStream;
         await v.play();
 
-        await applyFocusIfPossible(scanStream);
-        setupTorchButton(scanStream, $("btnTorchScan"));
-        await setupZoomUI(scanStream);
+        await applyFocusIfPossible(camStream);
+        setupTorchButton(camStream, $("btnTorch"));
+        await setupZoomUI(camStream);
 
-        $("btnOcrFromView").disabled = false;
+        $("btnStopCam").disabled = false;
+        $("btnStartCam").disabled = true;
+        $("btnBarcode").disabled = !detector;
+        $("btnOcrView").disabled = false;
 
-        setStatus("ok","Cámara lista. Usa escáner o OCR del recuadro.");
-        if(detector) scanLoop();
+        setStatus("ok", detector
+          ? "Cámara lista. Puedes usar OCR o escanear QR/barra."
+          : "Cámara lista. Usa OCR (tu navegador no soporta BarcodeDetector)."
+        );
       }catch(e){
-        stopScanner();
-        setStatus("bad","No pude abrir la cámara. Revisa permisos.");
+        stopCam();
+        setStatus("bad","No pude abrir la cámara. Revisa permisos o abre desde https.");
       }
     }
 
-    function stopScanner(){
-      scanning = false;
-      $("btnStartScan").disabled = false;
-      $("btnStopScan").disabled = true;
-      $("btnOcrFromView").disabled = true;
+    function stopCam(){
+      scanningBarcode = false;
+      if(scanRaf){ cancelAnimationFrame(scanRaf); scanRaf = null; }
 
       const v = $("video");
       try{ v.pause(); }catch(e){}
       v.srcObject = null;
 
-      if(scanStream){
-        scanStream.getTracks().forEach(t=>t.stop());
-        scanStream = null;
+      if(camStream){
+        camStream.getTracks().forEach(t=>t.stop());
+        camStream = null;
       }
-      if(scanRaf){
-        cancelAnimationFrame(scanRaf);
-        scanRaf = null;
-      }
-      $("btnTorchScan").style.display="none";
-      $("zoomWrap").style.display="none";
-      setStatus("ok","Escáner detenido.");
+
+      $("btnStopCam").disabled = true;
+      $("btnStartCam").disabled = false;
+      $("btnBarcode").disabled = true;
+      $("btnOcrView").disabled = true;
+      $("btnTorch").style.display = "none";
+      $("zoomWrap").style.display = "none";
+
+      setStatus("ok","Cámara detenida.");
     }
 
-    async function switchScanCamera(){
-      scanFacing = (scanFacing === "environment") ? "user" : "environment";
-      if(scanning){
-        stopScanner();
-        await startScanner();
+    async function switchCam(){
+      camFacing = (camFacing === "environment") ? "user" : "environment";
+      if(camStream){
+        stopCam();
+        await startCam();
+      } else {
+        setStatus("ok", `Cámara configurada a: ${camFacing}.`);
+      }
+    }
+
+    function getRoiMode(){
+      return $("chkTopRoi").checked ? "top" : "center";
+    }
+
+    function updateRoiUI(){
+      const top = $("roiTop");
+      const center = $("roiCenter");
+      if(getRoiMode()==="top"){
+        top.classList.add("show");
+        center.style.opacity = "0";
       }else{
-        setStatus("ok", `Cámara configurada a: ${scanFacing}.`);
+        top.classList.remove("show");
+        center.style.opacity = "1";
       }
     }
 
-    async function scanLoop(){
-      if(!scanning || !detector) return;
+    /********************
+     * Barcode scan loop
+     ********************/
+    async function startBarcodeScan(){
+      if(!camStream){
+        setStatus("bad","Primero inicia la cámara.");
+        return;
+      }
+      if(!detector){
+        setStatus("bad","Tu navegador no soporta escaneo de códigos. Usa OCR.");
+        return;
+      }
+      scanningBarcode = true;
+      setStatus("ok","Escaneando código... Alinea QR/barra en el recuadro.");
+      barcodeLoop();
+    }
+
+    function stopBarcodeScan(){
+      scanningBarcode = false;
+      if(scanRaf){ cancelAnimationFrame(scanRaf); scanRaf = null; }
+    }
+
+    async function barcodeLoop(){
+      if(!scanningBarcode || !detector || !camStream) return;
       const v = $("video");
       if(v.readyState < 2){
-        scanRaf = requestAnimationFrame(scanLoop);
+        scanRaf = requestAnimationFrame(barcodeLoop);
         return;
       }
 
       const vw = v.videoWidth, vh = v.videoHeight;
-      const roiW = Math.floor(vw * 0.78);
-      const roiH = Math.floor(vh * 0.22);
-      const roiX = Math.floor((vw - roiW)/2);
-      const roiY = Math.floor((vh - roiH)/2);
+
+      // ROI depende del modo
+      let roiW, roiH, roiX, roiY;
+      if(getRoiMode()==="top"){
+        roiW = Math.floor(vw * 0.86);
+        roiH = Math.floor(vh * 0.18);
+        roiX = Math.floor((vw - roiW)/2);
+        roiY = Math.floor(vh * 0.10);
+      }else{
+        roiW = Math.floor(vw * 0.78);
+        roiH = Math.floor(vh * 0.22);
+        roiX = Math.floor((vw - roiW)/2);
+        roiY = Math.floor((vh - roiH)/2);
+      }
 
       roiCanvas.width = roiW;
       roiCanvas.height = roiH;
@@ -885,27 +985,123 @@
             persistCurrentToHistory();
             renderItems();
             beep();
-            setStatus("ok","Tracking capturado por código ✅");
-            stopScanner();
+            setStatus("ok","✅ Tracking capturado por QR/barra.");
+            stopBarcodeScan();
             return;
           }
         }
       }catch(e){}
-      scanRaf = requestAnimationFrame(scanLoop);
+
+      scanRaf = requestAnimationFrame(barcodeLoop);
     }
 
     /********************
-     * OCR (NÚMEROS LARGOS)
+     * OCR INTELIGENTE
+     * - acepta 8+ dígitos
+     * - prioridad: número después de "Tracking"
+     * - evita fechas (DDMMYYYY / MMDDYYYY / YYYYMMDD)
      ********************/
+    const MIN_TRACK_DIGITS = 8;
     let ocrWorker = null;
+
+    function normalizeOcrText(t){
+      return String(t || "")
+        .replace(/[Oo]/g, "0")
+        .replace(/[Il|]/g, "1")
+        .replace(/[Ss]/g, "5")
+        .replace(/[Bb]/g, "8")
+        .replace(/[Zz]/g, "2");
+    }
+
+    function joinSplitDigits(t){
+      let s = t;
+      for(let i=0;i<8;i++){
+        s = s.replace(/(\d)\s+(\d)/g, "$1$2");
+        s = s.replace(/(\d)\n(\d)/g, "$1$2");
+      }
+      return s;
+    }
+
+    function looksLikeDate8(d){
+      const toInt = (x)=>Number(x);
+      const dd = toInt(d.slice(0,2));
+      const mm = toInt(d.slice(2,4));
+      const yyyy = toInt(d.slice(4,8));
+
+      const mm2 = toInt(d.slice(0,2));
+      const dd2 = toInt(d.slice(2,4));
+      const yyyy2 = toInt(d.slice(4,8));
+
+      const yyyy3 = toInt(d.slice(0,4));
+      const mm3 = toInt(d.slice(4,6));
+      const dd3 = toInt(d.slice(6,8));
+
+      const yearOk = (y)=> y >= 1990 && y <= 2099;
+
+      if(dd>=1 && dd<=31 && mm>=1 && mm<=12 && yearOk(yyyy)) return true;     // DDMMYYYY
+      if(mm2>=1 && mm2<=12 && dd2>=1 && dd2<=31 && yearOk(yyyy2)) return true; // MMDDYYYY
+      if(yearOk(yyyy3) && mm3>=1 && mm3<=12 && dd3>=1 && dd3<=31) return true; // YYYYMMDD
+      return false;
+    }
+
+    function scoreCandidateDigits(d){
+      let score = d.length * 10;
+
+      // castiga fecha típica
+      if(d.length === 8 && looksLikeDate8(d)) score -= 90;
+
+      // castiga si empieza con año (YYYY...)
+      if(d.length >= 8){
+        const first4 = Number(d.slice(0,4));
+        if(first4 >= 1990 && first4 <= 2099) score -= 25;
+      }
+
+      // bonifica longitudes mayores
+      if(d.length >= 12) score += 15;
+      if(d.length >= 20) score += 25;
+
+      return score;
+    }
+
+    function extractBestTracking(rawText){
+      let s = normalizeOcrText(rawText);
+      s = joinSplitDigits(s);
+
+      // 1) Prioridad: si aparece "Tracking", tomar el número cerca
+      const m = s.match(/tracking[^0-9]*([0-9]{6,})/i);
+      if(m){
+        const cand = m[1].replace(/\D/g,"");
+        if(cand.length >= MIN_TRACK_DIGITS) return cand;
+      }
+
+      // 2) Si no hay "Tracking", elegir mejor por score
+      const runs = (s.match(/\d+/g) || [])
+        .map(x => x.replace(/\D/g,""))
+        .filter(x => x.length >= MIN_TRACK_DIGITS);
+
+      if(!runs.length) return null;
+
+      let best = null;
+      let bestScore = -Infinity;
+      for(const d of runs){
+        const sc = scoreCandidateDigits(d);
+        if(sc > bestScore){
+          bestScore = sc;
+          best = d;
+        }
+      }
+
+      // Si lo único que hay es fecha de 8 dígitos -> no aceptes
+      if(best && best.length === 8 && looksLikeDate8(best)) return null;
+
+      return best;
+    }
 
     async function getOcrWorker(){
       if(ocrWorker) return ocrWorker;
 
-      // Inicializa una sola vez
       ocrWorker = await Tesseract.createWorker({
         logger: m=>{
-          // progreso simple
           if(m.status === "recognizing text"){
             setStatus("ok", `OCR leyendo... ${Math.round((m.progress||0)*100)}%`);
           }
@@ -915,10 +1111,11 @@
       await ocrWorker.loadLanguage("eng");
       await ocrWorker.initialize("eng");
 
-      // Solo dígitos para trackings largos
+      // Permitimos letras que OCR confunde con números; luego las convertimos
       await ocrWorker.setParameters({
-        tessedit_char_whitelist: "0123456789",
-        preserve_interword_spaces: "1"
+        tessedit_char_whitelist: "0123456789OoIl|SsBbZz",
+        preserve_interword_spaces: "1",
+        user_defined_dpi: "300"
       });
 
       return ocrWorker;
@@ -941,10 +1138,19 @@
       if(!v || v.readyState < 2) return null;
 
       const vw = v.videoWidth, vh = v.videoHeight;
-      const roiW = Math.floor(vw * 0.78);
-      const roiH = Math.floor(vh * 0.22);
-      const roiX = Math.floor((vw - roiW)/2);
-      const roiY = Math.floor((vh - roiH)/2);
+
+      let roiW, roiH, roiX, roiY;
+      if(getRoiMode()==="top"){
+        roiW = Math.floor(vw * 0.86);
+        roiH = Math.floor(vh * 0.18);
+        roiX = Math.floor((vw - roiW)/2);
+        roiY = Math.floor(vh * 0.10);
+      }else{
+        roiW = Math.floor(vw * 0.78);
+        roiH = Math.floor(vh * 0.22);
+        roiX = Math.floor((vw - roiW)/2);
+        roiY = Math.floor((vh - roiH)/2);
+      }
 
       const c = document.createElement("canvas");
       c.width = roiW;
@@ -952,44 +1158,28 @@
       const ctx = c.getContext("2d", { willReadFrequently: true });
       ctx.drawImage(v, roiX, roiY, roiW, roiH, 0, 0, roiW, roiH);
 
-      // Pre-procesado fuerte para números: gris + contraste + umbral
+      // Preprocesado fuerte: gris + contraste + umbral
       const img = ctx.getImageData(0,0,roiW,roiH);
       const d = img.data;
 
-      // 1) gris y acumula para umbral
       let sum = 0;
       for(let i=0;i<d.length;i+=4){
         const gray = (d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114);
         sum += gray;
       }
       const avg = sum / (d.length/4);
-      const thresh = avg * 0.92; // ajusta (0.85–0.98)
+      const thresh = avg * 0.92;
 
       for(let i=0;i<d.length;i+=4){
         let gray = (d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114);
-
-        // sube contraste
-        gray = (gray - avg) * 1.4 + avg;
-
-        const v = (gray < thresh) ? 0 : 255;
-        d[i]=d[i+1]=d[i+2]=v;
+        gray = (gray - avg) * 1.45 + avg;
+        const v2 = (gray < thresh) ? 0 : 255;
+        d[i]=d[i+1]=d[i+2]=v2;
         d[i+3]=255;
       }
       ctx.putImageData(img,0,0);
 
       return c.toDataURL("image/png");
-    }
-
-    async function extractLongestDigits(text){
-      if(!text) return null;
-      const matches = text.match(/\d+/g) || [];
-      let best = matches.sort((a,b)=>b.length-a.length)[0] || "";
-      const allDigits = text.replace(/\D/g,"");
-      if(allDigits.length > best.length) best = allDigits;
-
-      // si es muy corto no sirve
-      if(best.length < 8) return null;
-      return best;
     }
 
     async function runOcrOnDataUrl(dataUrl){
@@ -999,30 +1189,31 @@
         const worker = await getOcrWorker();
         const res = await worker.recognize(dataUrl);
         const rawText = res?.data?.text || "";
-        const digits = await extractLongestDigits(rawText);
 
-        showOcrPreview(dataUrl, digits || "(no detectado)");
+        const best = extractBestTracking(rawText);
+        showOcrPreview(dataUrl, best || "(no detectado)");
 
-        if(digits){
-          $("trackingInput").value = digits;
-          currentLoad.tracking = digits;
+        if(best){
+          $("trackingInput").value = best;
+          currentLoad.tracking = best;
           persistCurrentToHistory();
           renderItems();
           beep();
-          setStatus("ok","✅ Número largo capturado por OCR.");
+          setStatus("ok", `✅ Tracking capturado (${best.length} dígitos).`);
         }else{
-          setStatus("bad","OCR no detectó un número largo. Acerca más la cámara y evita reflejos.");
+          setStatus("bad","OCR no encontró tracking válido (solo fechas u otros números). Activa “franja superior” y reintenta.");
         }
       }catch(e){
-        setStatus("bad","Error OCR. Intenta con mejor luz o usa 'OCR desde foto'.");
+        setStatus("bad","Error OCR. Intenta con mejor luz o usa OCR desde foto.");
       }
     }
 
     async function ocrFromView(){
-      if(!scanning){
-        setStatus("bad","Primero inicia la cámara (Iniciar escáner) para hacer OCR del recuadro.");
+      if(!camStream){
+        setStatus("bad","Primero inicia la cámara.");
         return;
       }
+      stopBarcodeScan(); // evita competir
       const shot = snapshotRoiFromVideo();
       if(!shot){
         setStatus("bad","No pude capturar la vista. Intenta otra vez.");
@@ -1033,7 +1224,7 @@
 
     async function ocrFromImage(file){
       if(!file) return;
-      setStatus("ok","Procesando foto para OCR...");
+      setStatus("ok","Cargando imagen para OCR...");
       const reader = new FileReader();
       reader.onload = async ()=>{
         const dataUrl = reader.result;
@@ -1045,7 +1236,7 @@
     }
 
     /********************
-     * Foto producto (info + foto)
+     * Producto: Foto (info + foto)
      ********************/
     let pendingPhoto = null;
 
@@ -1065,7 +1256,7 @@
     }
 
     /********************
-     * WhatsApp sharing
+     * WhatsApp share
      ********************/
     function shareTextToWhatsApp(text){
       if(navigator.share){
@@ -1078,7 +1269,7 @@
 
     async function shareOrderedItems(load){
       if(!navigator.share){
-        setStatus("bad","Tu navegador no soporta compartir. Usa 'Enviar carga registrada' y adjunta fotos manualmente.");
+        setStatus("bad","Tu navegador no soporta compartir. Usa el botón de WhatsApp (texto).");
         return;
       }
       const canFiles = !!navigator.canShare;
@@ -1114,7 +1305,16 @@
     renderPendingPhoto();
     renderItems();
     renderHistory();
-    setStatus("ok","Listo. Para números largos: usa OCR del recuadro.");
+    setStatus("ok","Listo. Inicia cámara y usa OCR (recomendado).");
+
+    $("chkTopRoi").addEventListener("change", ()=>{
+      updateRoiUI();
+      setStatus("ok", getRoiMode()==="top"
+        ? "Modo franja superior activo (mejor para etiquetas con “Tracking:”)."
+        : "Modo centro activo."
+      );
+    });
+    updateRoiUI();
 
     $("trackingInput").addEventListener("input",(e)=>{
       currentLoad.tracking = sanitizeTracking(e.target.value);
@@ -1136,16 +1336,14 @@
       setStatus("ok","Historial borrado.");
     });
 
-    $("btnStartScan").addEventListener("click", startScanner);
-    $("btnStopScan").addEventListener("click", stopScanner);
-    $("btnSwitchCamScan").addEventListener("click", switchScanCamera);
+    $("btnStartCam").addEventListener("click", startCam);
+    $("btnStopCam").addEventListener("click", stopCam);
+    $("btnSwitchCam").addEventListener("click", switchCam);
 
-    // OCR
-    $("btnOcrFromView").addEventListener("click", ocrFromView);
+    $("btnBarcode").addEventListener("click", startBarcodeScan);
+    $("btnOcrView").addEventListener("click", ocrFromView);
 
-    $("btnOcrFromImage").addEventListener("click", ()=>{
-      $("fileInputOcr").click();
-    });
+    $("btnOcrImage").addEventListener("click", ()=> $("fileInputOcr").click());
     $("fileInputOcr").addEventListener("change",(e)=>{
       const f = e.target.files?.[0];
       e.target.value = "";
@@ -1153,9 +1351,7 @@
     });
 
     // Foto producto
-    $("btnTakePhoto").addEventListener("click", ()=>{
-      $("fileInputPhotoCam").click();
-    });
+    $("btnTakePhoto").addEventListener("click", ()=> $("fileInputPhotoCam").click());
     $("fileInputPhotoCam").addEventListener("change",(e)=>{
       const f = e.target.files?.[0];
       e.target.value = "";
@@ -1210,7 +1406,7 @@
         return;
       }
       if(!pendingPhoto){
-        setStatus("bad","Falta la foto. (Info y foto en orden.)");
+        setStatus("bad","Falta la foto. (Info y foto, en orden.)");
         return;
       }
 
@@ -1256,6 +1452,9 @@
       setTimeout(()=>URL.revokeObjectURL(url), 800);
       setStatus("ok","Historial exportado a JSON.");
     });
+
+    // Al cerrar / cambiar pestaña: apaga cámara para no dejarla “pegada”
+    window.addEventListener("pagehide", ()=>{ try{ stopCam(); }catch(e){} });
   </script>
 </body>
 </html>
