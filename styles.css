@@ -1,7 +1,7 @@
 :root{
-  --bg:#0b0f14; --card:#121a24; --muted:#8aa0b6; --text:#e9f0f7; --line:#203042;
-  --ok:#23c55e; --bad:#ef4444; --wa:#25D366;
+  --bg:#0b0f14; --muted:#8aa0b6; --text:#e9f0f7; --line:#203042;
   --shadow: 0 14px 40px rgba(0,0,0,.35); --radius: 18px;
+  --ok:#23c55e; --bad:#ef4444; --wa:#25D366;
 }
 *{ box-sizing:border-box; }
 body{
@@ -81,24 +81,35 @@ input:focus{ border-color: rgba(37,211,102,.55); box-shadow: 0 0 0 4px rgba(37,2
 
 .sep{ border:0; border-top:1px solid rgba(255,255,255,.08); margin:14px 0; }
 
-.preview{
-  display:none;
-  margin-top:10px;
-  border:1px solid rgba(255,255,255,.08);
-  background: rgba(0,0,0,.14);
-  border-radius: 16px;
-  padding:10px;
-  gap:10px;
-  grid-template-columns: 140px 1fr;
-}
-.preview.show{ display:grid; }
-.preview img{
-  width:140px; height:140px; object-fit:cover;
-  border-radius: 14px; border:1px solid rgba(255,255,255,.08);
-}
-.previewText .strong{ font-weight:1000; }
 .small{ color: var(--muted); font-size: 12px; margin-top:6px; }
 .tiny{ color: rgba(138,160,182,.85); font-size: 11px; margin-top:6px; }
+.big{ font-size:16px; font-weight:1000; }
+.hint{ margin-top:10px; color: var(--muted); font-size:12px; line-height:1.35; }
+
+.scanWrap{
+  margin-top:12px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:10px;
+  background: rgba(0,0,0,.14);
+}
+.scanTop{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; align-items:baseline; }
+.scanTitle{ font-weight:1000; font-size:13px; }
+.scanHint{ color: var(--muted); font-size:12px; }
+
+.scanCanvasWrap{
+  margin-top:10px;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  background:#000;
+}
+#scanCanvas{
+  width: 100%;
+  height: auto;
+  display:block;
+  touch-action: none; /* importante para dibujar en móvil */
+}
 
 .cand{ display:none; margin-top:10px; border:1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.14); border-radius:16px; padding:10px; }
 .cand.show{ display:block; }
@@ -131,11 +142,9 @@ input:focus{ border-color: rgba(37,211,102,.55); box-shadow: 0 0 0 4px rgba(37,2
 .thumb{ width:92px; height:92px; border-radius:14px; border:1px solid rgba(255,255,255,.08); overflow:hidden; background: rgba(255,255,255,.03); display:flex; align-items:center; justify-content:center; }
 .thumb img{ width:100%; height:100%; object-fit:cover; }
 .noimg{ font-size: 11px; color: rgba(138,160,182,.95); text-align:center; padding:0 8px; }
+.metaTop{ display:flex; justify-content:space-between; gap:10px; }
 .meta strong{ display:block; font-size:14px; }
 .meta small{ display:block; color: var(--muted); font-size:12px; }
-.metaTop{ display:flex; justify-content:space-between; gap:10px; }
-.miniBtns{ display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; }
-.miniBtns .btn{ min-height:34px; padding:7px 10px; border-radius:12px; font-size:12px; }
 
 .totals{
   margin-top: 10px;
@@ -147,8 +156,6 @@ input:focus{ border-color: rgba(37,211,102,.55); box-shadow: 0 0 0 4px rgba(37,2
   gap:10px;
   flex-wrap:wrap;
 }
-.big{ font-size:16px; font-weight:1000; }
-.hint{ margin-top:10px; color: var(--muted); font-size:12px; line-height:1.35; }
 
 .history{ display:flex; flex-direction:column; gap:10px; }
 .historyItem{ border:1px solid rgba(255,255,255,.08); border-radius:16px; overflow:hidden; background: rgba(0,0,0,.14); }
