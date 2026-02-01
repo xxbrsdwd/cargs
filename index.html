@@ -3,1076 +3,141 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Registro de Cargas (Foto → OCR Tracking → Producto → Foto)</title>
-  <style>
-    :root{
-      --bg:#0b0f14; --card:#121a24; --muted:#8aa0b6; --text:#e9f0f7; --line:#203042;
-      --ok:#23c55e; --bad:#ef4444; --wa:#25D366; --shadow: 0 14px 40px rgba(0,0,0,.35); --radius: 18px;
-    }
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 700px at 15% 10%, rgba(37,211,102,.10), transparent 55%),
-                  radial-gradient(1200px 700px at 85% 20%, rgba(59,130,246,.12), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-    }
-    .wrap{ max-width:1200px; margin:0 auto; padding:18px; }
-    header{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding:8px 0 16px; }
-    .title{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
-    .title h1{ margin:0; font-size: clamp(18px, 2.2vw, 28px); letter-spacing:.2px; }
-    .pill{ border:1px solid var(--line); background: rgba(255,255,255,.03); color: var(--muted);
-      padding: 6px 10px; border-radius: 999px; font-size: 12px; white-space: nowrap; }
-
-    .grid{ display:grid; grid-template-columns: 1.05fr .95fr; gap:14px; }
-    @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
-
-    .card{ background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow:hidden; }
-    .card .hd{ padding: 14px 14px 10px; border-bottom: 1px solid rgba(255,255,255,.06);
-      display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
-    .card .hd h2{ margin:0; font-size: 15px; letter-spacing:.2px; }
-    .card .bd{ padding: 14px; }
-
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:end; }
-    .row > *{ flex:1; min-width: 180px; }
-
-    label{ display:block; font-size:12px; color:var(--muted); margin:0 0 6px; }
-    input{
-      width:100%; padding: 12px 12px; border-radius: 12px; border: 1px solid var(--line);
-      background: rgba(0,0,0,.22); color: var(--text); outline: none;
-    }
-    input:focus{ border-color: rgba(37,211,102,.55); box-shadow: 0 0 0 4px rgba(37,211,102,.10); }
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; letter-spacing: .2px; }
-
-    .btns{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 10px; }
-    button{
-      cursor:pointer; border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      color: var(--text); padding: 10px 12px; border-radius: 14px; font-weight: 900; letter-spacing: .2px;
-      display:inline-flex; align-items:center; justify-content:center; gap: 10px; min-height: 42px;
-      transition: transform .05s ease, border-color .15s ease, background .15s ease;
-    }
-    button:active{ transform: translateY(1px); }
-    button.secondary{ background: rgba(255,255,255,.02); }
-    button.wa{ border-color: rgba(37,211,102,.45); background: linear-gradient(180deg, rgba(37,211,102,.16), rgba(37,211,102,.08)); }
-    button.danger{ border-color: rgba(239,68,68,.45); background: linear-gradient(180deg, rgba(239,68,68,.18), rgba(239,68,68,.08)); }
-    button:disabled{ opacity:.55; cursor:not-allowed; }
-
-    .status{ font-size: 12px; color: var(--muted); display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .dot{ width:10px; height:10px; border-radius:999px; background: rgba(245,158,11,.9); box-shadow: 0 0 0 4px rgba(245,158,11,.12); }
-    .dot.ok{ background: rgba(35,197,94,.95); box-shadow: 0 0 0 4px rgba(35,197,94,.12); }
-    .dot.bad{ background: rgba(239,68,68,.95); box-shadow: 0 0 0 4px rgba(239,68,68,.12); }
-
-    .hint{ margin-top:10px; color: var(--muted); font-size: 12px; line-height: 1.35; }
-
-    .previewBox{ margin-top: 10px; border:1px solid rgba(255,255,255,.08); border-radius: 16px;
-      padding: 10px; background: rgba(0,0,0,.14); display:none; gap:10px; }
-    .previewBox.show{ display:grid; grid-template-columns: 140px 1fr; }
-    .previewBox img{ width:140px; height:140px; border-radius: 14px; border: 1px solid rgba(255,255,255,.08); object-fit: cover; background:#000; }
-    .small{ font-size:12px; color: var(--muted); margin-top:6px; }
-    .strong{ font-weight:950; font-size:13px; word-break:break-all; }
-
-    .candWrap{ margin-top:10px; display:none; border:1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.14); border-radius: 16px; padding: 10px; }
-    .candWrap.show{ display:block; }
-    .candTitle{ font-weight:950; font-size:13px; margin-bottom:8px; }
-    .chips{ display:flex; flex-wrap:wrap; gap:8px; }
-    .chip{
-      border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04);
-      padding:8px 10px; border-radius: 999px; font-size: 12px; cursor:pointer; user-select:none;
-      max-width: 100%; overflow:hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .chip.best{ border-color: rgba(37,211,102,.55); background: rgba(37,211,102,.12); }
-
-    .items{ display:flex; flex-direction:column; gap:10px; }
-    .item{
-      border: 1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.16);
-      border-radius: 16px; overflow:hidden; display:grid; grid-template-columns: 92px 1fr; gap: 10px; padding: 10px;
-    }
-    .thumb{
-      width: 92px; height: 92px; border-radius: 14px; border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03); overflow:hidden; display:flex; align-items:center; justify-content:center;
-    }
-    .thumb img{ width:100%; height:100%; object-fit: cover; display:block; }
-    .noimg{ font-size: 11px; color: rgba(138,160,182,.95); text-align:center; padding: 0 8px; }
-    .meta{ display:flex; flex-direction:column; gap:6px; min-width:0; }
-    .metaTop{ display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
-    .meta strong{ font-size: 14px; line-height: 1.25; display:block; word-break: break-word; }
-    .meta small{ color: var(--muted); display:block; font-size: 12px; }
-    .miniBtns{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-    .miniBtns button{ min-height: 34px; padding: 7px 10px; border-radius: 12px; font-weight: 950; font-size: 12px; }
-
-    .totals{
-      display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px;
-      align-items:center; justify-content:space-between;
-      border-top: 1px dashed rgba(255,255,255,.10);
-      padding-top: 10px;
-      color: rgba(233,240,247,.92);
-    }
-    .totals .big{ font-size: 16px; font-weight: 1000; }
-    .totals .muted{ color: var(--muted); font-size: 12px; }
-
-    .historyList{ display:flex; flex-direction:column; gap:10px; }
-    .historyItem{ border:1px solid rgba(255,255,255,.08); border-radius: 16px; overflow:hidden; background: rgba(0,0,0,.14); }
-    .historyItem .top{
-      padding: 10px 12px; display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-    .historyItem .top strong{ font-size: 13px; word-break: break-word; }
-    .historyItem .top small{ display:block; font-size: 12px; color: var(--muted); margin-top: 4px; }
-    .historyItem .actions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-    .historyItem .actions button{ min-height: 34px; padding: 7px 10px; border-radius: 12px; font-size: 12px; }
-
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      padding: 2px 6px;
-      border-radius: 8px;
-      font-size: 12px;
-      color: rgba(233,240,247,.9);
-      white-space: nowrap;
-    }
-  </style>
+  <title>Registro de Cargas</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
   <div class="wrap">
-    <header>
-      <div class="title">
-        <h1>Registro de Cargas (Foto → OCR Tracking → Producto → Foto)</h1>
-        <span class="pill">OCR auto + WhatsApp con reporte (fotos)</span>
+    <header class="header">
+      <div>
+        <h1>Registro de Cargas</h1>
+        <div class="sub">Foto (tracking) → OCR → Producto + Foto → WhatsApp</div>
       </div>
       <div class="status">
-        <span class="dot" id="statusDot"></span>
-        <span id="statusText">Listo. Toma una foto de la etiqueta para sacar el tracking.</span>
+        <span id="dot" class="dot"></span>
+        <span id="statusText">Listo.</span>
       </div>
     </header>
 
-    <div class="grid">
+    <main class="grid">
       <section class="card">
-        <div class="hd">
+        <div class="card-hd">
           <h2>Carga actual</h2>
-          <div class="btns" style="margin:0">
-            <button class="secondary" id="btnNewLoad">Nueva carga</button>
-            <button class="danger" id="btnClearAll">Borrar historial</button>
+          <div class="actions">
+            <button id="btnNew" class="btn secondary">Nueva carga</button>
+            <button id="btnClear" class="btn danger">Borrar historial</button>
           </div>
         </div>
 
-        <div class="bd">
+        <div class="card-bd">
           <div class="row">
             <div>
-              <label>Tracking (se llena por OCR, pero puedes editar)</label>
-              <input id="trackingInput" class="mono" placeholder="Ej: 4203316660949402108106245672088267" autocomplete="off" />
+              <label>Tracking (OCR o manual)</label>
+              <input id="tracking" class="mono" placeholder="Ej: 4203316660949402108106245672088267" />
             </div>
             <div>
               <label>Fecha/Hora</label>
-              <input id="dateInput" class="mono" readonly />
+              <input id="date" class="mono" readonly />
             </div>
           </div>
 
-          <div class="btns" style="margin-top:12px;">
-            <button id="btnTakeTrackingPhoto">📸 Tomar foto del tracking</button>
-            <button class="secondary" id="btnPickTrackingPhoto">🖼️ Elegir imagen</button>
-            <button class="secondary" id="btnReRunOcr" disabled>🔁 Reprocesar OCR</button>
-            <button class="secondary" id="btnRemoveTrackingPhoto" disabled>🗑️ Quitar foto</button>
+          <div class="btns">
+            <button id="btnTrackCam" class="btn">📸 Foto del tracking</button>
+            <button id="btnTrackPick" class="btn secondary">🖼️ Elegir imagen</button>
+            <button id="btnOcr" class="btn secondary" disabled>🔁 Re-OCR</button>
+            <button id="btnRemoveTrackPhoto" class="btn secondary" disabled>🗑️ Quitar foto</button>
           </div>
 
-          <div class="hint">
-            • OCR corre automático al cargar foto. Si no se llena, toca <b>Reprocesar OCR</b>.<br/>
-            • Si estás abriendo la web dentro de WhatsApp/Facebook, mejor abrir en <b>Chrome</b> (in-app browser bloquea cosas).
-          </div>
+          <input id="trackCamInput" type="file" accept="image/*" capture="environment" hidden />
+          <input id="trackPickInput" type="file" accept="image/*" hidden />
 
-          <input id="trackCamInput" type="file" accept="image/*" capture="environment" style="display:none;" />
-          <input id="trackFileInput" type="file" accept="image/*" style="display:none;" />
-
-          <div class="previewBox" id="trackingPreview">
-            <img id="trackingImg" alt="Tracking preview" />
-            <div>
+          <div id="trackPreview" class="preview">
+            <img id="trackImg" alt="preview" />
+            <div class="previewText">
               <div class="strong">Foto cargada ✅</div>
-              <div class="small" id="ocrProgress">Lista para OCR.</div>
-              <div class="small" id="ocrReadyText">OCR: verificando…</div>
+              <div id="ocrProgress" class="small">Lista para OCR.</div>
+              <div id="ocrDebug" class="tiny">OCR: esperando…</div>
             </div>
           </div>
 
-          <div class="candWrap" id="candWrap">
-            <div class="candTitle">Candidatos detectados (toca el correcto):</div>
-            <div class="chips" id="candChips"></div>
-            <div class="small">Se marca en verde el mejor candidato, pero tú eliges.</div>
+          <div id="candWrap" class="cand">
+            <div class="candTitle">Candidatos (toca el correcto):</div>
+            <div id="candChips" class="chips"></div>
           </div>
 
-          <hr style="border:0;border-top:1px solid rgba(255,255,255,.08); margin:14px 0;"/>
+          <hr class="sep"/>
 
-          <h3 style="margin:0 0 10px; font-size:14px;">Agregar producto (Información + Foto)</h3>
+          <h3>Agregar producto (Información + Foto)</h3>
 
           <div class="row">
             <div>
               <label>Producto</label>
-              <input id="productInput" placeholder="Ej: pares de zapatos Nike" />
+              <input id="product" placeholder="Ej: pares de zapatos Nike" />
             </div>
             <div>
               <label>Unidades</label>
-              <input id="qtyInput" type="number" min="1" step="1" placeholder="Ej: 3" />
+              <input id="qty" type="number" min="1" step="1" placeholder="Ej: 3" />
             </div>
           </div>
 
-          <div class="row" style="margin-top:10px">
-            <div>
-              <label>Foto (cámara o subir)</label>
-              <div class="btns" style="margin-top:0">
-                <button id="btnTakePhoto">Tomar foto</button>
-                <button class="secondary" id="btnUploadPhoto">Subir foto</button>
-                <button class="secondary" id="btnRemovePendingPhoto" disabled>Quitar foto</button>
-              </div>
-
-              <input id="fileInputPhotoCam" type="file" accept="image/*" capture="environment" style="display:none;" />
-              <input id="fileInputPhoto" type="file" accept="image/*" style="display:none;" />
-
-              <div id="pendingPhotoWrap" style="display:none; margin-top:10px;">
-                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                  <div class="thumb" style="width:120px; height:120px;">
-                    <img id="pendingPhotoImg" alt="Foto pendiente" />
-                  </div>
-                  <div style="flex:1; min-width: 180px;">
-                    <div style="font-weight:1000;">Foto lista ✅</div>
-                    <div class="hint" style="margin-top:6px;">
-                      Se guardará al presionar <span class="kbd">Agregar a la carga</span>.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
+          <div class="btns">
+            <button id="btnProdCam" class="btn">📸 Foto producto</button>
+            <button id="btnProdPick" class="btn secondary">🖼️ Subir foto</button>
+            <button id="btnRemovePending" class="btn secondary" disabled>🗑️ Quitar foto</button>
           </div>
 
-          <div class="btns" style="margin-top:12px;">
-            <button id="btnAddItem">Agregar a la carga</button>
+          <input id="prodCamInput" type="file" accept="image/*" capture="environment" hidden />
+          <input id="prodPickInput" type="file" accept="image/*" hidden />
+
+          <div id="pendingWrap" class="pending">
+            <img id="pendingImg" alt="pendiente" />
+            <div class="small">Foto lista ✅ (se guardará al agregar)</div>
+          </div>
+
+          <div class="btns">
+            <button id="btnAdd" class="btn">➕ Agregar a la carga</button>
           </div>
 
           <div class="totals">
             <div>
               <div class="big">Total unidades: <span id="totalUnits">0</span></div>
-              <div class="muted">Productos agregados: <span id="totalItems">0</span></div>
+              <div class="small">Productos: <span id="totalItems">0</span></div>
             </div>
-
             <div class="btns" style="margin:0">
-              <button class="wa" id="btnSendWhatsAppText">📲 WhatsApp (solo texto)</button>
-              <button class="wa" id="btnSendWhatsAppReport">📲 WhatsApp (reporte + fotos)</button>
+              <button id="btnWAImages" class="btn wa">📲 WhatsApp: enviar fotos</button>
+              <button id="btnWAText" class="btn wa">📲 WhatsApp: enviar texto</button>
             </div>
           </div>
 
           <div class="hint">
-            <b>WhatsApp (reporte + fotos)</b> envía 1 sola imagen tipo “reporte” que incluye: tracking + fecha + lista + todas las fotos en orden.
-            Es la forma más estable para que vaya “información y foto” desde una web.
+            <b>Modo estable:</b><br/>
+            1) “Enviar fotos” abre el compartir para cada foto (elige WhatsApp y chat).<br/>
+            2) Luego “Enviar texto” abre WhatsApp con la información completa.<br/>
+            (WhatsApp no permite adjuntar fotos automático desde web).
           </div>
 
-          <hr style="border:0;border-top:1px solid rgba(255,255,255,.08); margin:14px 0;"/>
+          <hr class="sep"/>
 
-          <h3 style="margin:0 0 10px; font-size:14px;">Listado (Información + Foto, en orden)</h3>
-          <div class="items" id="itemsList"></div>
+          <h3>Lista (en orden)</h3>
+          <div id="itemsList" class="items"></div>
         </div>
       </section>
 
       <section class="card">
-        <div class="hd">
+        <div class="card-hd">
           <h2>Historial</h2>
-          <button class="secondary" id="btnExportJson">Exportar JSON</button>
+          <button id="btnExport" class="btn secondary">Exportar JSON</button>
         </div>
-        <div class="bd">
-          <div class="historyList" id="historyList"></div>
-          <div class="hint" style="margin-top:12px;">Se guarda en tu navegador (localStorage).</div>
+        <div class="card-bd">
+          <div id="historyList" class="history"></div>
+          <div class="hint">Guardado local (localStorage).</div>
         </div>
       </section>
-    </div>
+    </main>
   </div>
 
   <!-- OCR -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-
-  <script>
-    const $ = (id)=>document.getElementById(id);
-
-    function setStatus(type, text){
-      const dot = $("statusDot");
-      dot.classList.remove("ok","bad");
-      if(type==="ok") dot.classList.add("ok");
-      if(type==="bad") dot.classList.add("bad");
-      $("statusText").textContent = text;
-    }
-
-    function nowStamp(){
-      const d = new Date();
-      const pad = (n)=>String(n).padStart(2,"0");
-      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-    }
-
-    function sanitizeTracking(raw){
-      if(!raw) return "";
-      return String(raw).trim().replace(/\s+/g,"").slice(0, 260);
-    }
-
-    function beep(){
-      try{
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if(!AudioCtx) return;
-        const ctx = new AudioCtx();
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = "sine";
-        o.frequency.value = 880;
-        g.gain.value = 0.05;
-        o.connect(g); g.connect(ctx.destination);
-        o.start();
-        setTimeout(()=>{ o.stop(); ctx.close(); }, 110);
-      }catch(e){}
-      if(navigator.vibrate) navigator.vibrate(80);
-    }
-
-    /********************
-     * Storage
-     ********************/
-    const STORAGE_KEY = "registro_cargas_v6_ocr_report";
-    function loadStore(){
-      try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"history":[]}'); }
-      catch(e){ return {history:[]}; }
-    }
-    function saveStore(store){ localStorage.setItem(STORAGE_KEY, JSON.stringify(store)); }
-
-    let store = loadStore();
-    let currentLoad = { id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()), date: nowStamp(), tracking:"", items:[] };
-
-    function persistCurrentToHistory(){
-      if(!currentLoad.tracking && currentLoad.items.length===0) return;
-      const idx = store.history.findIndex(x=>x.id===currentLoad.id);
-      const copy = JSON.parse(JSON.stringify(currentLoad));
-      if(idx>=0) store.history[idx]=copy;
-      else store.history.unshift(copy);
-      store.history = store.history.slice(0,150);
-      saveStore(store);
-      renderHistory();
-    }
-
-    function resetCurrentLoad(){
-      currentLoad = { id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()), date: nowStamp(), tracking:"", items:[] };
-      $("trackingInput").value = "";
-      $("dateInput").value = currentLoad.date;
-      $("productInput").value = "";
-      $("qtyInput").value = "";
-      pendingPhoto = null;
-      renderPendingPhoto();
-      renderItems();
-      trackingPhotoFile=null; trackingPhotoDataUrl="";
-      setTrackingPreview(false); setCandidates([]);
-      $("btnRemoveTrackingPhoto").disabled = true;
-      $("btnReRunOcr").disabled = true;
-      setStatus("ok","Nueva carga lista. Toma foto del tracking.");
-    }
-
-    /********************
-     * Render
-     ********************/
-    function renderItems(){
-      const list = $("itemsList");
-      list.innerHTML = "";
-      if(currentLoad.items.length===0){
-        const empty = document.createElement("div");
-        empty.className="hint";
-        empty.textContent="Aún no has agregado productos. (Info + Foto, en orden).";
-        list.appendChild(empty);
-      } else {
-        currentLoad.items.forEach((it, idx)=>{
-          const div=document.createElement("div");
-          div.className="item";
-
-          const thumb=document.createElement("div");
-          thumb.className="thumb";
-          if(it.photo){
-            const img=document.createElement("img");
-            img.src=it.photo;
-            thumb.appendChild(img);
-          } else {
-            const p=document.createElement("div");
-            p.className="noimg";
-            p.textContent="Sin foto";
-            thumb.appendChild(p);
-          }
-
-          const meta=document.createElement("div");
-          meta.className="meta";
-
-          const top=document.createElement("div");
-          top.className="metaTop";
-
-          const info=document.createElement("div");
-          const strong=document.createElement("strong");
-          strong.textContent=`${it.qty} / ${it.product}`;
-          const small=document.createElement("small");
-          small.textContent=`Orden: ${idx+1} · Tracking: ${currentLoad.tracking || "(vacío)"}`;
-          info.appendChild(strong); info.appendChild(small);
-
-          const mini=document.createElement("div");
-          mini.className="miniBtns";
-          const btnDel=document.createElement("button");
-          btnDel.className="danger";
-          btnDel.textContent="Eliminar";
-          btnDel.onclick=()=>{
-            currentLoad.items.splice(idx,1);
-            persistCurrentToHistory();
-            renderItems();
-          };
-          mini.appendChild(btnDel);
-
-          top.appendChild(info);
-          top.appendChild(mini);
-          meta.appendChild(top);
-
-          div.appendChild(thumb);
-          div.appendChild(meta);
-          list.appendChild(div);
-        });
-      }
-
-      const totalUnits = currentLoad.items.reduce((a,b)=>a + (Number(b.qty)||0), 0);
-      $("totalUnits").textContent = String(totalUnits);
-      $("totalItems").textContent = String(currentLoad.items.length);
-    }
-
-    function renderHistory(){
-      const wrap = $("historyList");
-      wrap.innerHTML = "";
-      if(store.history.length===0){
-        const empty = document.createElement("div");
-        empty.className="hint";
-        empty.textContent="No hay cargas guardadas aún.";
-        wrap.appendChild(empty);
-        return;
-      }
-      store.history.forEach((h)=>{
-        const box=document.createElement("div");
-        box.className="historyItem";
-        const top=document.createElement("div");
-        top.className="top";
-
-        const left=document.createElement("div");
-        const st=document.createElement("strong");
-        st.textContent=`Tracking: ${h.tracking || "(sin tracking)"}`;
-        const sm=document.createElement("small");
-        const units = h.items.reduce((a,b)=>a + (Number(b.qty)||0), 0);
-        sm.textContent=`${h.date} · ${h.items.length} productos · ${units} unidades`;
-        left.appendChild(st); left.appendChild(sm);
-
-        const actions=document.createElement("div");
-        actions.className="actions";
-
-        const btnLoad=document.createElement("button");
-        btnLoad.className="secondary";
-        btnLoad.textContent="Abrir";
-        btnLoad.onclick=()=>{
-          currentLoad = JSON.parse(JSON.stringify(h));
-          $("trackingInput").value=currentLoad.tracking||"";
-          $("dateInput").value=currentLoad.date||nowStamp();
-          pendingPhoto=null;
-          renderPendingPhoto();
-          renderItems();
-
-          trackingPhotoFile=null; trackingPhotoDataUrl="";
-          setTrackingPreview(false); setCandidates([]);
-          $("btnReRunOcr").disabled=true;
-          $("btnRemoveTrackingPhoto").disabled=true;
-
-          setStatus("ok","Carga cargada desde historial.");
-        };
-
-        const btnDel=document.createElement("button");
-        btnDel.className="danger";
-        btnDel.textContent="Eliminar";
-        btnDel.onclick=()=>{
-          store.history = store.history.filter(x=>x.id!==h.id);
-          saveStore(store);
-          renderHistory();
-          setStatus("ok","Carga eliminada del historial.");
-        };
-
-        actions.appendChild(btnLoad);
-        actions.appendChild(btnDel);
-
-        top.appendChild(left);
-        top.appendChild(actions);
-        box.appendChild(top);
-        wrap.appendChild(box);
-      });
-    }
-
-    /********************
-     * OCR Tracking (ARREGLADO)
-     ********************/
-    const MIN_TRACK_DIGITS = 8;
-    let trackingPhotoFile=null;
-    let trackingPhotoDataUrl="";
-    let ocrWorker=null;
-    let ocrBooted=false;
-
-    function setTrackingPreview(show){
-      const box = $("trackingPreview");
-      if(show){
-        box.classList.add("show");
-        $("trackingImg").src = trackingPhotoDataUrl;
-      } else {
-        box.classList.remove("show");
-        $("trackingImg").src = "";
-        $("ocrProgress").textContent = "Lista para OCR.";
-      }
-    }
-
-    function setCandidates(cands){
-      const wrap=$("candWrap");
-      const chips=$("candChips");
-      chips.innerHTML="";
-      if(!cands || !cands.length){ wrap.classList.remove("show"); return; }
-      wrap.classList.add("show");
-      cands.forEach((c, idx)=>{
-        const b=document.createElement("div");
-        b.className="chip" + (idx===0 ? " best" : "");
-        b.textContent=c.value;
-        b.title=c.value;
-        b.onclick=()=>{
-          $("trackingInput").value=c.value;
-          currentLoad.tracking=c.value;
-          persistCurrentToHistory();
-          renderItems();
-          beep();
-          setStatus("ok","Tracking seleccionado ✅");
-        };
-        chips.appendChild(b);
-      });
-    }
-
-    function normalizeDigits(text){
-      return String(text||"")
-        .replace(/[Oo]/g,"0").replace(/[Il|]/g,"1").replace(/[Ss]/g,"5")
-        .replace(/[Bb]/g,"8").replace(/[Zz]/g,"2");
-    }
-
-    function joinSplitDigits(t){
-      let s=t;
-      for(let i=0;i<10;i++){
-        s=s.replace(/(\d)\s+(\d)/g,"$1$2");
-        s=s.replace(/(\d)\n(\d)/g,"$1$2");
-      }
-      return s;
-    }
-
-    function looksLikeDate8(d){
-      const toInt=(x)=>Number(x);
-      const dd=toInt(d.slice(0,2)), mm=toInt(d.slice(2,4)), yyyy=toInt(d.slice(4,8));
-      const yyyy3=toInt(d.slice(0,4)), mm3=toInt(d.slice(4,6)), dd3=toInt(d.slice(6,8));
-      const yearOk=(y)=>y>=1990 && y<=2099;
-      if(dd>=1 && dd<=31 && mm>=1 && mm<=12 && yearOk(yyyy)) return true;
-      if(yearOk(yyyy3) && mm3>=1 && mm3<=12 && dd3>=1 && dd3<=31) return true;
-      return false;
-    }
-
-    function scoreCandidate(d){
-      let score = d.length * 10;
-      if(d.length===8 && looksLikeDate8(d)) score -= 120;   // evita fechas
-      if(d.length>=18) score += 30;                         // prioriza largos
-      if(d.length>=28) score += 40;
-      return score;
-    }
-
-    function extractCandidatesDigitsOnly(rawText){
-      let s = normalizeDigits(rawText);
-      s = joinSplitDigits(s);
-
-      const runs = (s.match(/\d+/g) || [])
-        .map(x=>x.replace(/\D/g,""))
-        .filter(x=>x.length >= MIN_TRACK_DIGITS);
-
-      const seen=new Set();
-      const uniq=[];
-      for(const r of runs){
-        if(!seen.has(r)){ seen.add(r); uniq.push(r); }
-      }
-
-      return uniq
-        .map(v=>({value:v, score: scoreCandidate(v)}))
-        .sort((a,b)=>b.score-a.score)
-        .slice(0, 10);
-    }
-
-    async function ensureOcrReady(){
-      if(!window.Tesseract){
-        $("ocrReadyText").textContent = "OCR: ❌ No cargó (revisa internet / abre en Chrome)";
-        throw new Error("Tesseract no cargó");
-      }
-      if(ocrBooted) return;
-
-      $("ocrReadyText").textContent = "OCR: preparando…";
-      ocrWorker = await Tesseract.createWorker({
-        logger: m=>{
-          if(m.status==="recognizing text"){
-            $("ocrProgress").textContent = `OCR leyendo… ${Math.round((m.progress||0)*100)}%`;
-          }
-        }
-      });
-
-      // Importante: usamos solo dígitos para que agarre trackings largos
-      await ocrWorker.loadLanguage("eng");
-      await ocrWorker.initialize("eng");
-      ocrBooted = true;
-      $("ocrReadyText").textContent = "OCR: ✅ listo";
-    }
-
-    async function loadBitmapFromFile(file){
-      try{ return await createImageBitmap(file, { imageOrientation: "from-image" }); }
-      catch(e){ return await createImageBitmap(file); }
-    }
-
-    function preprocess(bitmap, mode){
-      const maxW = 1700;
-      const srcW = bitmap.width, srcH = bitmap.height;
-
-      let cropX=0,cropY=0,cropW=srcW,cropH=srcH;
-
-      // "band" = zona donde suele ir el tracking (baja/medio)
-      if(mode==="band"){
-        cropY = Math.floor(srcH*0.32);
-        cropH = Math.floor(srcH*0.55);
-      }
-
-      const scale = Math.min(1, maxW / cropW);
-      const outW = Math.max(900, Math.floor(cropW*scale));
-      const outH = Math.max(520, Math.floor(cropH*scale));
-
-      const c=document.createElement("canvas");
-      c.width=outW; c.height=outH;
-      const ctx=c.getContext("2d",{willReadFrequently:true});
-
-      ctx.fillStyle="#fff"; ctx.fillRect(0,0,outW,outH);
-      ctx.drawImage(bitmap, cropX,cropY,cropW,cropH, 0,0,outW,outH);
-
-      // B/N fuerte para números
-      const img=ctx.getImageData(0,0,outW,outH);
-      const d=img.data;
-      let sum=0;
-      for(let i=0;i<d.length;i+=4){
-        const gray=(d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114);
-        sum += gray;
-      }
-      const avg = sum/(d.length/4);
-      const thresh = avg*0.88;
-
-      for(let i=0;i<d.length;i+=4){
-        let gray=(d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114);
-        gray=(gray-avg)*1.65 + avg;
-        const v=(gray<thresh)?0:255;
-        d[i]=d[i+1]=d[i+2]=v; d[i+3]=255;
-      }
-      ctx.putImageData(img,0,0);
-
-      return c.toDataURL("image/png");
-    }
-
-    async function recognizeDigits(dataUrl, psm){
-      await ocrWorker.setParameters({
-        tessedit_char_whitelist: "0123456789",
-        tessedit_pageseg_mode: String(psm)
-      });
-      const res = await ocrWorker.recognize(dataUrl);
-      return res?.data?.text || "";
-    }
-
-    async function runTrackingOcr(){
-      if(!trackingPhotoFile){
-        setStatus("bad","Primero toma o elige una foto del tracking.");
-        return;
-      }
-
-      try{
-        await ensureOcrReady();
-      }catch(e){
-        setStatus("bad","OCR no cargó. Abre la página en Chrome y con internet (no dentro de WhatsApp/Facebook).");
-        return;
-      }
-
-      setCandidates([]);
-      setStatus("ok","OCR corriendo…");
-      $("ocrProgress").textContent = "Preparando imagen…";
-
-      try{
-        const bitmap = await loadBitmapFromFile(trackingPhotoFile);
-
-        // 1) Primero: banda + PSM 7 (línea única) => ideal para trackings largos
-        const band = preprocess(bitmap, "band");
-        $("ocrProgress").textContent = "OCR (banda/linea)…";
-        const t1 = await recognizeDigits(band, 7);
-        let c1 = extractCandidatesDigitsOnly(t1);
-
-        // 2) Si no hay nada, o muy malo: full + PSM 6
-        if(!c1.length){
-          const full = preprocess(bitmap, "full");
-          $("ocrProgress").textContent = "OCR (full)…";
-          const t2 = await recognizeDigits(full, 6);
-          c1 = extractCandidatesDigitsOnly(t2);
-        }
-
-        if(!c1.length){
-          setStatus("bad","No pude detectar tracking. Toma foto más cerca y con buena luz.");
-          $("ocrProgress").textContent = "No detectado.";
-          return;
-        }
-
-        setCandidates(c1);
-
-        // AUTO: toma el mejor y lo pone en el input
-        const best = c1[0].value;
-        $("trackingInput").value = best;
-        currentLoad.tracking = best;
-        persistCurrentToHistory();
-        renderItems();
-        beep();
-
-        $("ocrProgress").textContent = `Detectado: ${best} (${best.length} dígitos).`;
-        setStatus("ok","✅ Tracking capturado automáticamente.");
-      }catch(e){
-        setStatus("bad","Error OCR. Intenta otra foto (más cerca / sin reflejo).");
-        $("ocrProgress").textContent = "Error OCR.";
-      }
-    }
-
-    /********************
-     * Foto producto
-     ********************/
-    let pendingPhoto=null;
-
-    function renderPendingPhoto(){
-      const wrap=$("pendingPhotoWrap");
-      const img=$("pendingPhotoImg");
-      const btn=$("btnRemovePendingPhoto");
-      if(pendingPhoto){
-        wrap.style.display="block";
-        img.src=pendingPhoto;
-        btn.disabled=false;
-      } else {
-        wrap.style.display="none";
-        img.src="";
-        btn.disabled=true;
-      }
-    }
-
-    /********************
-     * WhatsApp (texto) + WhatsApp (reporte con fotos)
-     ********************/
-    function openWhatsAppText(text){
-      const url = "https://wa.me/?text=" + encodeURIComponent(text);
-      window.open(url, "_blank");
-    }
-
-    function formatTextFull(load){
-      const lines = [];
-      lines.push("📦 Carga registrada");
-      lines.push(`Tracking: ${load.tracking || "(sin tracking)"}`);
-      lines.push(`Fecha: ${load.date}`);
-      lines.push("");
-      load.items.forEach((it, idx)=>{
-        lines.push(`${idx+1}) ${it.qty} / ${it.product}`);
-      });
-      const totalUnits = load.items.reduce((a,b)=>a + (Number(b.qty)||0), 0);
-      lines.push("");
-      lines.push(`✅ Total unidades: ${totalUnits}`);
-      lines.push(`🧾 Total productos: ${load.items.length}`);
-      return lines.join("\n").trim();
-    }
-
-    function formatCaptionShort(load){
-      const totalUnits = load.items.reduce((a,b)=>a + (Number(b.qty)||0), 0);
-      return `📦 Carga\nTracking: ${load.tracking || ""}\nTotal: ${totalUnits} unidades (${load.items.length} productos)`;
-    }
-
-    async function loadImg(src){
-      const img = new Image();
-      img.src = src;
-      await img.decode();
-      return img;
-    }
-
-    async function buildReportImage(load){
-      // Crea 1 imagen con toda la info + fotos (en orden)
-      const W = 1080;
-      const pad = 40;
-      const photo = 220;
-      const gap = 26;
-      const headerH = 240;
-
-      const itemH = photo + 60;
-      const H = headerH + (load.items.length * itemH) + 80;
-
-      const c = document.createElement("canvas");
-      c.width = W;
-      c.height = Math.min(H, 18000); // safety
-
-      const ctx = c.getContext("2d");
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0,0,c.width,c.height);
-
-      ctx.fillStyle = "#111827";
-      ctx.font = "bold 44px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-      ctx.fillText("REGISTRO DE CARGA", pad, 80);
-
-      ctx.font = "28px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-      ctx.fillText(`Tracking: ${load.tracking || ""}`, pad, 140);
-      ctx.fillText(`Fecha: ${load.date}`, pad, 185);
-
-      const totalUnits = load.items.reduce((a,b)=>a + (Number(b.qty)||0), 0);
-      ctx.font = "bold 30px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-      ctx.fillText(`Total: ${totalUnits} unidades · ${load.items.length} productos`, pad, 228);
-
-      let y = headerH;
-
-      for(let i=0;i<load.items.length;i++){
-        const it = load.items[i];
-
-        // caja
-        ctx.fillStyle = "#f3f4f6";
-        ctx.fillRect(pad, y, W - pad*2, itemH - 12);
-
-        // texto
-        ctx.fillStyle = "#111827";
-        ctx.font = "bold 34px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-        ctx.fillText(`${i+1}) ${it.qty} / ${it.product}`, pad + photo + 30, y + 70);
-
-        ctx.font = "24px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-        ctx.fillStyle = "#374151";
-        ctx.fillText(`Tracking: ${load.tracking || ""}`, pad + photo + 30, y + 112);
-
-        // foto
-        if(it.photo){
-          try{
-            const img = await loadImg(it.photo);
-            ctx.drawImage(img, pad + 20, y + 20, photo, photo);
-          }catch(e){
-            ctx.fillStyle = "#9ca3af";
-            ctx.font = "22px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-            ctx.fillText("(foto no disponible)", pad + 20, y + 90);
-          }
-        } else {
-          ctx.fillStyle = "#9ca3af";
-          ctx.font = "22px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-          ctx.fillText("(sin foto)", pad + 20, y + 90);
-        }
-
-        y += itemH;
-        y += gap;
-        if(y > c.height - 100) break; // safety
-      }
-
-      return await new Promise((resolve, reject)=>{
-        c.toBlob((blob)=>{
-          if(!blob) return reject(new Error("no blob"));
-          resolve(blob);
-        }, "image/png", 0.95);
-      });
-    }
-
-    async function sendWhatsAppReport(load){
-      if(!navigator.share || !navigator.canShare){
-        // fallback: abre texto, y descarga el reporte
-        const full = formatTextFull(load);
-        openWhatsAppText(full);
-        setStatus("bad","Tu navegador no soporta compartir archivos. Te abrí WhatsApp con texto. (Para fotos, usa Chrome moderno).");
-        return;
-      }
-
-      try{
-        setStatus("ok","Generando reporte con fotos…");
-        const blob = await buildReportImage(load);
-        const file = new File([blob], `carga_${(load.tracking||"sin")}_${Date.now()}.png`, {type:"image/png"});
-
-        if(!navigator.canShare({files:[file]})){
-          const full = formatTextFull(load);
-          openWhatsAppText(full);
-          setStatus("bad","Este dispositivo no permite compartir archivos a WhatsApp desde web. Te abrí WhatsApp con texto.");
-          return;
-        }
-
-        await navigator.share({
-          text: formatCaptionShort(load),
-          files: [file]
-        });
-
-        setStatus("ok","✅ Compartido (reporte + fotos). Elige WhatsApp y el chat.");
-      }catch(e){
-        setStatus("bad","Compartir cancelado o no soportado. Intenta de nuevo.");
-      }
-    }
-
-    /********************
-     * Init + Events
-     ********************/
-    $("dateInput").value = currentLoad.date;
-
-    $("trackingInput").addEventListener("input",(e)=>{
-      currentLoad.tracking = sanitizeTracking(e.target.value);
-      persistCurrentToHistory();
-      renderItems();
-    });
-
-    $("btnNewLoad").addEventListener("click", ()=>{
-      persistCurrentToHistory();
-      resetCurrentLoad();
-    });
-
-    $("btnClearAll").addEventListener("click", ()=>{
-      if(!confirm("¿Seguro que quieres borrar TODO el historial?")) return;
-      store={history:[]};
-      saveStore(store);
-      resetCurrentLoad();
-      renderHistory();
-      setStatus("ok","Historial borrado.");
-    });
-
-    // OCR readiness display
-    window.addEventListener("load", ()=>{
-      if(window.Tesseract){
-        $("ocrReadyText").textContent = "OCR: ✅ detectado (se inicializa al usar)";
-      }else{
-        $("ocrReadyText").textContent = "OCR: ❌ no cargó (abre en Chrome + internet)";
-      }
-    });
-
-    // Tracking photo
-    $("btnTakeTrackingPhoto").addEventListener("click", ()=> $("trackCamInput").click());
-    $("btnPickTrackingPhoto").addEventListener("click", ()=> $("trackFileInput").click());
-
-    function handleTrackingFile(file){
-      if(!file) return;
-      trackingPhotoFile = file;
-
-      const r = new FileReader();
-      r.onload = ()=>{
-        trackingPhotoDataUrl = r.result;
-        setTrackingPreview(true);
-
-        $("btnRemoveTrackingPhoto").disabled = false;
-        $("btnReRunOcr").disabled = false; // SIEMPRE habilitado al tener foto
-
-        // OCR AUTO (con pequeño delay para que se vea la UI)
-        setTimeout(()=>{ runTrackingOcr(); }, 100);
-      };
-      r.readAsDataURL(file);
-    }
-
-    $("trackCamInput").addEventListener("change",(e)=>{
-      const f = e.target.files?.[0];
-      e.target.value = "";
-      handleTrackingFile(f);
-    });
-
-    $("trackFileInput").addEventListener("change",(e)=>{
-      const f = e.target.files?.[0];
-      e.target.value = "";
-      handleTrackingFile(f);
-    });
-
-    $("btnReRunOcr").addEventListener("click", runTrackingOcr);
-
-    $("btnRemoveTrackingPhoto").addEventListener("click", ()=>{
-      trackingPhotoFile=null;
-      trackingPhotoDataUrl="";
-      setTrackingPreview(false);
-      setCandidates([]);
-      $("btnRemoveTrackingPhoto").disabled = true;
-      $("btnReRunOcr").disabled = true;
-      setStatus("ok","Foto del tracking removida.");
-    });
-
-    // Product photo
-    $("btnTakePhoto").addEventListener("click", ()=> $("fileInputPhotoCam").click());
-    $("btnUploadPhoto").addEventListener("click", ()=> $("fileInputPhoto").click());
-
-    $("fileInputPhotoCam").addEventListener("change",(e)=>{
-      const f = e.target.files?.[0]; e.target.value="";
-      if(!f) return;
-      const r=new FileReader();
-      r.onload=()=>{ pendingPhoto=r.result; renderPendingPhoto(); setStatus("ok","Foto lista para guardarse con el producto."); };
-      r.readAsDataURL(f);
-    });
-
-    $("fileInputPhoto").addEventListener("change",(e)=>{
-      const f = e.target.files?.[0]; e.target.value="";
-      if(!f) return;
-      const r=new FileReader();
-      r.onload=()=>{ pendingPhoto=r.result; renderPendingPhoto(); setStatus("ok","Foto lista para guardarse con el producto."); };
-      r.readAsDataURL(f);
-    });
-
-    $("btnRemovePendingPhoto").addEventListener("click", ()=>{
-      pendingPhoto=null;
-      renderPendingPhoto();
-      setStatus("ok","Foto pendiente removida.");
-    });
-
-    $("btnAddItem").addEventListener("click", ()=>{
-      const product = $("productInput").value.trim();
-      const qty = Number($("qtyInput").value);
-
-      if(!currentLoad.tracking){
-        setStatus("bad","Aún no hay tracking. Toma foto del tracking y espera OCR (o escribe manual).");
-        return;
-      }
-      if(!product){ setStatus("bad","Escribe el nombre del producto."); return; }
-      if(!qty || qty < 1){ setStatus("bad","Ingresa una cantidad válida (>= 1)."); return; }
-      if(!pendingPhoto){ setStatus("bad","Falta la foto. (Info y foto en orden.)"); return; }
-
-      currentLoad.items.push({ product, qty: Math.floor(qty), photo: pendingPhoto });
-
-      $("productInput").value="";
-      $("qtyInput").value="";
-      pendingPhoto=null;
-      renderPendingPhoto();
-
-      persistCurrentToHistory();
-      renderItems();
-      setStatus("ok","Producto agregado ✅ (info + foto en orden)");
-    });
-
-    $("btnSendWhatsAppText").addEventListener("click", ()=>{
-      if(!currentLoad.tracking || currentLoad.items.length===0){
-        setStatus("bad","Carga vacía. Captura tracking y agrega productos.");
-        return;
-      }
-      persistCurrentToHistory();
-      openWhatsAppText(formatTextFull(currentLoad));
-    });
-
-    $("btnSendWhatsAppReport").addEventListener("click", async ()=>{
-      if(!currentLoad.tracking || currentLoad.items.length===0){
-        setStatus("bad","Carga vacía. Captura tracking y agrega productos.");
-        return;
-      }
-      persistCurrentToHistory();
-      await sendWhatsAppReport(currentLoad);
-    });
-
-    $("btnExportJson").addEventListener("click", ()=>{
-      const blob=new Blob([JSON.stringify(store,null,2)],{type:"application/json"});
-      const url=URL.createObjectURL(blob);
-      const a=document.createElement("a");
-      a.href=url; a.download="historial_cargas.json";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(()=>URL.revokeObjectURL(url),800);
-      setStatus("ok","Historial exportado a JSON.");
-    });
-
-    // first render
-    renderPendingPhoto();
-    renderItems();
-    renderHistory();
-    setStatus("ok","Listo. Toma foto del tracking y se extrae automáticamente.");
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
