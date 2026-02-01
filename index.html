@@ -11,7 +11,7 @@
     <header class="header">
       <div>
         <h1>Registro de Cargas</h1>
-        <div class="sub">Foto (tracking) → OCR → Producto + Foto → WhatsApp</div>
+        <div class="sub">Foto → Marcar área → OCR → Producto + Foto → WhatsApp</div>
       </div>
       <div class="status">
         <span id="dot" class="dot"></span>
@@ -44,25 +44,37 @@
           <div class="btns">
             <button id="btnTrackCam" class="btn">📸 Foto del tracking</button>
             <button id="btnTrackPick" class="btn secondary">🖼️ Elegir imagen</button>
-            <button id="btnOcr" class="btn secondary" disabled>🔁 Re-OCR</button>
-            <button id="btnRemoveTrackPhoto" class="btn secondary" disabled>🗑️ Quitar foto</button>
+            <button id="btnRotate" class="btn secondary" disabled>🔄 Girar</button>
+            <button id="btnRemoveTrackPhoto" class="btn secondary" disabled>🗑️ Quitar</button>
+          </div>
+
+          <div class="btns">
+            <button id="btnOcrBox" class="btn secondary" disabled>✅ OCR del recuadro</button>
+            <button id="btnOcrAuto" class="btn secondary" disabled>⚡ OCR automático</button>
           </div>
 
           <input id="trackCamInput" type="file" accept="image/*" capture="environment" hidden />
           <input id="trackPickInput" type="file" accept="image/*" hidden />
 
-          <div id="trackPreview" class="preview">
-            <img id="trackImg" alt="preview" />
-            <div class="previewText">
-              <div class="strong">Foto cargada ✅</div>
-              <div id="ocrProgress" class="small">Lista para OCR.</div>
+          <div id="scanWrap" class="scanWrap">
+            <div class="scanTop">
+              <div class="scanTitle">Selecciona el área del TRACKING</div>
+              <div class="scanHint">Arrastra en la imagen para dibujar el recuadro sobre el número.</div>
+            </div>
+
+            <div class="scanCanvasWrap">
+              <canvas id="scanCanvas"></canvas>
+            </div>
+
+            <div class="scanInfo">
+              <div id="ocrProgress" class="small">Sube una foto para empezar.</div>
               <div id="ocrDebug" class="tiny">OCR: esperando…</div>
             </div>
-          </div>
 
-          <div id="candWrap" class="cand">
-            <div class="candTitle">Candidatos (toca el correcto):</div>
-            <div id="candChips" class="chips"></div>
+            <div id="candWrap" class="cand">
+              <div class="candTitle">Candidatos (toca el correcto):</div>
+              <div id="candChips" class="chips"></div>
+            </div>
           </div>
 
           <hr class="sep"/>
@@ -104,16 +116,15 @@
               <div class="small">Productos: <span id="totalItems">0</span></div>
             </div>
             <div class="btns" style="margin:0">
-              <button id="btnWAImages" class="btn wa">📲 WhatsApp: enviar fotos</button>
+              <button id="btnWAImages" class="btn wa">📲 WhatsApp: enviar TODAS las fotos</button>
               <button id="btnWAText" class="btn wa">📲 WhatsApp: enviar texto</button>
             </div>
           </div>
 
           <div class="hint">
-            <b>Modo estable:</b><br/>
-            1) “Enviar fotos” abre el compartir para cada foto (elige WhatsApp y chat).<br/>
-            2) Luego “Enviar texto” abre WhatsApp con la información completa.<br/>
-            (WhatsApp no permite adjuntar fotos automático desde web).
+            <b>WhatsApp real (sin inventos):</b><br/>
+            • “Enviar TODAS las fotos” intenta mandar todas juntas. Si tu teléfono no deja, las manda 1 por 1.<br/>
+            • Luego “Enviar texto” manda el registro completo.
           </div>
 
           <hr class="sep"/>
