@@ -1,0 +1,1347 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1220" />
+  <title>Registro de Cargas – Scanner + Fotos + WhatsApp</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1a30;
+      --muted:#9fb0d0;
+      --text:#e9f0ff;
+      --line:rgba(255,255,255,.10);
+      --accent:#27c26a;
+      --warn:#ffcc66;
+      --danger:#ff5c5c;
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 14px;
+      --pad: 16px;
+      --max: 1100px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f6f8ff;
+        --card:#ffffff;
+        --muted:#51607a;
+        --text:#0b1220;
+        --line:rgba(11,18,32,.12);
+        --shadow: 0 10px 22px rgba(11,18,32,.12);
+      }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      background: radial-gradient(1200px 700px at 30% -10%, rgba(39,194,106,.18), transparent 60%),
+                  radial-gradient(900px 500px at 110% 20%, rgba(80,140,255,.14), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding: 18px 14px 90px;}
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding: 8px 0 14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(39,194,106,.95), rgba(80,140,255,.85));
+      box-shadow: var(--shadow);
+    }
+    h1{margin:0; font-size: 18px; line-height:1.1}
+    .sub{margin:2px 0 0; font-size: 12px; color: var(--muted)}
+    .top-actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .pill{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding:10px 12px;
+      border-radius: 999px;
+      display:flex; align-items:center; gap:8px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .pill:active{transform: translateY(1px)}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+    }
+    .card{
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card > .hd{
+      padding: 14px var(--pad);
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), transparent);
+    }
+    .title{
+      display:flex; flex-direction:column; gap:2px;
+    }
+    .title strong{font-size:14px}
+    .title span{font-size:12px; color:var(--muted)}
+    .bd{padding: var(--pad)}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 11px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .btn.primary{background: rgba(39,194,106,.18); border-color: rgba(39,194,106,.45)}
+    .btn.danger{background: rgba(255,92,92,.16); border-color: rgba(255,92,92,.45)}
+    .btn.warn{background: rgba(255,204,102,.14); border-color: rgba(255,204,102,.40)}
+    .btn:active{transform: translateY(1px)}
+    .btn[disabled]{opacity:.45; cursor:not-allowed}
+    .kv{
+      display:grid; grid-template-columns: 1fr 1fr; gap:10px;
+    }
+    @media (max-width:520px){ .kv{grid-template-columns:1fr} }
+    .field{
+      display:flex; flex-direction:column; gap:6px;
+    }
+    label{font-size:12px; color:var(--muted)}
+    input, textarea, select{
+      width:100%;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 12px 12px;
+      outline:none;
+      font-size: 14px;
+    }
+    textarea{min-height: 120px; resize: vertical}
+    .hint{font-size:12px; color: var(--muted); line-height:1.35}
+    .mono{font-family: var(--mono)}
+    .banner{
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px dashed var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .banner strong{color:var(--text)}
+    .ok{color: var(--accent)}
+    .warnTxt{color: var(--warn)}
+    .dangerTxt{color: var(--danger)}
+    /* Scanner */
+    .scannerWrap{
+      position: relative;
+      border-radius: var(--radius2);
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:#000;
+      min-height: 220px;
+    }
+    #scanner{
+      width:100%;
+      min-height: 220px;
+      position: relative;
+    }
+    .scanOverlay{
+      position:absolute; inset:0;
+      pointer-events:none;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .scanBox{
+      width:min(520px, 90%);
+      height: 120px;
+      border-radius: 16px;
+      border: 2px solid rgba(39,194,106,.85);
+      box-shadow: 0 0 0 9999px rgba(0,0,0,.35);
+    }
+    .scanNote{
+      position:absolute;
+      bottom:10px; left:10px; right:10px;
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      pointer-events:none;
+      font-size: 12px;
+      color: rgba(255,255,255,.85);
+    }
+    .scanNote span{background: rgba(0,0,0,.40); padding:8px 10px; border-radius: 999px; border:1px solid rgba(255,255,255,.16)}
+    /* Items list */
+    .items{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 680px){ .items{grid-template-columns:1fr} }
+    .item{
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+      overflow:hidden;
+      background: rgba(255,255,255,.03);
+      display:grid;
+      grid-template-columns: 120px 1fr;
+      min-height: 120px;
+    }
+    @media (max-width:420px){ .item{grid-template-columns: 110px 1fr} }
+    .thumb{
+      position: relative;
+      background: rgba(255,255,255,.04);
+    }
+    .thumb img{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      object-fit: cover;
+    }
+    .thumb .noimg{
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      color: rgba(255,255,255,.60);
+      font-size: 12px;
+      text-align:center;
+      padding: 8px;
+    }
+    .meta{
+      padding: 10px 10px 10px 10px;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .meta .line1{
+      display:flex; align-items:baseline; justify-content:space-between; gap:10px;
+    }
+    .qty{
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+    .prod{
+      font-size: 13px;
+      color: var(--text);
+      line-height:1.25;
+      font-weight: 650;
+    }
+    .tracking{
+      font-size: 11px;
+      color: var(--muted);
+      font-family: var(--mono);
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .meta .actions{
+      margin-top:auto;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .mini{
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+    .summary{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:stretch;
+    }
+    .stat{
+      flex:1;
+      min-width: 170px;
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+      background: rgba(255,255,255,.03);
+      padding: 12px;
+      display:flex; flex-direction:column; gap:3px;
+    }
+    .stat .big{font-size: 26px; font-weight: 900}
+    .stat .lab{font-size: 12px; color: var(--muted)}
+    /* Modal */
+    .modalBack{
+      position: fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 16px;
+      z-index: 50;
+    }
+    .modal{
+      width: min(760px, 100%);
+      background: var(--card);
+      border:1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .modal .hd{padding: 14px 16px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; gap:10px}
+    .modal .bd{padding: 14px 16px}
+    .x{cursor:pointer; border:1px solid var(--line); border-radius: 12px; padding:8px 10px; background: rgba(255,255,255,.04)}
+    .previewPhoto{
+      width:100%;
+      aspect-ratio: 4/3;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      overflow:hidden;
+      position: relative;
+    }
+    .previewPhoto img{width:100%; height:100%; object-fit:cover; display:block}
+    .previewPhoto .ph{
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 10px;
+      text-align:center;
+    }
+    /* Crop */
+    .cropWrap{
+      border:1px solid var(--line);
+      border-radius: 14px;
+      overflow:hidden;
+      background: rgba(0,0,0,.35);
+      position: relative;
+    }
+    #cropCanvas{width:100%; display:block; touch-action:none}
+    .cropHelp{
+      font-size:12px; color: var(--muted);
+      margin-top:8px;
+      line-height:1.35;
+    }
+    .footerBar{
+      position: fixed;
+      left:0; right:0; bottom:0;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,.45));
+      padding: 10px 14px;
+      display:flex; justify-content:center;
+      pointer-events:none;
+      z-index: 10;
+    }
+    .footerInner{
+      width:min(var(--max), 100%);
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
+      pointer-events:auto;
+    }
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 78px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.75);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.18);
+      font-size: 12px;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .18s ease;
+      z-index: 60;
+      max-width: 92vw;
+      text-align:center;
+    }
+    .toast.show{opacity:1}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Registro de Cargas (Scanner + Foto + WhatsApp)</h1>
+          <div class="sub">Escanea tracking → agrega producto/unidades → foto → total → enviar por WhatsApp</div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="pill" id="btnBackupDownload" title="Descargar respaldo (.json)">
+          ⬇️ Respaldo
+        </button>
+        <label class="pill" title="Cargar respaldo (.json)">
+          ⬆️ Importar
+          <input id="backupFile" type="file" accept="application/json" style="display:none">
+        </label>
+        <button class="pill" id="btnClearAll" title="Borrar la carga actual">🗑️ Limpiar</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT -->
+      <section class="card">
+        <div class="hd">
+          <div class="title">
+            <strong>1) Tracking</strong>
+            <span>Escanea con cámara (código de barras) o usa OCR por foto + recorte</span>
+          </div>
+          <div class="row">
+            <span class="hint mono" id="protoHint"></span>
+          </div>
+        </div>
+
+        <div class="bd">
+          <div class="banner" id="httpsBanner" style="display:none">
+            <strong class="warnTxt">Ojo:</strong> estás abriendo esto como <span class="mono">file://</span>. La cámara suele fallar.
+            Súbelo a <strong>GitHub Pages</strong> (HTTPS) y funcionará bien.
+          </div>
+
+          <div class="kv" style="margin-top:10px">
+            <div class="field">
+              <label>Tracking detectado / actual</label>
+              <input id="trackingInput" class="mono" placeholder="Escanea o escribe aquí..." />
+              <div class="hint">Se toma el bloque más largo (prioriza dígitos) con mínimo 8 caracteres. Puedes corregirlo manual.</div>
+            </div>
+
+            <div class="field">
+              <label>Modo de reconocimiento</label>
+              <select id="scanMode">
+                <option value="barcode">Cámara (código de barras / etiqueta)</option>
+                <option value="ocr">OCR por foto (si no detecta bien)</option>
+              </select>
+              <div class="hint">Si tu etiqueta trae código de barras, el modo cámara es el más rápido.</div>
+            </div>
+          </div>
+
+          <div id="barcodeArea" style="margin-top:12px">
+            <div class="scannerWrap">
+              <div id="scanner"></div>
+              <div class="scanOverlay" aria-hidden="true">
+                <div class="scanBox"></div>
+              </div>
+              <div class="scanNote" aria-hidden="true">
+                <span>📷 Alinea el código en el cuadro horizontal</span>
+                <span>✅ Cuando detecte, se detiene solo</span>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary" id="btnStartScan">▶️ Iniciar escaneo</button>
+              <button class="btn" id="btnStopScan" disabled>⏹️ Detener</button>
+              <button class="btn" id="btnUseTracking">✅ Usar este tracking</button>
+            </div>
+            <div class="hint" style="margin-top:8px">
+              Si no detecta, prueba: buena luz, acerca el código, y que el texto/lineas estén nítidas.
+            </div>
+          </div>
+
+          <div id="ocrArea" style="display:none; margin-top:12px">
+            <div class="row">
+              <label class="btn primary" style="cursor:pointer">
+                📸 Tomar / elegir foto
+                <input id="ocrFile" type="file" accept="image/*" capture="environment" style="display:none">
+              </label>
+              <button class="btn" id="btnOcrRead" disabled>🔎 Leer tracking (OCR)</button>
+              <button class="btn warn" id="btnOcrReadCropped" disabled>✂️ Recortar y leer</button>
+            </div>
+
+            <div class="cropWrap" style="margin-top:12px; display:none" id="cropWrap">
+              <canvas id="cropCanvas"></canvas>
+            </div>
+            <div class="cropHelp" id="cropHelp" style="display:none">
+              Arrastra con el dedo/mouse para marcar el recorte (solo la zona del tracking). Luego presiona <strong>Recortar y leer</strong>.
+            </div>
+
+            <div class="banner" style="margin-top:12px">
+              <strong>Tip:</strong> OCR es más lento. Pero sirve cuando el tracking es solo texto y quieres recortar para sacar únicamente el número.
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- RIGHT -->
+      <section class="card">
+        <div class="hd">
+          <div class="title">
+            <strong>2) Agregar producto</strong>
+            <span>Guarda: cantidad / producto + foto</span>
+          </div>
+          <div class="row">
+            <button class="btn primary" id="btnAddItem">➕ Agregar</button>
+          </div>
+        </div>
+
+        <div class="bd">
+          <div class="summary">
+            <div class="stat">
+              <div class="big" id="statUnits">0</div>
+              <div class="lab">Total de unidades (sumatoria)</div>
+            </div>
+            <div class="stat">
+              <div class="big" id="statLines">0</div>
+              <div class="lab">Líneas / productos registrados</div>
+            </div>
+          </div>
+
+          <div class="kv" style="margin-top:12px">
+            <div class="field">
+              <label>Opciones para WhatsApp</label>
+              <select id="waGrouping">
+                <option value="group">Agrupar por tracking</option>
+                <option value="flat">Lista corrida (sin agrupar)</option>
+              </select>
+              <div class="hint">Si un tracking tiene varios productos, lo más ordenado es agrupar.</div>
+            </div>
+            <div class="field">
+              <label>Incluir tracking en el mensaje</label>
+              <select id="waIncludeTracking">
+                <option value="yes">Sí</option>
+                <option value="no">No</option>
+              </select>
+              <div class="hint">Si solo quieres mandar productos y cantidades, pon “No”.</div>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:12px">
+            <label>Vista previa del mensaje</label>
+            <textarea id="waText" placeholder="Aquí aparecerá el mensaje listo para WhatsApp..."></textarea>
+            <div class="hint">
+              Nota: Por link de WhatsApp se envía <strong>texto</strong>. Para intentar mandar <strong>texto + fotos</strong>,
+              usa “Compartir con fotos” (depende del navegador/móvil).
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:10px">
+            <button class="btn primary" id="btnSendWA">🟢 Enviar por WhatsApp (texto)</button>
+            <button class="btn" id="btnShareWA">📤 Compartir con fotos (si disponible)</button>
+            <button class="btn" id="btnCopyText">📋 Copiar texto</button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- LIST -->
+      <section class="card" style="grid-column: 1 / -1;">
+        <div class="hd">
+          <div class="title">
+            <strong>3) Lista (ordenada)</strong>
+            <span>Todo queda guardado en el navegador (local). Puedes exportar respaldo.</span>
+          </div>
+          <div class="row">
+            <button class="btn" id="btnSortByTracking">↕️ Ordenar por tracking</button>
+            <button class="btn" id="btnSortByTime">🕒 Orden original</button>
+          </div>
+        </div>
+        <div class="bd">
+          <div class="items" id="items"></div>
+          <div class="hint" style="margin-top:10px">
+            Las fotos se guardan comprimidas. Si guardas demasiadas, el navegador puede llegar a su límite.
+            En ese caso: usa respaldos por carga.
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Bottom quick actions -->
+  <div class="footerBar">
+    <div class="footerInner">
+      <button class="btn primary" id="btnQuickScan">📷 Escanear tracking</button>
+      <button class="btn" id="btnQuickAdd">➕ Agregar producto</button>
+      <button class="btn" id="btnQuickSend">🟢 WhatsApp</button>
+    </div>
+  </div>
+
+  <!-- Modal Add/Edit -->
+  <div class="modalBack" id="modalBack">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="hd">
+        <div>
+          <div id="modalTitle" style="font-weight:800">Agregar producto</div>
+          <div class="hint" id="modalSub">Tracking: <span class="mono" id="modalTracking">—</span></div>
+        </div>
+        <button class="x" id="modalClose">✕</button>
+      </div>
+      <div class="bd">
+        <div class="kv">
+          <div class="field">
+            <label>Producto</label>
+            <input id="prodInput" placeholder="Ej: pares zapatos Nike" />
+          </div>
+          <div class="field">
+            <label>Unidades</label>
+            <input id="qtyInput" type="number" inputmode="numeric" min="1" step="1" placeholder="Ej: 3" />
+          </div>
+        </div>
+
+        <div class="kv" style="margin-top:12px">
+          <div class="field">
+            <label>Foto (cámara / archivo)</label>
+            <label class="btn" style="cursor:pointer; width: fit-content">
+              📸 Tomar foto
+              <input id="photoInput" type="file" accept="image/*" capture="environment" style="display:none">
+            </label>
+            <div class="hint">En PC abre selector de archivo. En móvil abre cámara (Android/iPhone) si lo permite.</div>
+          </div>
+
+          <div class="field">
+            <label>Vista previa</label>
+            <div class="previewPhoto" id="photoPreview">
+              <div class="ph">Sin foto</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:14px; justify-content:flex-end">
+          <button class="btn danger" id="btnDeleteItem" style="display:none">🗑️ Eliminar</button>
+          <button class="btn" id="btnCancel">Cancelar</button>
+          <button class="btn primary" id="btnSave">✅ Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Quagga (barcode scanner) -->
+  <script src="https://unpkg.com/@ericblade/quagga2@2.0.12/dist/quagga.min.js"></script>
+  <!-- Tesseract (OCR) -->
+  <script src="https://unpkg.com/tesseract.js@5.0.5/dist/tesseract.min.js"></script>
+
+  <script>
+    /*********************
+     * State + Storage
+     *********************/
+    const STORE_KEY = "registro_cargas_v1";
+    let state = {
+      items: [], // {id, ts, tracking, product, qty, photoDataUrl}
+      sortMode: "time", // time | tracking
+      waGrouping: "group",
+      waIncludeTracking: "yes"
+    };
+
+    function loadState(){
+      try{
+        const raw = localStorage.getItem(STORE_KEY);
+        if(raw){
+          const parsed = JSON.parse(raw);
+          if(parsed && Array.isArray(parsed.items)) state = {...state, ...parsed};
+        }
+      }catch(e){}
+    }
+    function saveState(){
+      try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){
+        toast("⚠️ No se pudo guardar (límite de almacenamiento). Usa Respaldo.");
+      }
+    }
+
+    /*********************
+     * Helpers
+     *********************/
+    const $ = (id)=>document.getElementById(id);
+    const uid = ()=> Math.random().toString(16).slice(2) + "-" + Date.now().toString(16);
+
+    function toast(msg){
+      const t = $("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(toast._tm);
+      toast._tm = setTimeout(()=>t.classList.remove("show"), 1800);
+    }
+
+    // Extrae tracking: prioriza dígitos >= 8, si no encuentra toma alfanumérico >=8
+    function extractTracking(str){
+      if(!str) return "";
+      const s = String(str).trim();
+      // 1) dígitos
+      const digitMatches = s.match(/\d{8,}/g) || [];
+      let best = digitMatches.sort((a,b)=>b.length-a.length)[0] || "";
+      if(best) return best;
+
+      // 2) alfanumérico (sin espacios) con 8+
+      const alnumMatches = s.replace(/\s+/g, " ").match(/[A-Za-z0-9]{8,}/g) || [];
+      best = alnumMatches.sort((a,b)=>b.length-a.length)[0] || "";
+
+      return best || s;
+    }
+
+    function fmtDateTime(d=new Date()){
+      const pad = (n)=>String(n).padStart(2,"0");
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    function totalUnits(){
+      return state.items.reduce((a,it)=>a + (Number(it.qty)||0), 0);
+    }
+
+    function buildMessage(){
+      const includeTracking = state.waIncludeTracking === "yes";
+      const grouping = state.waGrouping;
+      const lines = [];
+      lines.push("📦 Registro de carga");
+      lines.push(`🕒 ${fmtDateTime(new Date())}`);
+      lines.push(`✅ Total unidades: ${totalUnits()}`);
+      lines.push("");
+
+      const items = getSortedItems();
+
+      if(grouping === "group"){
+        // group by tracking
+        const map = new Map();
+        for(const it of items){
+          const key = (it.tracking || "").trim() || "SIN_TRACKING";
+          if(!map.has(key)) map.set(key, []);
+          map.get(key).push(it);
+        }
+        for(const [trk, arr] of map.entries()){
+          if(includeTracking){
+            lines.push(trk === "SIN_TRACKING" ? "📎 Tracking: (no registrado)" : `📎 Tracking: ${trk}`);
+          }
+          for(const it of arr){
+            lines.push(`${it.qty} / ${it.product}${it.photoDataUrl ? "  📷" : ""}`);
+          }
+          lines.push("");
+        }
+      }else{
+        // flat
+        for(const it of items){
+          if(includeTracking){
+            lines.push(`📎 ${it.tracking || "(sin tracking)"} — ${it.qty} / ${it.product}${it.photoDataUrl ? "  📷" : ""}`);
+          }else{
+            lines.push(`${it.qty} / ${it.product}${it.photoDataUrl ? "  📷" : ""}`);
+          }
+        }
+        lines.push("");
+      }
+
+      lines.push("—");
+      lines.push("Nota: 📷 = foto guardada (usa “Compartir con fotos” si quieres intentar mandarlas juntas).");
+
+      return lines.join("\n");
+    }
+
+    function getSortedItems(){
+      const arr = [...state.items];
+      if(state.sortMode === "tracking"){
+        arr.sort((a,b)=>{
+          const ta = (a.tracking||"").localeCompare(b.tracking||"");
+          if(ta!==0) return ta;
+          return (a.ts||0) - (b.ts||0);
+        });
+      }else{
+        arr.sort((a,b)=>(a.ts||0)-(b.ts||0));
+      }
+      return arr;
+    }
+
+    function render(){
+      $("statUnits").textContent = totalUnits();
+      $("statLines").textContent = state.items.length;
+
+      $("waText").value = buildMessage();
+      $("waGrouping").value = state.waGrouping;
+      $("waIncludeTracking").value = state.waIncludeTracking;
+
+      const wrap = $("items");
+      wrap.innerHTML = "";
+
+      const items = getSortedItems();
+      if(items.length === 0){
+        wrap.innerHTML = `<div class="banner" style="grid-column:1/-1">
+          <strong>Sin registros todavía.</strong><br>
+          1) Escanea el tracking → 2) Agregar producto → 3) Enviar por WhatsApp
+        </div>`;
+        return;
+      }
+
+      for(const it of items){
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `
+          <div class="thumb">
+            ${it.photoDataUrl
+              ? `<img alt="Foto" src="${it.photoDataUrl}">`
+              : `<div class="noimg">Sin foto</div>`
+            }
+          </div>
+          <div class="meta">
+            <div class="line1">
+              <div class="qty">${it.qty}</div>
+              <div style="font-size:11px; color:var(--muted)">${new Date(it.ts).toLocaleString()}</div>
+            </div>
+            <div class="prod">${escapeHtml(it.product)}</div>
+            <div class="tracking">Tracking: ${escapeHtml(it.tracking || "—")}</div>
+            <div class="actions">
+              <button class="btn mini" data-edit="${it.id}">✏️ Editar</button>
+              <button class="btn mini danger" data-del="${it.id}">🗑️</button>
+            </div>
+          </div>
+        `;
+        wrap.appendChild(div);
+      }
+
+      wrap.querySelectorAll("[data-edit]").forEach(b=>{
+        b.addEventListener("click", ()=> openModal(b.getAttribute("data-edit")));
+      });
+      wrap.querySelectorAll("[data-del]").forEach(b=>{
+        b.addEventListener("click", ()=> deleteItem(b.getAttribute("data-del")));
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str||"")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#39;");
+    }
+
+    /*********************
+     * Modal (Add/Edit)
+     *********************/
+    let modalEditingId = null;
+    let modalPhotoData = null;
+
+    function openModal(editId=null){
+      modalEditingId = editId;
+      modalPhotoData = null;
+
+      const trk = extractTracking($("trackingInput").value);
+      $("modalTracking").textContent = trk || "—";
+
+      $("prodInput").value = "";
+      $("qtyInput").value = "";
+      $("photoPreview").innerHTML = `<div class="ph">Sin foto</div>`;
+      $("btnDeleteItem").style.display = "none";
+      $("modalTitle").textContent = editId ? "Editar producto" : "Agregar producto";
+
+      if(editId){
+        const it = state.items.find(x=>x.id===editId);
+        if(it){
+          $("prodInput").value = it.product;
+          $("qtyInput").value = it.qty;
+          modalPhotoData = it.photoDataUrl || null;
+          if(modalPhotoData){
+            $("photoPreview").innerHTML = `<img alt="Foto" src="${modalPhotoData}">`;
+          }
+          $("modalTracking").textContent = it.tracking || "—";
+          $("btnDeleteItem").style.display = "inline-flex";
+        }
+      }
+
+      $("modalBack").style.display = "flex";
+      setTimeout(()=> $("prodInput").focus(), 50);
+    }
+
+    function closeModal(){
+      $("modalBack").style.display = "none";
+      modalEditingId = null;
+      modalPhotoData = null;
+      $("photoInput").value = "";
+    }
+
+    function deleteItem(id){
+      state.items = state.items.filter(x=>x.id!==id);
+      saveState(); render();
+      toast("Eliminado");
+    }
+
+    $("modalClose").addEventListener("click", closeModal);
+    $("btnCancel").addEventListener("click", closeModal);
+    $("modalBack").addEventListener("click", (e)=>{ if(e.target === $("modalBack")) closeModal(); });
+
+    $("btnDeleteItem").addEventListener("click", ()=>{
+      if(modalEditingId){
+        deleteItem(modalEditingId);
+        closeModal();
+      }
+    });
+
+    $("btnSave").addEventListener("click", async ()=>{
+      const product = $("prodInput").value.trim();
+      const qty = Number($("qtyInput").value);
+      const tracking = extractTracking($("trackingInput").value);
+
+      if(!product){
+        toast("⚠️ Escribe el producto");
+        $("prodInput").focus();
+        return;
+      }
+      if(!qty || qty < 1){
+        toast("⚠️ Unidades inválidas");
+        $("qtyInput").focus();
+        return;
+      }
+
+      if(modalEditingId){
+        const it = state.items.find(x=>x.id===modalEditingId);
+        if(it){
+          it.product = product;
+          it.qty = qty;
+          it.photoDataUrl = modalPhotoData || null;
+          // Si el usuario está editando, no le sobreescribimos tracking a menos que esté vacío:
+          if(!it.tracking) it.tracking = tracking || "";
+        }
+      }else{
+        state.items.push({
+          id: uid(),
+          ts: Date.now(),
+          tracking: tracking || "",
+          product,
+          qty,
+          photoDataUrl: modalPhotoData || null
+        });
+      }
+
+      saveState();
+      render();
+      closeModal();
+      toast("Guardado ✅");
+    });
+
+    // Photo compress
+    $("photoInput").addEventListener("change", async (e)=>{
+      const file = e.target.files && e.target.files[0];
+      if(!file) return;
+
+      try{
+        const dataUrl = await compressImageToDataUrl(file, 900, 0.78);
+        modalPhotoData = dataUrl;
+        $("photoPreview").innerHTML = `<img alt="Foto" src="${dataUrl}">`;
+        toast("Foto lista ✅");
+      }catch(err){
+        toast("⚠️ No se pudo procesar la foto");
+      }
+    });
+
+    function readFileAsDataURL(file){
+      return new Promise((res,rej)=>{
+        const r = new FileReader();
+        r.onload = ()=>res(r.result);
+        r.onerror = rej;
+        r.readAsDataURL(file);
+      });
+    }
+
+    async function compressImageToDataUrl(file, maxSide=900, quality=0.78){
+      const dataUrl = await readFileAsDataURL(file);
+      const img = new Image();
+      img.src = dataUrl;
+      await new Promise((res,rej)=>{ img.onload=res; img.onerror=rej; });
+
+      const w = img.naturalWidth, h = img.naturalHeight;
+      const scale = Math.min(1, maxSide / Math.max(w,h));
+      const nw = Math.round(w*scale), nh = Math.round(h*scale);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = nw; canvas.height = nh;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, nw, nh);
+
+      // Try webp, fallback jpeg
+      let out = canvas.toDataURL("image/webp", quality);
+      if(!out.startsWith("data:image/webp")) out = canvas.toDataURL("image/jpeg", quality);
+      return out;
+    }
+
+    /*********************
+     * Barcode scanning (Quagga2)
+     *********************/
+    let scanning = false;
+
+    async function startScan(){
+      if(scanning) return;
+
+      if(location.protocol === "file:"){
+        toast("⚠️ Sube esto a HTTPS (GitHub Pages) para usar cámara");
+        return;
+      }
+
+      scanning = true;
+      $("btnStartScan").disabled = true;
+      $("btnStopScan").disabled = false;
+
+      const target = document.querySelector("#scanner");
+      target.innerHTML = "";
+
+      Quagga.init({
+        inputStream: {
+          name: "Live",
+          type: "LiveStream",
+          target: target,
+          constraints: {
+            facingMode: "environment",
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          // Banda horizontal (como pediste)
+          area: {
+            top: "38%",
+            right: "6%",
+            left: "6%",
+            bottom: "38%"
+          }
+        },
+        decoder: {
+          readers: [
+            "code_128_reader",
+            "code_39_reader",
+            "ean_reader",
+            "ean_8_reader",
+            "upc_reader",
+            "upc_e_reader",
+            "i2of5_reader"
+          ]
+        },
+        locate: true
+      }, function(err){
+        if(err){
+          scanning = false;
+          $("btnStartScan").disabled = false;
+          $("btnStopScan").disabled = true;
+          toast("⚠️ No se pudo iniciar cámara");
+          return;
+        }
+        Quagga.start();
+        toast("Escaneando...");
+      });
+
+      Quagga.offDetected();
+      Quagga.onDetected((data)=>{
+        try{
+          const raw = data && data.codeResult && data.codeResult.code ? data.codeResult.code : "";
+          const trk = extractTracking(raw);
+          if(trk){
+            $("trackingInput").value = trk;
+            toast("Tracking detectado ✅");
+            stopScan();
+          }
+        }catch(e){}
+      });
+    }
+
+    function stopScan(){
+      if(!scanning) return;
+      scanning = false;
+      try{ Quagga.stop(); }catch(e){}
+      $("btnStartScan").disabled = false;
+      $("btnStopScan").disabled = true;
+    }
+
+    $("btnStartScan").addEventListener("click", startScan);
+    $("btnStopScan").addEventListener("click", stopScan);
+
+    $("btnUseTracking").addEventListener("click", ()=>{
+      const trk = extractTracking($("trackingInput").value);
+      if(!trk){
+        toast("⚠️ No hay tracking");
+        $("trackingInput").focus();
+        return;
+      }
+      $("trackingInput").value = trk;
+      toast("Listo ✅");
+    });
+
+    /*********************
+     * OCR + Crop
+     *********************/
+    let ocrImage = null;
+    let cropRect = null; // {x,y,w,h} in canvas coords
+    let cropCanvas = $("cropCanvas");
+    let cropCtx = cropCanvas.getContext("2d");
+    let dragging = false;
+    let dragStart = null;
+
+    function showOcrUI(show){
+      $("barcodeArea").style.display = show ? "none" : "";
+      $("ocrArea").style.display = show ? "" : "none";
+      stopScan();
+    }
+
+    $("scanMode").addEventListener("change", ()=>{
+      showOcrUI($("scanMode").value === "ocr");
+    });
+
+    $("ocrFile").addEventListener("change", async (e)=>{
+      const file = e.target.files && e.target.files[0];
+      if(!file) return;
+
+      try{
+        const dataUrl = await readFileAsDataURL(file);
+        const img = new Image();
+        img.src = dataUrl;
+        await new Promise((res,rej)=>{ img.onload=res; img.onerror=rej; });
+        ocrImage = img;
+
+        // Fit canvas to container width
+        const maxW = Math.min(1000, $("ocrArea").clientWidth - 6);
+        const scale = Math.min(1, maxW / img.naturalWidth);
+        cropCanvas.width = Math.round(img.naturalWidth * scale);
+        cropCanvas.height = Math.round(img.naturalHeight * scale);
+
+        cropCtx.clearRect(0,0,cropCanvas.width,cropCanvas.height);
+        cropCtx.drawImage(img, 0,0,cropCanvas.width,cropCanvas.height);
+
+        cropRect = null;
+
+        $("cropWrap").style.display = "";
+        $("cropHelp").style.display = "";
+        $("btnOcrRead").disabled = false;
+        $("btnOcrReadCropped").disabled = false;
+
+        toast("Foto cargada ✅ (marca recorte si quieres)");
+      }catch(err){
+        toast("⚠️ Error cargando imagen");
+      }
+    });
+
+    function drawCrop(){
+      if(!ocrImage) return;
+
+      cropCtx.clearRect(0,0,cropCanvas.width,cropCanvas.height);
+      cropCtx.drawImage(ocrImage, 0,0,cropCanvas.width,cropCanvas.height);
+
+      if(cropRect){
+        cropCtx.save();
+        cropCtx.strokeStyle = "rgba(39,194,106,.95)";
+        cropCtx.lineWidth = 3;
+        cropCtx.fillStyle = "rgba(0,0,0,.35)";
+        cropCtx.fillRect(0,0,cropCanvas.width,cropCanvas.height);
+        cropCtx.clearRect(cropRect.x, cropRect.y, cropRect.w, cropRect.h);
+        cropCtx.strokeRect(cropRect.x+1.5, cropRect.y+1.5, cropRect.w-3, cropRect.h-3);
+        cropCtx.restore();
+      }
+    }
+
+    function pointerPos(ev){
+      const r = cropCanvas.getBoundingClientRect();
+      const x = (ev.clientX - r.left) * (cropCanvas.width / r.width);
+      const y = (ev.clientY - r.top) * (cropCanvas.height / r.height);
+      return {x,y};
+    }
+
+    cropCanvas.addEventListener("pointerdown", (ev)=>{
+      if(!ocrImage) return;
+      dragging = true;
+      cropCanvas.setPointerCapture(ev.pointerId);
+      dragStart = pointerPos(ev);
+      cropRect = {x: dragStart.x, y: dragStart.y, w: 0, h: 0};
+      drawCrop();
+    });
+    cropCanvas.addEventListener("pointermove", (ev)=>{
+      if(!dragging || !dragStart) return;
+      const p = pointerPos(ev);
+      const x = Math.min(dragStart.x, p.x);
+      const y = Math.min(dragStart.y, p.y);
+      const w = Math.abs(p.x - dragStart.x);
+      const h = Math.abs(p.y - dragStart.y);
+      cropRect = {x, y, w, h};
+      drawCrop();
+    });
+    cropCanvas.addEventListener("pointerup", ()=>{
+      dragging = false;
+      dragStart = null;
+      drawCrop();
+    });
+
+    async function runOcr(useCrop){
+      if(!ocrImage) { toast("⚠️ Carga una foto"); return; }
+
+      // Construir canvas de entrada (recortado o completo)
+      let srcCanvas = document.createElement("canvas");
+      let sctx = srcCanvas.getContext("2d");
+
+      if(useCrop && cropRect && cropRect.w > 10 && cropRect.h > 10){
+        // extraer recorte
+        srcCanvas.width = Math.round(cropRect.w);
+        srcCanvas.height = Math.round(cropRect.h);
+        // redibujar desde canvas mostrado
+        sctx.drawImage(cropCanvas,
+          cropRect.x, cropRect.y, cropRect.w, cropRect.h,
+          0, 0, srcCanvas.width, srcCanvas.height
+        );
+      }else{
+        srcCanvas.width = cropCanvas.width;
+        srcCanvas.height = cropCanvas.height;
+        sctx.drawImage(cropCanvas, 0, 0);
+      }
+
+      toast("OCR leyendo... (puede tardar)");
+      try{
+        const { data } = await Tesseract.recognize(srcCanvas, "eng", {
+          tessedit_char_whitelist: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+        });
+        const text = (data && data.text) ? data.text : "";
+        const trk = extractTracking(text);
+        if(trk){
+          $("trackingInput").value = trk;
+          toast("OCR OK ✅");
+        }else{
+          toast("⚠️ OCR no encontró tracking (prueba recortar más)");
+        }
+      }catch(err){
+        toast("⚠️ Error OCR");
+      }
+    }
+
+    $("btnOcrRead").addEventListener("click", ()=> runOcr(false));
+    $("btnOcrReadCropped").addEventListener("click", ()=> runOcr(true));
+
+    /*********************
+     * WhatsApp
+     *********************/
+    function openWhatsAppText(){
+      const text = buildMessage();
+      const url = "https://wa.me/?text=" + encodeURIComponent(text);
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+
+    $("btnSendWA").addEventListener("click", openWhatsAppText);
+    $("btnQuickSend").addEventListener("click", openWhatsAppText);
+
+    $("btnCopyText").addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText(buildMessage());
+        toast("Copiado ✅");
+      }catch(e){
+        $("waText").select();
+        document.execCommand("copy");
+        toast("Copiado ✅");
+      }
+    });
+
+    function dataUrlToFile(dataUrl, filename){
+      const arr = dataUrl.split(",");
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8 = new Uint8Array(n);
+      while(n--) u8[n] = bstr.charCodeAt(n);
+      return new File([u8], filename, {type:mime});
+    }
+
+    async function shareWithPhotos(){
+      const text = buildMessage();
+      const files = state.items
+        .filter(it=>it.photoDataUrl)
+        .slice(0, 10) // limite razonable
+        .map((it, idx)=> dataUrlToFile(it.photoDataUrl, `foto-${idx+1}.webp`));
+
+      if(navigator.canShare && navigator.canShare({ files })){
+        try{
+          await navigator.share({
+            title: "Registro de carga",
+            text,
+            files
+          });
+        }catch(e){
+          // usuario canceló o error
+        }
+      }else{
+        toast("Tu navegador no soporta compartir fotos. Usa WhatsApp (texto) y envía fotos manual.");
+      }
+    }
+
+    $("btnShareWA").addEventListener("click", shareWithPhotos);
+
+    /*********************
+     * Backup export/import
+     *********************/
+    $("btnBackupDownload").addEventListener("click", ()=>{
+      const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `registro-carga-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast("Respaldo descargado ✅");
+    });
+
+    $("backupFile").addEventListener("change", async (e)=>{
+      const f = e.target.files && e.target.files[0];
+      if(!f) return;
+      try{
+        const text = await f.text();
+        const parsed = JSON.parse(text);
+        if(parsed && Array.isArray(parsed.items)){
+          state = {...state, ...parsed};
+          saveState();
+          render();
+          toast("Importado ✅");
+        }else{
+          toast("⚠️ Archivo no válido");
+        }
+      }catch(err){
+        toast("⚠️ Error importando");
+      }
+      e.target.value = "";
+    });
+
+    $("btnClearAll").addEventListener("click", ()=>{
+      if(confirm("¿Borrar toda la carga actual?")){
+        state.items = [];
+        saveState(); render();
+        toast("Limpio ✅");
+      }
+    });
+
+    /*********************
+     * UI hooks
+     *********************/
+    $("btnAddItem").addEventListener("click", ()=> openModal(null));
+    $("btnQuickAdd").addEventListener("click", ()=> openModal(null));
+
+    $("btnQuickScan").addEventListener("click", ()=>{
+      $("scanMode").value = "barcode";
+      showOcrUI(false);
+      startScan();
+    });
+
+    $("btnSortByTracking").addEventListener("click", ()=>{
+      state.sortMode = "tracking";
+      saveState(); render();
+      toast("Ordenado por tracking");
+    });
+
+    $("btnSortByTime").addEventListener("click", ()=>{
+      state.sortMode = "time";
+      saveState(); render();
+      toast("Orden original");
+    });
+
+    $("waGrouping").addEventListener("change", ()=>{
+      state.waGrouping = $("waGrouping").value;
+      saveState(); render();
+    });
+    $("waIncludeTracking").addEventListener("change", ()=>{
+      state.waIncludeTracking = $("waIncludeTracking").value;
+      saveState(); render();
+    });
+
+    // Si el usuario escribe tracking manual, limpiamos
+    $("trackingInput").addEventListener("blur", ()=>{
+      const trk = extractTracking($("trackingInput").value);
+      if(trk) $("trackingInput").value = trk;
+      render();
+    });
+
+    /*********************
+     * Init
+     *********************/
+    loadState();
+    render();
+
+    // protocol hint
+    $("protoHint").textContent = location.protocol;
+    if(location.protocol === "file:"){
+      $("httpsBanner").style.display = "";
+    }
+
+    // If scan mode toggled
+    showOcrUI($("scanMode").value === "ocr");
+  </script>
+</body>
+</html>
