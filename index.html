@@ -48,9 +48,7 @@
       display:flex; align-items:center; justify-content:space-between;
       gap:12px; padding: 8px 0 14px;
     }
-    .brand{
-      display:flex; align-items:center; gap:12px;
-    }
+    .brand{display:flex; align-items:center; gap:12px;}
     .logo{
       width:44px;height:44px;border-radius:14px;
       background: linear-gradient(135deg, rgba(39,194,106,.95), rgba(80,140,255,.85));
@@ -70,15 +68,9 @@
       user-select:none;
     }
     .pill:active{transform: translateY(1px)}
-    .grid{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 14px;
-      align-items:start;
-    }
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr}
-    }
+    .grid{display:grid; grid-template-columns: 1.1fr .9fr; gap: 14px; align-items:start;}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+
     .card{
       background: rgba(255,255,255,.04);
       border: 1px solid var(--line);
@@ -92,13 +84,12 @@
       border-bottom: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.06), transparent);
     }
-    .title{
-      display:flex; flex-direction:column; gap:2px;
-    }
+    .title{display:flex; flex-direction:column; gap:2px;}
     .title strong{font-size:14px}
     .title span{font-size:12px; color:var(--muted)}
     .bd{padding: var(--pad)}
     .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+
     .btn{
       border:1px solid var(--line);
       background: rgba(255,255,255,.06);
@@ -114,13 +105,11 @@
     .btn.warn{background: rgba(255,204,102,.14); border-color: rgba(255,204,102,.40)}
     .btn:active{transform: translateY(1px)}
     .btn[disabled]{opacity:.45; cursor:not-allowed}
-    .kv{
-      display:grid; grid-template-columns: 1fr 1fr; gap:10px;
-    }
+
+    .kv{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
     @media (max-width:520px){ .kv{grid-template-columns:1fr} }
-    .field{
-      display:flex; flex-direction:column; gap:6px;
-    }
+
+    .field{display:flex; flex-direction:column; gap:6px;}
     label{font-size:12px; color:var(--muted)}
     input, textarea, select{
       width:100%;
@@ -135,6 +124,7 @@
     textarea{min-height: 120px; resize: vertical}
     .hint{font-size:12px; color: var(--muted); line-height:1.35}
     .mono{font-family: var(--mono)}
+
     .banner{
       padding: 12px 12px;
       border-radius: 14px;
@@ -148,6 +138,7 @@
     .ok{color: var(--accent)}
     .warnTxt{color: var(--warn)}
     .dangerTxt{color: var(--danger)}
+
     /* Scanner */
     .scannerWrap{
       position: relative;
@@ -157,11 +148,15 @@
       background:#000;
       min-height: 220px;
     }
-    #scanner{
+    #camVideo{
       width:100%;
-      min-height: 220px;
-      position: relative;
+      height:100%;
+      min-height:220px;
+      object-fit: cover;
+      display:block;
     }
+    #scanCanvas{display:none}
+
     .scanOverlay{
       position:absolute; inset:0;
       pointer-events:none;
@@ -182,14 +177,17 @@
       font-size: 12px;
       color: rgba(255,255,255,.85);
     }
-    .scanNote span{background: rgba(0,0,0,.40); padding:8px 10px; border-radius: 999px; border:1px solid rgba(255,255,255,.16)}
-    /* Items list */
-    .items{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    .scanNote span{
+      background: rgba(0,0,0,.40);
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.16)
     }
+
+    /* Items list */
+    .items{display:grid; grid-template-columns: 1fr 1fr; gap: 12px;}
     @media (max-width: 680px){ .items{grid-template-columns:1fr} }
+
     .item{
       border:1px solid var(--line);
       border-radius: var(--radius2);
@@ -200,15 +198,9 @@
       min-height: 120px;
     }
     @media (max-width:420px){ .item{grid-template-columns: 110px 1fr} }
-    .thumb{
-      position: relative;
-      background: rgba(255,255,255,.04);
-    }
-    .thumb img{
-      position:absolute; inset:0;
-      width:100%; height:100%;
-      object-fit: cover;
-    }
+
+    .thumb{position: relative; background: rgba(255,255,255,.04);}
+    .thumb img{position:absolute; inset:0; width:100%; height:100%; object-fit: cover;}
     .thumb .noimg{
       position:absolute; inset:0;
       display:flex; align-items:center; justify-content:center;
@@ -217,44 +209,20 @@
       text-align:center;
       padding: 8px;
     }
-    .meta{
-      padding: 10px 10px 10px 10px;
-      display:flex; flex-direction:column; gap:6px;
-    }
-    .meta .line1{
-      display:flex; align-items:baseline; justify-content:space-between; gap:10px;
-    }
-    .qty{
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: .3px;
-    }
-    .prod{
-      font-size: 13px;
-      color: var(--text);
-      line-height:1.25;
-      font-weight: 650;
-    }
+    .meta{padding: 10px; display:flex; flex-direction:column; gap:6px;}
+    .meta .line1{display:flex; align-items:baseline; justify-content:space-between; gap:10px;}
+    .qty{font-size: 22px; font-weight: 800; letter-spacing: .3px;}
+    .prod{font-size: 13px; color: var(--text); line-height:1.25; font-weight: 650;}
     .tracking{
       font-size: 11px;
       color: var(--muted);
       font-family: var(--mono);
-      overflow:hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      overflow:hidden; text-overflow: ellipsis; white-space: nowrap;
     }
-    .meta .actions{
-      margin-top:auto;
-      display:flex; gap:8px; flex-wrap:wrap;
-    }
-    .mini{
-      padding: 8px 10px;
-      border-radius: 12px;
-      font-size: 12px;
-    }
-    .summary{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:stretch;
-    }
+    .meta .actions{margin-top:auto; display:flex; gap:8px; flex-wrap:wrap;}
+    .mini{padding: 8px 10px; border-radius: 12px; font-size: 12px;}
+
+    .summary{display:flex; gap:10px; flex-wrap:wrap; align-items:stretch;}
     .stat{
       flex:1;
       min-width: 170px;
@@ -266,6 +234,7 @@
     }
     .stat .big{font-size: 26px; font-weight: 900}
     .stat .lab{font-size: 12px; color: var(--muted)}
+
     /* Modal */
     .modalBack{
       position: fixed; inset:0;
@@ -305,6 +274,7 @@
       padding: 10px;
       text-align:center;
     }
+
     /* Crop */
     .cropWrap{
       border:1px solid var(--line);
@@ -314,11 +284,8 @@
       position: relative;
     }
     #cropCanvas{width:100%; display:block; touch-action:none}
-    .cropHelp{
-      font-size:12px; color: var(--muted);
-      margin-top:8px;
-      line-height:1.35;
-    }
+    .cropHelp{font-size:12px; color: var(--muted); margin-top:8px; line-height:1.35;}
+
     .footerBar{
       position: fixed;
       left:0; right:0; bottom:0;
@@ -333,6 +300,7 @@
       display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
       pointer-events:auto;
     }
+
     .toast{
       position: fixed;
       left: 50%;
@@ -367,9 +335,7 @@
       </div>
 
       <div class="top-actions">
-        <button class="pill" id="btnBackupDownload" title="Descargar respaldo (.json)">
-          ⬇️ Respaldo
-        </button>
+        <button class="pill" id="btnBackupDownload" title="Descargar respaldo (.json)">⬇️ Respaldo</button>
         <label class="pill" title="Cargar respaldo (.json)">
           ⬆️ Importar
           <input id="backupFile" type="file" accept="application/json" style="display:none">
@@ -394,7 +360,12 @@
         <div class="bd">
           <div class="banner" id="httpsBanner" style="display:none">
             <strong class="warnTxt">Ojo:</strong> estás abriendo esto como <span class="mono">file://</span>. La cámara suele fallar.
-            Súbelo a <strong>GitHub Pages</strong> (HTTPS) y funcionará bien.
+            Súbelo a <strong>GitHub Pages</strong> (HTTPS) o úsalo en <strong>localhost</strong>.
+          </div>
+
+          <div class="banner" id="engineBanner" style="margin-top:10px">
+            <strong>Motor de escaneo:</strong> <span id="engineText">Detectando…</span><br>
+            <span class="hint">Tip: en Android, abre el link en <strong>Chrome</strong> (no dentro de WhatsApp/Facebook).</span>
           </div>
 
           <div class="kv" style="margin-top:10px">
@@ -416,10 +387,9 @@
 
           <div id="barcodeArea" style="margin-top:12px">
             <div class="scannerWrap">
-              <div id="scanner"></div>
-              <div class="scanOverlay" aria-hidden="true">
-                <div class="scanBox"></div>
-              </div>
+              <video id="camVideo" autoplay playsinline muted></video>
+              <canvas id="scanCanvas"></canvas>
+              <div class="scanOverlay" aria-hidden="true"><div class="scanBox"></div></div>
               <div class="scanNote" aria-hidden="true">
                 <span>📷 Alinea el código en el cuadro horizontal</span>
                 <span>✅ Cuando detecte, se detiene solo</span>
@@ -518,7 +488,6 @@
             <button class="btn" id="btnShareWA">📤 Compartir con fotos (si disponible)</button>
             <button class="btn" id="btnCopyText">📋 Copiar texto</button>
           </div>
-
         </div>
       </section>
 
@@ -605,18 +574,13 @@
 
   <div class="toast" id="toast"></div>
 
-  <!-- Quagga (barcode scanner) -->
-  <script src="https://unpkg.com/@ericblade/quagga2@2.0.12/dist/quagga.min.js"></script>
-  <!-- Tesseract (OCR) -->
-  <script src="https://unpkg.com/tesseract.js@5.0.5/dist/tesseract.min.js"></script>
-
   <script>
     /*********************
      * State + Storage
      *********************/
-    const STORE_KEY = "registro_cargas_v1";
+    const STORE_KEY = "registro_cargas_v2_native";
     let state = {
-      items: [], // {id, ts, tracking, product, qty, photoDataUrl}
+      items: [],
       sortMode: "time", // time | tracking
       waGrouping: "group",
       waIncludeTracking: "yes"
@@ -632,9 +596,8 @@
       }catch(e){}
     }
     function saveState(){
-      try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){
-        toast("⚠️ No se pudo guardar (límite de almacenamiento). Usa Respaldo.");
-      }
+      try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+      catch(e){ toast("⚠️ No se pudo guardar (límite). Usa Respaldo."); }
     }
 
     /*********************
@@ -648,22 +611,19 @@
       t.textContent = msg;
       t.classList.add("show");
       clearTimeout(toast._tm);
-      toast._tm = setTimeout(()=>t.classList.remove("show"), 1800);
+      toast._tm = setTimeout(()=>t.classList.remove("show"), 2000);
     }
 
     // Extrae tracking: prioriza dígitos >= 8, si no encuentra toma alfanumérico >=8
     function extractTracking(str){
       if(!str) return "";
       const s = String(str).trim();
-      // 1) dígitos
-      const digitMatches = s.match(/\d{8,}/g) || [];
+      const digitMatches = s.match(/\\d{8,}/g) || [];
       let best = digitMatches.sort((a,b)=>b.length-a.length)[0] || "";
       if(best) return best;
 
-      // 2) alfanumérico (sin espacios) con 8+
-      const alnumMatches = s.replace(/\s+/g, " ").match(/[A-Za-z0-9]{8,}/g) || [];
+      const alnumMatches = s.replace(/\\s+/g, " ").match(/[A-Za-z0-9]{8,}/g) || [];
       best = alnumMatches.sort((a,b)=>b.length-a.length)[0] || "";
-
       return best || s;
     }
 
@@ -672,8 +632,20 @@
       return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
     }
 
-    function totalUnits(){
-      return state.items.reduce((a,it)=>a + (Number(it.qty)||0), 0);
+    function totalUnits(){ return state.items.reduce((a,it)=>a + (Number(it.qty)||0), 0); }
+
+    function getSortedItems(){
+      const arr = [...state.items];
+      if(state.sortMode === "tracking"){
+        arr.sort((a,b)=>{
+          const ta = (a.tracking||"").localeCompare(b.tracking||"");
+          if(ta!==0) return ta;
+          return (a.ts||0) - (b.ts||0);
+        });
+      }else{
+        arr.sort((a,b)=>(a.ts||0)-(b.ts||0));
+      }
+      return arr;
     }
 
     function buildMessage(){
@@ -688,7 +660,6 @@
       const items = getSortedItems();
 
       if(grouping === "group"){
-        // group by tracking
         const map = new Map();
         for(const it of items){
           const key = (it.tracking || "").trim() || "SIN_TRACKING";
@@ -705,7 +676,6 @@
           lines.push("");
         }
       }else{
-        // flat
         for(const it of items){
           if(includeTracking){
             lines.push(`📎 ${it.tracking || "(sin tracking)"} — ${it.qty} / ${it.product}${it.photoDataUrl ? "  📷" : ""}`);
@@ -718,22 +688,16 @@
 
       lines.push("—");
       lines.push("Nota: 📷 = foto guardada (usa “Compartir con fotos” si quieres intentar mandarlas juntas).");
-
-      return lines.join("\n");
+      return lines.join("\\n");
     }
 
-    function getSortedItems(){
-      const arr = [...state.items];
-      if(state.sortMode === "tracking"){
-        arr.sort((a,b)=>{
-          const ta = (a.tracking||"").localeCompare(b.tracking||"");
-          if(ta!==0) return ta;
-          return (a.ts||0) - (b.ts||0);
-        });
-      }else{
-        arr.sort((a,b)=>(a.ts||0)-(b.ts||0));
-      }
-      return arr;
+    function escapeHtml(str){
+      return String(str||"")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#39;");
     }
 
     function render(){
@@ -761,10 +725,7 @@
         div.className = "item";
         div.innerHTML = `
           <div class="thumb">
-            ${it.photoDataUrl
-              ? `<img alt="Foto" src="${it.photoDataUrl}">`
-              : `<div class="noimg">Sin foto</div>`
-            }
+            ${it.photoDataUrl ? `<img alt="Foto" src="${it.photoDataUrl}">` : `<div class="noimg">Sin foto</div>`}
           </div>
           <div class="meta">
             <div class="line1">
@@ -788,15 +749,6 @@
       wrap.querySelectorAll("[data-del]").forEach(b=>{
         b.addEventListener("click", ()=> deleteItem(b.getAttribute("data-del")));
       });
-    }
-
-    function escapeHtml(str){
-      return String(str||"")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#39;");
     }
 
     /*********************
@@ -854,10 +806,7 @@
     $("modalBack").addEventListener("click", (e)=>{ if(e.target === $("modalBack")) closeModal(); });
 
     $("btnDeleteItem").addEventListener("click", ()=>{
-      if(modalEditingId){
-        deleteItem(modalEditingId);
-        closeModal();
-      }
+      if(modalEditingId){ deleteItem(modalEditingId); closeModal(); }
     });
 
     $("btnSave").addEventListener("click", async ()=>{
@@ -865,16 +814,8 @@
       const qty = Number($("qtyInput").value);
       const tracking = extractTracking($("trackingInput").value);
 
-      if(!product){
-        toast("⚠️ Escribe el producto");
-        $("prodInput").focus();
-        return;
-      }
-      if(!qty || qty < 1){
-        toast("⚠️ Unidades inválidas");
-        $("qtyInput").focus();
-        return;
-      }
+      if(!product){ toast("⚠️ Escribe el producto"); $("prodInput").focus(); return; }
+      if(!qty || qty < 1){ toast("⚠️ Unidades inválidas"); $("qtyInput").focus(); return; }
 
       if(modalEditingId){
         const it = state.items.find(x=>x.id===modalEditingId);
@@ -882,7 +823,6 @@
           it.product = product;
           it.qty = qty;
           it.photoDataUrl = modalPhotoData || null;
-          // Si el usuario está editando, no le sobreescribimos tracking a menos que esté vacío:
           if(!it.tracking) it.tracking = tracking || "";
         }
       }else{
@@ -941,22 +881,60 @@
       const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0, nw, nh);
 
-      // Try webp, fallback jpeg
       let out = canvas.toDataURL("image/webp", quality);
       if(!out.startsWith("data:image/webp")) out = canvas.toDataURL("image/jpeg", quality);
       return out;
     }
 
     /*********************
-     * Barcode scanning (Quagga2)
+     * Barcode scanning (Nativo: BarcodeDetector)
+     * - NO depende de librerías externas (evita que "no pida permiso")
      *********************/
     let scanning = false;
+    let stream = null;
+    let detector = null;
+    let scanTimer = null;
+
+    const videoEl = $("camVideo");
+    const scanCanvas = $("scanCanvas");
+    const scanCtx = scanCanvas.getContext("2d", { willReadFrequently: true });
+
+    function isSecureContextOk(){
+      return location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1";
+    }
+
+    function supportsBarcodeDetector(){
+      return ("BarcodeDetector" in window);
+    }
+
+    function updateEngineBanner(){
+      const t = $("engineText");
+      if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+        t.innerHTML = `<span class="dangerTxt">Sin soporte de cámara en este navegador</span>`;
+        return;
+      }
+      if(supportsBarcodeDetector()){
+        t.innerHTML = `<span class="ok">BarcodeDetector (nativo)</span>`;
+      }else{
+        t.innerHTML = `<span class="warnTxt">Sin BarcodeDetector</span> → usa OCR por foto`;
+      }
+    }
 
     async function startScan(){
       if(scanning) return;
 
-      if(location.protocol === "file:"){
-        toast("⚠️ Sube esto a HTTPS (GitHub Pages) para usar cámara");
+      if(!isSecureContextOk()){
+        toast("⚠️ Necesitas HTTPS o localhost para usar cámara");
+        return;
+      }
+      if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+        toast("⚠️ Tu navegador no soporta cámara");
+        return;
+      }
+      if(!supportsBarcodeDetector()){
+        toast("⚠️ Tu Chrome no soporta BarcodeDetector. Usa OCR por foto.");
+        $("scanMode").value = "ocr";
+        showOcrUI(true);
         return;
       }
 
@@ -964,72 +942,82 @@
       $("btnStartScan").disabled = true;
       $("btnStopScan").disabled = false;
 
-      const target = document.querySelector("#scanner");
-      target.innerHTML = "";
+      detector = new BarcodeDetector({
+        formats: ["code_128","code_39","ean_13","ean_8","upc_a","upc_e","itf"]
+      });
 
-      Quagga.init({
-        inputStream: {
-          name: "Live",
-          type: "LiveStream",
-          target: target,
-          constraints: {
-            facingMode: "environment",
+      try{
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { ideal: "environment" },
             width: { ideal: 1280 },
             height: { ideal: 720 }
           },
-          // Banda horizontal (como pediste)
-          area: {
-            top: "38%",
-            right: "6%",
-            left: "6%",
-            bottom: "38%"
-          }
-        },
-        decoder: {
-          readers: [
-            "code_128_reader",
-            "code_39_reader",
-            "ean_reader",
-            "ean_8_reader",
-            "upc_reader",
-            "upc_e_reader",
-            "i2of5_reader"
-          ]
-        },
-        locate: true
-      }, function(err){
-        if(err){
-    scanning = false;
-    $("btnStartScan").disabled = false;
-    $("btnStopScan").disabled = true;
+          audio: false
+        });
 
-    const msg = (err && (err.name || err.message)) ? (err.name || err.message) : String(err);
-    toast("⚠️ Cámara error: " + msg);
-    console.error("Quagga init error:", err);
-    return;
-  }
-  Quagga.start();
-  toast("Escaneando...");
-      });
+        videoEl.srcObject = stream;
+        await videoEl.play();
+        toast("Escaneando...");
 
-      Quagga.offDetected();
-      Quagga.onDetected((data)=>{
-        try{
-          const raw = data && data.codeResult && data.codeResult.code ? data.codeResult.code : "";
+        scanTimer = setInterval(scanFrame, 150);
+
+      }catch(err){
+        scanning = false;
+        $("btnStartScan").disabled = false;
+        $("btnStopScan").disabled = true;
+
+        const msg = (err && (err.name || err.message)) ? (err.name || err.message) : String(err);
+        toast("⚠️ Cámara error: " + msg);
+        console.error("Camera error:", err);
+      }
+    }
+
+    async function scanFrame(){
+      if(!scanning || !videoEl.videoWidth) return;
+
+      const vw = videoEl.videoWidth;
+      const vh = videoEl.videoHeight;
+
+      // Banda horizontal central (como pediste)
+      const cropW = Math.floor(vw * 0.88);
+      const cropH = Math.floor(vh * 0.24);
+      const cropX = Math.floor((vw - cropW) / 2);
+      const cropY = Math.floor((vh - cropH) / 2);
+
+      scanCanvas.width = cropW;
+      scanCanvas.height = cropH;
+      scanCtx.drawImage(videoEl, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
+
+      try{
+        const codes = await detector.detect(scanCanvas);
+        if(codes && codes.length){
+          const raw = codes.map(c=>c.rawValue || "").sort((a,b)=>b.length-a.length)[0];
           const trk = extractTracking(raw);
           if(trk){
             $("trackingInput").value = trk;
             toast("Tracking detectado ✅");
             stopScan();
           }
-        }catch(e){}
-      });
+        }
+      }catch(e){
+        // ignorar errores intermitentes
+      }
     }
 
     function stopScan(){
       if(!scanning) return;
       scanning = false;
-      try{ Quagga.stop(); }catch(e){}
+
+      if(scanTimer){ clearInterval(scanTimer); scanTimer = null; }
+
+      try{ videoEl.pause(); }catch(e){}
+      if(stream){
+        try{ stream.getTracks().forEach(t=>t.stop()); }catch(e){}
+        stream = null;
+      }
+      videoEl.srcObject = null;
+
       $("btnStartScan").disabled = false;
       $("btnStopScan").disabled = true;
     }
@@ -1039,24 +1027,44 @@
 
     $("btnUseTracking").addEventListener("click", ()=>{
       const trk = extractTracking($("trackingInput").value);
-      if(!trk){
-        toast("⚠️ No hay tracking");
-        $("trackingInput").focus();
-        return;
-      }
+      if(!trk){ toast("⚠️ No hay tracking"); $("trackingInput").focus(); return; }
       $("trackingInput").value = trk;
       toast("Listo ✅");
     });
 
     /*********************
-     * OCR + Crop
+     * OCR + Crop (Tesseract) — se carga bajo demanda (evita bloqueos al inicio)
      *********************/
     let ocrImage = null;
-    let cropRect = null; // {x,y,w,h} in canvas coords
+    let cropRect = null;
     let cropCanvas = $("cropCanvas");
     let cropCtx = cropCanvas.getContext("2d");
     let dragging = false;
     let dragStart = null;
+
+    async function loadTesseract(){
+      if(window.Tesseract) return true;
+
+      const urls = [
+        "https://cdn.jsdelivr.net/npm/tesseract.js@5.0.5/dist/tesseract.min.js",
+        "https://unpkg.com/tesseract.js@5.0.5/dist/tesseract.min.js"
+      ];
+
+      for(const url of urls){
+        try{
+          await new Promise((res, rej)=>{
+            const s = document.createElement("script");
+            s.src = url;
+            s.async = true;
+            s.onload = ()=>res();
+            s.onerror = ()=>rej(new Error("No cargó " + url));
+            document.head.appendChild(s);
+          });
+          if(window.Tesseract) return true;
+        }catch(e){}
+      }
+      return false;
+    }
 
     function showOcrUI(show){
       $("barcodeArea").style.display = show ? "none" : "";
@@ -1079,7 +1087,6 @@
         await new Promise((res,rej)=>{ img.onload=res; img.onerror=rej; });
         ocrImage = img;
 
-        // Fit canvas to container width
         const maxW = Math.min(1000, $("ocrArea").clientWidth - 6);
         const scale = Math.min(1, maxW / img.naturalWidth);
         cropCanvas.width = Math.round(img.naturalWidth * scale);
@@ -1151,17 +1158,20 @@
     });
 
     async function runOcr(useCrop){
-      if(!ocrImage) { toast("⚠️ Carga una foto"); return; }
+      if(!ocrImage){ toast("⚠️ Carga una foto"); return; }
 
-      // Construir canvas de entrada (recortado o completo)
+      const ok = await loadTesseract();
+      if(!ok){
+        toast("⚠️ No se pudo cargar OCR (red/bloqueo).");
+        return;
+      }
+
       let srcCanvas = document.createElement("canvas");
       let sctx = srcCanvas.getContext("2d");
 
       if(useCrop && cropRect && cropRect.w > 10 && cropRect.h > 10){
-        // extraer recorte
         srcCanvas.width = Math.round(cropRect.w);
         srcCanvas.height = Math.round(cropRect.h);
-        // redibujar desde canvas mostrado
         sctx.drawImage(cropCanvas,
           cropRect.x, cropRect.y, cropRect.w, cropRect.h,
           0, 0, srcCanvas.width, srcCanvas.height
@@ -1230,19 +1240,13 @@
       const text = buildMessage();
       const files = state.items
         .filter(it=>it.photoDataUrl)
-        .slice(0, 10) // limite razonable
+        .slice(0, 10)
         .map((it, idx)=> dataUrlToFile(it.photoDataUrl, `foto-${idx+1}.webp`));
 
       if(navigator.canShare && navigator.canShare({ files })){
         try{
-          await navigator.share({
-            title: "Registro de carga",
-            text,
-            files
-          });
-        }catch(e){
-          // usuario canceló o error
-        }
+          await navigator.share({ title: "Registro de carga", text, files });
+        }catch(e){}
       }else{
         toast("Tu navegador no soporta compartir fotos. Usa WhatsApp (texto) y envía fotos manual.");
       }
@@ -1324,7 +1328,6 @@
       saveState(); render();
     });
 
-    // Si el usuario escribe tracking manual, limpiamos
     $("trackingInput").addEventListener("blur", ()=>{
       const trk = extractTracking($("trackingInput").value);
       if(trk) $("trackingInput").value = trk;
@@ -1337,15 +1340,11 @@
     loadState();
     render();
 
-    // protocol hint
-    $("protoHint").textContent = location.protocol;
-    if(location.protocol === "file:"){
-      $("httpsBanner").style.display = "";
-    }
+    $("protoHint").textContent = location.protocol + "//" + location.host;
+    if(location.protocol === "file:") $("httpsBanner").style.display = "";
+    updateEngineBanner();
 
-    // If scan mode toggled
     showOcrUI($("scanMode").value === "ocr");
   </script>
 </body>
 </html>
-
